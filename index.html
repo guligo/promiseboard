@@ -1,0 +1,208 @@
+<html>
+    <head>
+        <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+        <style>
+            @font-face {
+                font-family: 'AlexBrushRegular';
+                src: url('AlexBrushRegular.otf') format('opentype');
+                font-weight: normal;
+                font-style: normal;
+            }
+
+            .pb-body {
+                background-color: #dddddd;
+            }
+
+            .pb-navbar-collapse {
+                margin-right: 15px !important;
+            }
+
+            .pb-container {
+                width: 750px;
+                margin-top: 50px;
+                padding-top: 15px;
+                background-color: #eeeeee;
+            }
+
+            .pb-navbar-icon {
+                line-height: 1.42857143;
+            }
+
+            .pb-navbar-form {
+                margin-left: -10px;
+                margin-right: -10px;
+            }
+
+            .pb-account-btn {
+                /* margin-right: 5px; */
+            }
+
+            .pb-notifications-btn {
+                margin-right: 5px !important;
+            }
+
+            .pb-promise {
+                /* height: 150px; */
+                margin-bottom: 15px;
+            }
+
+            .pb-progress {
+                margin-bottom: 0px;
+            }
+
+            .pb-brand {
+                font-family: 'AlexBrushRegular';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 40px;
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    </head>
+    <body class="pb-body">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse pb-navbar-collapse">
+                    <button type="button" class="btn btn-default navbar-btn navbar-left">
+                        <span class="glyphicon glyphicon-plus pb-navbar-icon"></span>
+                    </button>
+                    <div class="navbar-form navbar-left pb-navbar-form">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search pb-navbar-icon"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-default navbar-btn navbar-left">
+                        <span class="glyphicon glyphicon-filter pb-navbar-icon"></span>
+                    </button>
+                    <div class="navbar-header navbar-left">
+                        <a class="navbar-brand pb-brand" style="text-align: center; width: 685px;">Promiseboard</a>
+                    </div>
+                    <button type="button" class="btn btn-default navbar-btn navbar-right pb-account-btn">
+                        <span class="glyphicon glyphicon-user pb-navbar-icon"></span>
+                    </button>
+                    <button type="button" class="btn btn-default navbar-btn navbar-right pb-notifications-btn">
+                        <span class="glyphicon glyphicon-bell pb-navbar-icon"></span>
+                        <!-- span class="badge">1</span -->
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div class="container pb-container">
+            <div style="width: 100%; font-size: 10px; text-align: center;">
+                12/19/2015 23:41:00
+            </div>
+            <div class="alert alert-danger pb-promise">
+                <div>
+                    <label>To:</label>
+                    <span class="label label-default">Yourself</span>
+                    <span class="label label-info">Jane Doe</span>
+                </div>
+                <br />
+                <div>
+                    <label>I promise...</label>
+                    <div>
+                        To become a billionaire before end of this year
+                    </div>
+                </div>
+                <br />
+                <div style="float: left;">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                </div>
+                <div style="float: right;">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+            <div style="width: 100%; font-size: 10px; text-align: center;">
+                12/19/2015 23:41:00
+            </div>
+            <div class="alert alert-success pb-promise">
+                <div>
+                    <label>To:</label>
+                    <span class="label label-default">Yourself</span>
+                    <span class="label label-info">Jane Doe</span>
+                </div>
+                <br />
+                <div>
+                    <label>I promise...</label>
+                    <div>
+                        To train hard until the end of year
+                    </div>
+                </div>
+                <br />
+                <div style="float: left;">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                </div>
+                <div style="float: right;">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+            <div style="width: 100%; font-size: 10px; text-align: center;">
+                12/19/2015 23:41:00
+            </div>
+            <div class="alert alert-warning pb-promise">
+                <div>
+                    <label>To:</label>
+                    <span class="label label-default">Yourself</span>
+                    <span class="label label-info">Girlfriend</span>
+                    <span class="label label-info">Jane Doe</span>
+                </div>
+                <br />
+                <div>
+                    <label>I promise...</label>
+                    <div>
+                        To move away from this town soon!
+                    </div>
+                </div>
+                <br />
+                <div style="float: left; width: 75px;">
+                    <div class="progress pb-progress">
+                        <div class="progress-bar progress-bar-info" style="width: 20%"></div> 12/26/2015 11:00:00
+                    </div>
+                </div>
+                <div style="float: right;">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="glyphicon glyphicon-trash"></span>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+            <div class="alert alert-warning pb-promise">
+                <div>
+                    <label>To:</label>
+                    <span class="label label-default">Yourself</span>
+                </div>
+                <br />
+                <div>
+                    <label>I promise...</label>
+                    <div>
+                        To do something cool!
+                    </div>
+                </div>
+                <br />
+                <div style="float: left; width: 75px;">
+                    <div class="progress pb-progress">
+                        <div class="progress-bar progress-bar-info" style="width: 55%"></div> 12/26/2015 11:00:00
+                    </div>
+                </div>
+                <div style="float: right;">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="glyphicon glyphicon-trash"></span>
+                </div>
+                <div style="clear: both;">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
