@@ -1,10 +1,18 @@
 <html>
     <head>
+        <title>Promiseboard | Home</title>
+
         <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="Place that makes it easier to keep your promises" />
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+        <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css" />
         <style>
+            body {
+                background-image: url("sky.jpg");
+            }
+
             @font-face {
                 font-family: 'AlexBrushRegular';
                 src: url('AlexBrushRegular.otf') format('opentype');
@@ -13,7 +21,7 @@
             }
 
             .pb-body {
-                background-color: #dddddd;
+                background-color: #eeeeee;
             }
 
             .pb-navbar-collapse {
@@ -22,9 +30,10 @@
 
             .pb-container {
                 width: 750px;
-                margin-top: 50px;
-                padding-top: 15px;
-                background-color: #eeeeee;
+                margin: auto;
+                margin-top: 75px;
+                margin-bottom: 25px;
+                background-color: rgba(255, 255, 255, 0.75);
             }
 
             .pb-navbar-icon {
@@ -106,6 +115,7 @@
         </script>
     </head>
     <body class="pb-body">
+        <!-- navigation -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse pb-navbar-collapse">
@@ -118,7 +128,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <button type="button" class="btn btn-default navbar-btn pb-add-btn">
+                            <button data-toggle="modal" data-target="#createPromiseModal" type="button" class="btn btn-default navbar-btn pb-add-btn">
                                 <span class="glyphicon glyphicon-plus pb-navbar-icon"></span>
                             </button>
                         </li>
@@ -128,7 +138,7 @@
                             </button>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome, guligo!<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome, jondoe!<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="#">Profile</a>
@@ -142,115 +152,154 @@
                 </div>
             </div>
         </nav>
-        <div class="container pb-container">
-            <div class="pb-promise-header pb-promse-header-failure">
-                12/19/2015 23:41:00
-            </div>
-            <div class="alert alert-danger pb-promise">
-                <div>
-                    <label>To:</label>
-                    <span class="label label-default">Yourself</span>
-                    <span class="label label-info">Jane Doe</span>
+        <!-- [END!] navigation -->
+
+        <!-- promise list -->
+        <div class="panel panel-default pb-container">
+            <div class="panel-body">
+                <div class="pb-promise-header pb-promse-header-failure">
+                    12/19/2015 23:41:00
                 </div>
-                <br />
-                <div>
-                    <label>I promise...</label>
+                <div class="alert alert-danger pb-promise">
                     <div>
-                        To become a billionaire before end of this year
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                        <span class="label label-info">Jane Doe</span>
                     </div>
-                </div>
-                <br />
-                <div class="pb-promise-footer-left">
-                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                </div>
-                <div class="pb-promise-footer-right">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </div>
-                <div class="pb-promise-footer-clear"></div>
-            </div>
-            <div class="pb-promise-header pb-promse-header-success">
-                12/19/2015 23:41:00
-            </div>
-            <div class="alert alert-success pb-promise">
-                <div>
-                    <label>To:</label>
-                    <span class="label label-default">Yourself</span>
-                    <span class="label label-info">Jane Doe</span>
-                </div>
-                <br />
-                <div>
-                    <label>I promise...</label>
+                    <br />
                     <div>
-                        To train hard until the end of year
+                        <label>I promise...</label>
+                        <div>
+                            To become a billionaire before end of this year
+                        </div>
                     </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
                 </div>
-                <br />
-                <div class="pb-promise-footer-left">
-                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                <div class="pb-promise-header pb-promse-header-success">
+                    12/19/2015 23:41:00
                 </div>
-                <div class="pb-promise-footer-right">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </div>
-                <div class="pb-promise-footer-clear"></div>
-            </div>
-            <div class="pb-promise-header pb-promse-header-ongoing">
-                12/19/2015 23:41:00
-            </div>
-            <div class="alert alert-warning pb-promise">
-                <div>
-                    <label>To:</label>
-                    <span class="label label-default">Yourself</span>
-                    <span class="label label-info">Girlfriend</span>
-                    <span class="label label-info">Jane Doe</span>
-                </div>
-                <br />
-                <div>
-                    <label>I promise...</label>
+                <div class="alert alert-success pb-promise">
                     <div>
-                        To move away from this town soon!
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                        <span class="label label-info">Jane Doe</span>
                     </div>
-                </div>
-                <br />
-                <div class="pb-promise-footer-left">
-                    <div class="progress pb-progress">
-                        <div class="progress-bar progress-bar-info" style="width: 20%"></div>
-                    </div>
-                </div>
-                <div class="pb-promise-footer-right">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <span class="glyphicon glyphicon-remove"></span>
-                    <span class="glyphicon glyphicon-trash"></span>
-                </div>
-                <div class="pb-promise-footer-clear"></div>
-            </div>
-            <div class="pb-promise-header pb-promse-header-ongoing">
-                12/19/2015 23:41:00
-            </div>
-            <div class="alert alert-warning pb-promise">
-                <div>
-                    <label>To:</label>
-                    <span class="label label-default">Yourself</span>
-                </div>
-                <br />
-                <div>
-                    <label>I promise...</label>
+                    <br />
                     <div>
-                        To do something cool!
+                        <label>I promise...</label>
+                        <div>
+                            To train hard until the end of year
+                        </div>
+                    </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
+                </div>
+                <div class="pb-promise-header pb-promse-header-ongoing">
+                    12/19/2015 23:41:00
+                </div>
+                <div class="alert alert-warning pb-promise">
+                    <div>
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                        <span class="label label-info">Girlfriend</span>
+                        <span class="label label-info">Jane Doe</span>
+                    </div>
+                    <br />
+                    <div>
+                        <label>I promise...</label>
+                        <div>
+                            To move away from this town soon!
+                        </div>
+                    </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <div class="progress pb-progress">
+                            <div class="progress-bar progress-bar-info" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
+                </div>
+                <div class="pb-promise-header pb-promse-header-ongoing">
+                    12/19/2015 23:41:00
+                </div>
+                <div class="alert alert-warning pb-promise">
+                    <div>
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                    </div>
+                    <br />
+                    <div>
+                        <label>I promise...</label>
+                        <div>
+                            To do something cool!
+                        </div>
+                    </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <div class="progress pb-progress">
+                            <div class="progress-bar progress-bar-info" style="width: 55%"></div>
+                        </div>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
+                </div>
+            </div>
+            <!--
+            <div class="panel-footer">
+                <span style="float: left;">
+                    Copyright &copy; promiseboard.net 2015
+                </span>
+                <span style="float: right;">
+                    <i class="fa fa-facebook fa-lg"></i>
+                    <i class="fa fa-twitter fa-lg"></i>
+                    <i class="fa fa-instagram fa-lg"></i>
+                </span>
+                <div style="clear: both"></span>
+            </div>
+            -->
+        </div>
+        <!-- [END!] promise list -->
+
+        <!-- create promise -->
+        <div id="createPromiseModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Your promise</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>I promise&hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Make</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-                <br />
-                <div class="pb-promise-footer-left">
-                    <div class="progress pb-progress">
-                        <div class="progress-bar progress-bar-info" style="width: 55%"></div>
-                    </div>
-                </div>
-                <div class="pb-promise-footer-right">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <span class="glyphicon glyphicon-remove"></span>
-                    <span class="glyphicon glyphicon-trash"></span>
-                </div>
-                <div class="pb-promise-footer-clear"></div>
             </div>
         </div>
+        <!-- [END!] create promise -->
     </body>
 </html>
