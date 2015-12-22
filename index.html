@@ -13,6 +13,16 @@
                 background-image: url("sky.jpg");
             }
 
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            a:hover {
+                text-decoration: none;
+                color: inherit;
+            }
+
             @font-face {
                 font-family: 'AlexBrushRegular';
                 src: url('AlexBrushRegular.otf') format('opentype');
@@ -46,7 +56,7 @@
             }
 
             .pb-add-btn {
-                margin-right: 5px;
+                /* margin-right: 5px; */
             }
 
             .pb-notifications-btn {
@@ -121,8 +131,15 @@
                 <div class="collapse navbar-collapse pb-navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         <li>
-                            <div class="navbar-header navbar-left">
+                            <div class="navbar-header">
                                 <a class="navbar-brand pb-brand">Promiseboard</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="navbar-header">
+                                <div class="navbar-brand">
+                                    <span class="badge">+3</span>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -132,11 +149,13 @@
                                 <span class="glyphicon glyphicon-plus pb-navbar-icon"></span>
                             </button>
                         </li>
+                        <!--
                         <li>
                             <button type="button" class="btn btn-default navbar-btn pb-notifications-btn">
                                 <span class="glyphicon glyphicon-bell pb-navbar-icon"></span>
                             </button>
                         </li>
+                        -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome, jondoe!<span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -157,31 +176,6 @@
         <!-- promise list -->
         <div class="panel panel-default pb-container">
             <div class="panel-body">
-                <div class="pb-promise-header pb-promse-header-failure">
-                    12/19/2015 23:41:00
-                </div>
-                <div class="alert alert-danger pb-promise">
-                    <div>
-                        <label>To:</label>
-                        <span class="label label-default">Yourself</span>
-                        <span class="label label-info">Jane Doe</span>
-                    </div>
-                    <br />
-                    <div>
-                        <label>I promise...</label>
-                        <div>
-                            To become a billionaire before end of this year
-                        </div>
-                    </div>
-                    <br />
-                    <div class="pb-promise-footer-left">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                    </div>
-                    <div class="pb-promise-footer-right">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </div>
-                    <div class="pb-promise-footer-clear"></div>
-                </div>
                 <div class="pb-promise-header pb-promse-header-success">
                     12/19/2015 23:41:00
                 </div>
@@ -203,7 +197,64 @@
                         <span class="glyphicon glyphicon-thumbs-up"></span>
                     </div>
                     <div class="pb-promise-footer-right">
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
+                </div>
+                <div class="pb-promise-header pb-promse-header-failure">
+                    12/19/2015 23:41:00
+                </div>
+                <div class="alert alert-danger pb-promise">
+                    <div>
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                        <span class="label label-info">Jane Doe</span>
+                    </div>
+                    <br />
+                    <div>
+                        <label>I promise...</label>
+                        <div>
+                            To become a billionaire before end of this year
+                        </div>
+                    </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                    <div class="pb-promise-footer-clear"></div>
+                </div>
+                <div class="pb-promise-header pb-promse-header-success">
+                    12/19/2015 23:42:00
+                </div>
+                <div class="alert alert-success pb-promise">
+                    <div>
+                        <label>To:</label>
+                        <span class="label label-default">Yourself</span>
+                        <span class="label label-info">Jane Doe</span>
+                    </div>
+                    <br />
+                    <div>
+                        <label>I promise...</label>
+                        <div>
+                            To read a lot
+                        </div>
+                    </div>
+                    <br />
+                    <div class="pb-promise-footer-left">
+                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                    </div>
+                    <div class="pb-promise-footer-right">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
                     </div>
                     <div class="pb-promise-footer-clear"></div>
                 </div>
@@ -231,9 +282,15 @@
                         </div>
                     </div>
                     <div class="pb-promise-footer-right">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </a>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
                     </div>
                     <div class="pb-promise-footer-clear"></div>
                 </div>
@@ -259,9 +316,15 @@
                         </div>
                     </div>
                     <div class="pb-promise-footer-right">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </a>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
                     </div>
                     <div class="pb-promise-footer-clear"></div>
                 </div>
