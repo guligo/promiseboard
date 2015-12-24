@@ -1,0 +1,6 @@
+{
+    "name": "promiseboard",
+    "keywords": ["node", "promiseboard", "web"],
+    "repository": "https://github.com/guligo/promiseboard.git",
+    "image": "heroku/nodejs"
+}
