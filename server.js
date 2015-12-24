@@ -35,6 +35,10 @@ var clone = function(object) {
     return JSON.parse(JSON.stringify(object));
 }
 
+var createException = function(text) {
+    return {checked: true, text: text};
+}
+
 // RESTful services
 
 app.get('/users', function(req, res) {
@@ -53,10 +57,10 @@ app.post('/users/login', function(req, res) {
         var actualUser = getUserByUsername(submittedUser.username);
 
         if (actualUser === undefined) {
-            throw 'User does not exist'
+            throw createException('User does not exist');
         }
         if (submittedUser.password !== actualUser.password) {
-            throw 'Wrong password'
+            throw createException('Wrong password');
         }
 
         res.sendStatus(200);
@@ -71,16 +75,16 @@ app.post('/users/register', function(req, res) {
         var submittedUser = req.body;
 
         if (submittedUser.username.length < 6) {
-            throw 'Username too short';
+            throw createException('Username too short');
         }
         if (submittedUser.password.length < 6) {
-            throw 'Password too short'
+            throw createException('Password too short');
         }
         if (submittedUser.password !== submittedUser.confirm) {
-            throw 'Password and password confirmation do not match';
+            throw createException('Password and password confirmation do not match');
         }
         if (getUserByUsername(submittedUser.username) !== undefined) {
-            throw 'User already exists';
+            throw createException('User already exists');
         }
 
         _users.push({
@@ -90,7 +94,11 @@ app.post('/users/register', function(req, res) {
         res.sendStatus(200);
     } catch (e) {
         console.error(e);
-        res.sendStatus(500);
+        if (e.checked === true) {
+            res.status(500).send(e.text);
+        } else {
+            res.sendStatus(500);
+        }
     }
 });
 
