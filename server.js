@@ -12,7 +12,7 @@ app.use(express.static(__dirname + '/public'));
 
 // data stores
 
-var users = [
+var _users = [
     {
         username: 'guligo',
         password: 'qwerty'
@@ -23,7 +23,7 @@ var users = [
 
 var getUserByUsername = function(username) {
     var result;
-    users.forEach(function(user) {
+    _users.forEach(function(user) {
         if (user.username === username) {
             result = user;
         }
@@ -31,7 +31,21 @@ var getUserByUsername = function(username) {
     return result;
 }
 
+var clone = function(object) {
+    return JSON.parse(JSON.stringify(object));
+}
+
 // RESTful services
+
+app.get('/users', function(req, res) {
+    var users = clone(_users);
+    users.forEach(function(user) {
+        user.password = '****';
+    });
+
+    res.end(JSON.stringify(users));
+    res.sendStatus(200);
+});
 
 app.post('/users/login', function(req, res) {
     try {
@@ -69,7 +83,7 @@ app.post('/users/register', function(req, res) {
             throw 'User already exists';
         }
 
-        users.push({
+        _users.push({
             username: submittedUser.username,
             password: submittedUser.password
         });
