@@ -1,116 +1,13 @@
 <html>
     <head>
-        <title>Promiseboard | Home</title>
+        <title>Promiseboard | Main</title>
 
-        <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Place that makes it easier to keep your promises" />
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
         <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css" />
-        <style>
-            body {
-                background-image: url("sky.jpg");
-            }
-
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
-
-            a:hover {
-                text-decoration: none;
-                color: inherit;
-            }
-
-            @font-face {
-                font-family: 'AlexBrushRegular';
-                src: url('AlexBrushRegular.otf') format('opentype');
-                font-weight: normal;
-                font-style: normal;
-            }
-
-            .pb-body {
-                background-color: #eeeeee;
-            }
-
-            .pb-navbar-collapse {
-                margin-right: 15px !important;
-            }
-
-            .pb-container {
-                width: 750px;
-                margin: auto;
-                margin-top: 75px;
-                margin-bottom: 25px;
-                background-color: rgba(255, 255, 255, 0.75);
-            }
-
-            .pb-navbar-icon {
-                line-height: 1.42857143;
-            }
-
-            .pb-navbar-form {
-                margin-left: -10px;
-                margin-right: -10px;
-            }
-
-            .pb-add-btn {
-                /* margin-right: 5px; */
-            }
-
-            .pb-notifications-btn {
-                /* margin-right: 5px !important; */
-            }
-
-            .pb-promise-header {
-                width: 100%;
-                font-size: 10px;
-                text-align: center;
-            }
-
-            .pb-promse-header-success {
-                color: #3c763d;
-            }
-
-            .pb-promse-header-failure {
-                color: #a94442;
-            }
-
-            .pb-promse-header-ongoing {
-                color: #8a6d3b;
-            }
-
-            .pb-promise {
-                /* height: 150px; */
-                margin-bottom: 15px;
-            }
-
-            .pb-promise-footer-left {
-                float: left;
-            }
-
-            .pb-promise-footer-right {
-                float: right;
-            }
-
-            .pb-promise-footer-clear {
-                clear: both;
-            }
-
-            .pb-progress {
-                width: 75px;
-                margin-bottom: 0px;
-            }
-
-            .pb-brand {
-                text-align: center;
-                font-family: 'AlexBrushRegular';
-                font-weight: normal;
-                font-style: normal;
-                font-size: 40px;
-            }
-        </style>
+        <link rel="stylesheet" href="style/promiseboard-main.css" />
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -125,7 +22,7 @@
         </script>
     </head>
     <body class="pb-body">
-        <!-- navigation -->
+        <!-- initially visible content -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse pb-navbar-collapse">
@@ -171,9 +68,9 @@
                 </div>
             </div>
         </nav>
-        <!-- [END!] navigation -->
+        <!-- [END] initially visible content -->
 
-        <!-- promise list -->
+        <!-- list -->
         <div class="panel panel-default pb-container">
             <div class="panel-body">
                 <div class="pb-promise-header pb-promse-header-success">
@@ -343,9 +240,9 @@
             </div>
             -->
         </div>
-        <!-- [END!] promise list -->
+        <!-- [END] list -->
 
-        <!-- create promise -->
+        <!-- create -->
         <div id="createPromiseModal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -363,6 +260,6 @@
                 </div>
             </div>
         </div>
-        <!-- [END!] create promise -->
+        <!-- [END] create -->
     </body>
 </html>

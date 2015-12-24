@@ -1,18 +1,13 @@
 <html>
     <head>
-        <title>Promiseboard | Welcome</title>
+        <title>Promiseboard | Home</title>
 
-        <!-- meta name="viewport" content="width=device-width, initial-scale=1" -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Place that makes it easier to keep your promises" />
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
         <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css" />
-        <style>
-            body {
-                background-color: #8a458a;
-            }
-        </style>
+        <link rel="stylesheet" href="style/promiseboard-index.css" />
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -27,19 +22,19 @@
         </script>
     </head>
     <body class="pb-body">
-        <!-- visible content -->
-        <div class="container" style="margin-top: 150px;">
+        <!-- initially visible content -->
+        <div class="container pb-banner">
             <div class="jumbotron">
                 <h1>Welcome to Promiseboard!</h1>
                 <p>We are making a place - an app - that would challenge people to commit and complete promises made to themselves and other people. Check it out, you might love it!</p>
                 <br />
-                <div style="width: 100%; text-align: center;">
+                <div class="pb-banner-btn-group">
                     <!--
                     <button data-toggle="modal" data-target="#loginModal" type="button" class="btn btn-default btn-lg">
                         <span class="glyphicon glyphicon glyphicon-log-in" aria-hidden="true"></span> Sign in
                     </button>
                     -->
-                    <a href="promiseboard.html" class="btn btn-default btn-lg">
+                    <a href="main.html" class="btn btn-default btn-lg">
                         <span class="glyphicon glyphicon glyphicon-log-in" aria-hidden="true"></span> Sign in
                     </a>
                     <button data-toggle="modal" data-target="#registrationModal" type="button" class="btn btn-default btn-lg">
@@ -48,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <!-- [END] visible content -->
+        <!-- [END] initially visible content -->
 
         <!-- login -->
         <div id="loginModal" class="modal fade" tabindex="-1" role="dialog">

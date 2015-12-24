@@ -1,0 +1,12 @@
+body {
+    background-color: #8a458a;
+}
+
+.pb-banner {
+    margin-top: 150px;
+}
+
+.pb-banner-btn-group {
+    width: 100%;
+    text-align: center;
+}
