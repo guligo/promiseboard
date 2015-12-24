@@ -18,6 +18,19 @@ var userController = (function() {
             });
         },
 
+        logOut: function(onSuccess) {
+            $.ajax({
+                url: '/users/logout',
+                method: 'post',
+                success: function() {
+                    onSuccess();
+                },
+                error: function() {
+                    onSuccess();
+                }
+            });
+        },
+
         register: function(data, onSuccess, onError) {
             $.ajax({
                 url: '/users/register',
