@@ -26,13 +26,33 @@
                     });
                 });
 
-                promiseController.getPromises(function(promises) {
-                    promises.forEach(function(promise) {
-                        var promiseElement = $('.promise');
-                        promiseElement.find('.promiseDescription').text(promise.description);
-                        $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="promise"', ''));
+                var refreshPromiseList = function() {
+                    $('#promiseList').empty();
+                    promiseController.getPromises(function(promises) {
+                        promises.forEach(function(promise) {
+                            var promiseElement = $('.promise');
+                            promiseElement.find('.promiseDescription').text(promise.description);
+                            $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="promise"', ''));
+                        });
+                    });
+                }
+
+                $('#createPromiseModalCreateButton').click(function() {
+                    promiseController.createPromise({
+                        description: $('#createPromiseModalDescriptionField').val()
+                    }, function() {
+                        $('#createPromiseModalCloseButton').click();
+                        refreshPromiseList();
+                    }, function(error) {
+                        console.error(error);
                     });
                 });
+
+                $('#createPromiseModalCloseButton').click(function() {
+                    $('#createPromiseModalDescriptionField').val('');
+                });
+
+                refreshPromiseList();
             });
         </script>
     </head>
@@ -120,11 +140,14 @@
                         <h4 class="modal-title">Your promise</h4>
                     </div>
                     <div class="modal-body">
-                        <p>I promise&hellip;</p>
+                        <div class="form-group">
+                            <label class="control-label" class="control-label" for="createPromiseModalDescriptionField">I promise...</label>
+                            <textarea id="createPromiseModalDescriptionField" class="form-control" placeholder="Description"></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Make</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="createPromiseModalCreateButton" type="button" class="btn btn-primary">Make</button>
+                        <button id="createPromiseModalCloseButton" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

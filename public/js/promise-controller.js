@@ -27,7 +27,7 @@ var promiseController = (function() {
                 },
                 error: function() {
                     onError();
-                },
+                }
             });
         }
     };

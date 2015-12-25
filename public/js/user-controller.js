@@ -45,7 +45,7 @@ var userController = (function() {
                 },
                 error: function(error) {
                     onError(error.responseText);
-                },
+                }
             });
         }
     };

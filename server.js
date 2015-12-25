@@ -162,7 +162,7 @@ app.post('/promises', function(req, res) {
     try {
         var submittedPromise = req.body;
 
-        if (submittedUser.description.length <= 0) {
+        if (submittedPromise.description.length <= 0) {
             throw createException('Description empty');
         }
 
