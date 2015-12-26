@@ -6,7 +6,6 @@
         <meta name="description" content="Changing the way we make and keep our promises!" />
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
-        <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="style/promiseboard-main.css" />
         <style>
             .promise {
@@ -19,6 +18,10 @@
         <script src="js/user-controller.js"></script>
         <script src="js/promise-controller.js"></script>
         <script>
+            const PROMISE_COMMITED = 1;
+            const PROMISE_COMPLETED = 2;
+            const PROMISE_FAILED = 3;
+
             $(document).ready(function() {
                 $('#logoutLink').click(function() {
                     userController.logOut(function() {
@@ -31,8 +34,39 @@
                     promiseController.getPromises(function(promises) {
                         promises.forEach(function(promise) {
                             var promiseElement = $('.promise');
-                            promiseElement.find('.promiseDescription').text(promise.description);
-                            $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="promise"', ''));
+                            promiseElement.find('.pb-promise-description').text(promise.description);
+
+                            $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="promise"', 'id="promise' + promise.id + '"'));
+
+                            if (Number(promise.status) === PROMISE_COMMITED) {
+                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
+                            } else if (Number(promise.status) === PROMISE_COMPLETED) {
+                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
+                            } else if (Number(promise.status) === PROMISE_FAILED) {
+                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
+                            }
+
+                            $('#promise' + promise.id + ' .pb-status-completed').click(function() {
+                                promiseController.updatePromiseStatus({
+                                    id: promise.id,
+                                    status: 2
+                                }, function() {
+                                    refreshPromiseList();
+                                }, function(error) {
+                                    console.error(error);
+                                });
+                            });
+
+                            $('#promise' + promise.id + ' .pb-status-failed').click(function() {
+                                promiseController.updatePromiseStatus({
+                                    id: promise.id,
+                                    status: 3
+                                }, function() {
+                                    refreshPromiseList();
+                                }, function(error) {
+                                    console.error(error);
+                                });
+                            });
                         });
                     });
                 }
@@ -108,18 +142,18 @@
 
         <!-- entity -->
         <div class="promise">
-            <div class="alert alert-warning pb-promise">
+            <div class="alert pb-promise">
                 <div>
                     <label>I promise...</label>
-                    <div class="promiseDescription">
+                    <div class="pb-promise-description">
                         <!-- placeholder -->
                     </div>
                 </div>
                 <div class="pb-promise-footer-right">
-                    <a href="#">
+                    <a href="#" class="pb-status-completed">
                         <span class="glyphicon glyphicon-ok"></span>
                     </a>
-                    <a href="#">
+                    <a href="#" class="pb-status-failed">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
                     <a href="#">

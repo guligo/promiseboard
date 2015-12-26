@@ -28,18 +28,22 @@ var _users = [
     }
 ];
 
-const PROMISES_COMMITED = 1;
-const PROMISES_COMPLETED = 2;
-const PROMISES_FAILED = 3;
+const PROMISE_COMMITED = 1;
+const PROMISE_COMPLETED = 2;
+const PROMISE_FAILED = 3;
 
 var _promises = [
     {
+        id: 1,
         username: 'guligo',
-        description: 'I promise to myself...'
+        description: 'I promise to myself...',
+        status: PROMISE_COMMITED
     },
     {
+        id: 2,
         username: 'guligo',
-        description: 'I promise to myself...'
+        description: 'I promise to myself...',
+        status: PROMISE_COMMITED
     }
 ];
 
@@ -81,10 +85,28 @@ var getUserByUsername = function(username) {
 }
 
 var createPromise = function(username, description) {
+    var id = getMaxPromiseId() + 1;
     _promises.push({
+        id: id,
         username: username,
-        description: description
+        description: description,
+        status: PROMISE_COMMITED
     });
+}
+
+var updatePromise = function(id, description, status) {
+    var promise = getPromiseById(id);
+    promise.status = status;
+};
+
+var getPromiseById = function(id) {
+    var resultingPromise;
+    _promises.forEach(function(promise) {
+        if (promise.id === id) {
+            resultingPromise = promise;
+        }
+    });
+    return resultingPromise;
 }
 
 var getPromisesByUsername = function(username) {
@@ -95,6 +117,16 @@ var getPromisesByUsername = function(username) {
         }
     });
     return resultingPromises;
+}
+
+var getMaxPromiseId = function() {
+    var resultingId = 0;
+    _promises.forEach(function(promise) {
+        if (promise.id > resultingId) {
+            resultingId = promise.id;
+        }
+    });
+    return resultingId;
 }
 
 // RESTful services
@@ -166,7 +198,11 @@ app.post('/promises', function(req, res) {
             throw createException('Description empty');
         }
 
-        createPromise(req.session.username, submittedPromise.description);
+        if (submittedPromise.id !== undefined) {
+            updatePromise(Number(submittedPromise.id), submittedPromise.description, submittedPromise.status);
+        } else {
+            createPromise(req.session.username, submittedPromise.description);
+        }
         res.sendStatus(200);
     } catch (e) {
         console.error(e);
@@ -181,6 +217,11 @@ app.post('/promises', function(req, res) {
 app.get('/promises', function(req, res) {
     var promises = getPromisesByUsername(req.session.username);
     res.end(JSON.stringify(promises));
+});
+
+app.get('/promises/:id', function(req, res) {
+    var promise = getPromiseById(Number(req.params.id));
+    res.end(JSON.stringify(promise));
 });
 
 // main
