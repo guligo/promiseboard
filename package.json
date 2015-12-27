@@ -2,9 +2,9 @@
     "name":"promiseboard",
     "version":"0.0.1",
     "description":"",
-    "main":"server.js",
+    "main":"promiseboard.js",
     "scripts":{
-        "start":"node server.js"
+        "start":"node server/promiseboard.js"
     },
     "author":"guligo",
     "dependencies": {

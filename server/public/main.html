@@ -18,6 +18,7 @@
         <script src="js/user-controller.js"></script>
         <script src="js/promise-controller.js"></script>
         <script>
+            const PROMISE_DELETED = 0;
             const PROMISE_COMMITED = 1;
             const PROMISE_COMPLETED = 2;
             const PROMISE_FAILED = 3;
@@ -55,7 +56,7 @@
                                         status: 2
                                     }, function() {
                                         refreshPromiseList();
-                                        $('#promiseCompletionModal').modal('close');
+                                        $('#promiseCompletionModal').modal('hide');
                                     }, function(error) {
                                         console.error(error);
                                     });
@@ -71,7 +72,23 @@
                                         status: 3
                                     }, function() {
                                         refreshPromiseList();
-                                        $('#promiseFailureModal').modal('close');
+                                        $('#promiseFailureModal').modal('hide');
+                                    }, function(error) {
+                                        console.error(error);
+                                    });
+                                });
+                            });
+
+                            $('#promise' + promise.id + ' .pb-status-removed').click(function() {
+                                $('#promiseRemovalModal').modal('show');
+                                $('#promiseRemovalModalOkButton').off();
+                                $('#promiseRemovalModalOkButton').click(function() {
+                                    promiseController.updatePromiseStatus({
+                                        id: promise.id,
+                                        status: 0
+                                    }, function() {
+                                        refreshPromiseList();
+                                        $('#promiseRemovalModal').modal('hide');
                                     }, function(error) {
                                         console.error(error);
                                     });
@@ -166,7 +183,7 @@
                     <a href="#" class="pb-status-failed">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
-                    <a href="#">
+                    <a href="#" class="pb-status-removed">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
                 </div>
@@ -237,6 +254,26 @@
             </div>
         </div>
         <!-- [END] failure confirmation -->
+
+        <!-- removal confirmation -->
+        <div id="promiseRemovalModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Promise removal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Promise is about to be removed. Are you sure you want to continue?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="promiseRemovalModalOkButton" type="button" class="btn btn-primary">Ok</button>
+                        <button id="promiseRemovalModalCancelButton" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [END] removal confirmation -->
 
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
