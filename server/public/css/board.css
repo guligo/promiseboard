@@ -76,6 +76,10 @@ a:hover {
     margin-bottom: 15px;
 }
 
+.pb-promise-list {
+    padding-bottom: 0px;
+}
+
 .pb-promise-wrapper {
     display: none;
 }
