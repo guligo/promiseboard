@@ -70,10 +70,10 @@ module.exports = {
         _createPromise(username, description);
     },
     updatePromise: function(id, description, status) {
-        _updatePromise(id, description, status);
+        _updatePromise(Number(id), description, Number(status));
     },
     getPromiseById: function(id) {
-        return _getPromiseById(id);
+        return _getPromiseById(Number(id));
     },
     getPromisesByUsername: function(username) {
         return _getPromisesByUsername(username);

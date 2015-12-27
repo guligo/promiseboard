@@ -1,10 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var session = require("express-session");
+var session = require('express-session');
+
+var commonUtils = require('./common-utils');
+var userDao = require('./dao/user-dao');
+var promiseDao = require('./dao/promise-dao');
+
 var app = express();
-
-app.set('port', (process.env.PORT || 5000));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -16,14 +18,7 @@ app.use(session({
         maxAge: 30000
     }
 }));
-
-// custom application modules
-
-var commonUtils = require('./common-utils');
-var userDao = require("./dao/user-dao");
-var promiseDao = require("./dao/promise-dao");
-
-// helper functions
+app.set('port', (process.env.PORT || 5000));
 
 app.get('/users', function(req, res) {
     var users = userDao.getUsers();
@@ -93,7 +88,7 @@ app.post('/promises', function(req, res) {
         }
 
         if (submittedPromise.id !== undefined) {
-            promiseDao.updatePromise(Number(submittedPromise.id), submittedPromise.description, Number(submittedPromise.status));
+            promiseDao.updatePromise(submittedPromise.id, submittedPromise.description, submittedPromise.status);
         } else {
             promiseDao.createPromise(req.session.username, submittedPromise.description);
         }
@@ -114,11 +109,9 @@ app.get('/promises', function(req, res) {
 });
 
 app.get('/promises/:id', function(req, res) {
-    var promise = promiseDao.getPromiseById(Number(req.params.id));
+    var promise = promiseDao.getPromiseById(req.params.id);
     res.end(JSON.stringify(promise));
 });
-
-// main
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
