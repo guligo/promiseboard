@@ -1,5 +1,12 @@
+/*
 body {
     background-color: #8a458a;
+}
+*/
+
+body {
+    background-image: url('sky.jpg');
+    background-size: 100%;
 }
 
 .pb-jumbotron {
@@ -8,7 +15,7 @@ body {
 }
 
 .pb-banner {
-    margin-top: 100px;
+    margin-top: 150px;
 }
 
 .pb-banner-btn-group {

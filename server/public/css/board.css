@@ -6,7 +6,8 @@
 }
 
 body {
-    background-image: url('sky.jpg');
+    background-image: url('city.jpg');
+    background-size: 100%;
 }
 
 a {
