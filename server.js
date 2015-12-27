@@ -11,8 +11,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(__dirname + '/public'));
 app.use(session({
-    resave: true,
-    saveUninitialized: true,
     secret: 'kuss',
     cookie: {
         maxAge: 30000
@@ -130,6 +128,20 @@ var getMaxPromiseId = function() {
 }
 
 // RESTful services
+
+/**
+ * Example usage:
+ *
+ * app.get('/users', restrict function(req, res) ...
+ */
+function restrict(req, res, next) {
+    if (req.session.username) {
+        next();
+    } else {
+        req.session.username = 'Access denied!';
+        res.redirect('/index.html');
+    }
+}
 
 app.get('/users', function(req, res) {
     var users = getUsers();
