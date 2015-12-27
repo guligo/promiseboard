@@ -47,13 +47,18 @@
                             }
 
                             $('#promise' + promise.id + ' .pb-status-completed').click(function() {
-                                promiseController.updatePromiseStatus({
-                                    id: promise.id,
-                                    status: 2
-                                }, function() {
-                                    refreshPromiseList();
-                                }, function(error) {
-                                    console.error(error);
+                                $('#promiseCompletionModal').modal('show');
+                                $('#promiseCompletionModalOkButton').off();
+                                $('#promiseCompletionModalOkButton').click(function() {
+                                    promiseController.updatePromiseStatus({
+                                        id: promise.id,
+                                        status: 2
+                                    }, function() {
+                                        refreshPromiseList();
+                                        $('#promiseCompletionModal').modal('close');
+                                    }, function(error) {
+                                        console.error(error);
+                                    });
                                 });
                             });
 
@@ -150,7 +155,7 @@
                     </div>
                 </div>
                 <div class="pb-promise-footer-right">
-                    <a href="#" class="pb-status-completed">
+                    <a data-toggle="promiseCompletionModal" role="button" href="#" class="pb-status-completed">
                         <span class="glyphicon glyphicon-ok"></span>
                     </a>
                     <a href="#" class="pb-status-failed">
@@ -187,6 +192,26 @@
             </div>
         </div>
         <!-- [END] create -->
+
+        <!-- complete confirmation -->
+        <div id="promiseCompletionModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Promise completed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Promise is about to be completed. Are you sure you want to continue?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="promiseCompletionModalOkButton" type="button" class="btn btn-primary">Ok</button>
+                        <button id="promiseCompletionModalCancelButton" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [END] complete confirmation -->
 
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
