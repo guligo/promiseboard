@@ -2,11 +2,20 @@ body {
     background-color: #8a458a;
 }
 
+.pb-jumbotron {
+    width: 800px;
+    margin: auto;
+}
+
 .pb-banner {
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 .pb-banner-btn-group {
     width: 100%;
     text-align: center;
+}
+
+.pb-modal-dialog {
+    width: 350px;
 }
