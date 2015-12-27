@@ -1,12 +1,12 @@
 @font-face {
     font-family: 'AlexBrushRegular';
-    src: url('AlexBrushRegular.otf') format('opentype');
+    src: url('fonts/AlexBrushRegular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 
 body {
-    background-image: url("sky.jpg");
+    background-image: url('sky.jpg');
 }
 
 a {
@@ -73,6 +73,10 @@ a:hover {
 .pb-promise {
     /* height: 150px; */
     margin-bottom: 15px;
+}
+
+.pb-promise-wrapper {
+    display: none;
 }
 
 .pb-promise-footer-left {

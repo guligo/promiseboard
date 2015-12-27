@@ -1,6 +1,6 @@
 var promiseController = (function() {
 
-    var _getPromise =  function(data, onSuccess, onError) {
+    var _getPromise =  function(data, onSuccess) {
         $.ajax({
             url: '/promises/' + data.id,
             method: 'get',
@@ -8,7 +8,7 @@ var promiseController = (function() {
                 onSuccess(JSON.parse(promise));
             },
             error: function() {
-                onError();
+                console.log(error);
             }
         });
     };
@@ -31,19 +31,19 @@ var promiseController = (function() {
             });
         },
 
-        getPromise: function(data, onSuccess, onError) {
-            _getPromise(data, onSuccess, onError);
+        getPromise: function(data, onSuccess) {
+            _getPromise(data, onSuccess);
         },
 
-        getPromises: function(onSuccess, onError) {
+        getPromises: function(onSuccess) {
             $.ajax({
                 url: '/promises',
                 method: 'get',
                 success: function(promises) {
                     onSuccess(JSON.parse(promises));
                 },
-                error: function() {
-                    onError();
+                error: function(error) {
+                    console.log(error);
                 }
             });
         },
@@ -60,12 +60,12 @@ var promiseController = (function() {
                     success: function() {
                         onSuccess();
                     },
-                    error: function() {
-                        onError();
+                    error: function(error) {
+                        console.log(error);
                     }
                 });
-            }, function() {
-                onError();
+            }, function(error) {
+                console.log(error);
             });
         }
     };
