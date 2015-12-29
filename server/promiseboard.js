@@ -15,13 +15,13 @@ app.use(bodyParser.urlencoded({
 app.use(session({
     secret: 'kuss',
     cookie: {
-        maxAge: 30000
+        maxAge: 300000
     }
 }));
 app.use(favicon(__dirname + '/public/img/icon.png'));
 app.set('port', (process.env.PORT || 5000));
 
-function checkAuthSync(req, res) {
+function checkAuthSync(req, res, next) {
     if (!req.session.username) {
         res.redirect('/index.html');
     } else {

@@ -5,12 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Changing the way we make and keep our promises!" />
 
-        <link rel="icon" type="image/png" href="img/icon.png" />
+        <link rel="icon" href="img/icon.png" type="image/png" />
         <link rel="stylesheet" href="css/bootstrap-3.3.6/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker-4.17.37/bootstrap-datetimepicker.min.css"></script>
         <link rel="stylesheet" href="css/board.css" />
 
         <script src="js/jquery-1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.6/bootstrap.min.js"></script>
+        <script src="js/moment-2.10.6/moment.js"></script>
+        <script src="js/bootstrap-datetimepicker-4.17.37/bootstrap-datetimepicker.min.js"></script>
         <script src="js/user-controller.js"></script>
         <script src="js/promise-controller.js"></script>
         <script>
@@ -106,6 +109,12 @@
                     $('#createPromiseModalDescriptionField').val('');
                 });
 
+                $(function () {
+                    $('#datetimepicker12').datetimepicker({
+                        inline: true
+                    });
+                });
+
                 refreshPromiseList();
             });
         </script>
@@ -150,9 +159,23 @@
             </div>
         </nav>
 
-        <div class="panel panel-default pb-container">
-            <div id="promiseList" class="panel-body pb-promise-list">
-                <!-- placeholder -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default pb-container">
+                        <div class="pb-datepicker" id="datetimepicker12"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default pb-container">
+                        <div id="promiseList" class="panel-body pb-promise-list">
+                            <!-- placeholder -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    &nbsp;
+                </div>
             </div>
         </div>
 

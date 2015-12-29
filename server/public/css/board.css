@@ -29,7 +29,6 @@ a:hover {
 }
 
 .pb-container {
-    width: 750px;
     margin: auto;
     margin-top: 75px;
     margin-bottom: 25px;
@@ -132,4 +131,16 @@ a:hover {
 .pb-status-completed:visited:active, .pb-status-failed:visited:active, .pb-status-removed:visited:active {
     color: inherit;
     text-decoration: none;
+}
+
+.pb-datepicker table {
+    font-size: 14px !important;
+}
+
+.pb-datepicker .picker-switch {
+    height: 5px;
+}
+
+.pb-datepicker .picker-switch .table-condensed {
+    display: none;
 }
