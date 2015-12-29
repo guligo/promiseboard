@@ -1,5 +1,22 @@
 var promiseController = (function() {
 
+    var _createPromise = function(data, onSuccess, onError) {
+        $.ajax({
+            url: '/promises',
+            method: 'post',
+            data: {
+                username: data.username,
+                description: data.description
+            },
+            success: function() {
+                onSuccess();
+            },
+            error: function(error) {
+                onError(error.responseText);
+            }
+        });
+    };
+
     var _getPromise =  function(data, onSuccess) {
         $.ajax({
             url: '/promises/' + data.id,
@@ -13,22 +30,43 @@ var promiseController = (function() {
         });
     };
 
-    return {
-        createPromise: function(data, onSuccess, onError) {
+    var _getPromises = function(onSuccess) {
+        $.ajax({
+            url: '/promises',
+            method: 'get',
+            success: function(promises) {
+                onSuccess(JSON.parse(promises));
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    };
+
+    var _updatePromiseStatus = function(data, onSuccess, onError) {
+        _getPromise({
+            id: data.id
+        }, function(promise) {
+            promise.status = data.status;
             $.ajax({
                 url: '/promises',
                 method: 'post',
-                data: {
-                    username: data.username,
-                    description: data.description
-                },
+                data: promise,
                 success: function() {
                     onSuccess();
                 },
                 error: function(error) {
-                    onError(error.responseText);
+                    console.log(error);
                 }
             });
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    return {
+        createPromise: function(data, onSuccess, onError) {
+            _createPromise(data, onSuccess, onError);
         },
 
         getPromise: function(data, onSuccess) {
@@ -36,37 +74,11 @@ var promiseController = (function() {
         },
 
         getPromises: function(onSuccess) {
-            $.ajax({
-                url: '/promises',
-                method: 'get',
-                success: function(promises) {
-                    onSuccess(JSON.parse(promises));
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+            _getPromises(onSuccess);
         },
 
         updatePromiseStatus: function(data, onSuccess, onError) {
-            _getPromise({
-                id: data.id
-            }, function(promise) {
-                promise.status = data.status;
-                $.ajax({
-                    url: '/promises',
-                    method: 'post',
-                    data: promise,
-                    success: function() {
-                        onSuccess();
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }, function(error) {
-                console.log(error);
-            });
+            _updatePromiseStatus(data, onSuccess, onError);
         }
     };
 

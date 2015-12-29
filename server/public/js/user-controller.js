@@ -1,52 +1,64 @@
 var userController = (function() {
 
+    var _logIn = function(data, onSuccess, onError) {
+        $.ajax({
+            url: '/users/login',
+            method: 'post',
+            data: {
+                username: data.username,
+                password: data.password
+            },
+            success: function() {
+                onSuccess();
+            },
+            error: function() {
+                onError();
+            }
+        });
+    };
+
+    var _logOut = function(onSuccess) {
+        $.ajax({
+            url: '/users/logout',
+            method: 'post',
+            success: function() {
+                onSuccess();
+            },
+            error: function() {
+                onSuccess();
+            }
+        });
+    };
+
+    var _register = function(data, onSuccess, onError) {
+        $.ajax({
+            url: '/users/register',
+            method: 'post',
+            data: {
+                username: data.username,
+                password: data.password,
+                confirm: data.confirm
+            },
+            success: function() {
+                onSuccess();
+            },
+            error: function(error) {
+                onError(error.responseText);
+            }
+        });
+    };
+
     return {
         logIn: function(data, onSuccess, onError) {
-            $.ajax({
-                url: '/users/login',
-                method: 'post',
-                data: {
-                    username: data.username,
-                    password: data.password
-                },
-                success: function() {
-                    onSuccess();
-                },
-                error: function() {
-                    onError();
-                }
-            });
+            _logIn(data, onSuccess, onError);
         },
 
         logOut: function(onSuccess) {
-            $.ajax({
-                url: '/users/logout',
-                method: 'post',
-                success: function() {
-                    onSuccess();
-                },
-                error: function() {
-                    onSuccess();
-                }
-            });
+            _logOut(onSuccess);
         },
 
         register: function(data, onSuccess, onError) {
-            $.ajax({
-                url: '/users/register',
-                method: 'post',
-                data: {
-                    username: data.username,
-                    password: data.password,
-                    confirm: data.confirm
-                },
-                success: function() {
-                    onSuccess();
-                },
-                error: function(error) {
-                    onError(error.responseText);
-                }
-            });
+            _register(data, onSuccess, onError);
         }
     };
 
