@@ -52,25 +52,30 @@
                                 });
                             }
 
-                            $('#promise' + promise.id + ' .pb-status-completed').click(function() {
-                                $('#promiseCompletionModal').modal('show');
-                                $('#promiseCompletionModalOkButton').off();
-                                $('#promiseCompletionModalOkButton').click(function() {
-                                    updatePromiseStatus(PROMISE_COMPLETED, function() {
-                                        $('#promiseCompletionModal').modal('hide');
+                            if (Number(promise.status) === PROMISE_COMMITED) {
+                                $('#promise' + promise.id + ' .pb-status-completed').click(function() {
+                                    $('#promiseCompletionModal').modal('show');
+                                    $('#promiseCompletionModalOkButton').off();
+                                    $('#promiseCompletionModalOkButton').click(function() {
+                                        updatePromiseStatus(PROMISE_COMPLETED, function() {
+                                            $('#promiseCompletionModal').modal('hide');
+                                        });
                                     });
                                 });
-                            });
 
-                            $('#promise' + promise.id + ' .pb-status-failed').click(function() {
-                                $('#promiseFailureModal').modal('show');
-                                $('#promiseFailureModalOkButton').off();
-                                $('#promiseFailureModalOkButton').click(function() {
-                                    updatePromiseStatus(PROMISE_FAILED, function() {
-                                        $('#promiseFailureModal').modal('hide');
+                                $('#promise' + promise.id + ' .pb-status-failed').click(function() {
+                                    $('#promiseFailureModal').modal('show');
+                                    $('#promiseFailureModalOkButton').off();
+                                    $('#promiseFailureModalOkButton').click(function() {
+                                        updatePromiseStatus(PROMISE_FAILED, function() {
+                                            $('#promiseFailureModal').modal('hide');
+                                        });
                                     });
                                 });
-                            });
+                            } else {
+                                $('#promise' + promise.id + ' .pb-status-completed').hide();
+                                $('#promise' + promise.id + ' .pb-status-failed').hide();
+                            }
 
                             $('#promise' + promise.id + ' .pb-status-removed').click(function() {
                                 $('#promiseRemovalModal').modal('show');

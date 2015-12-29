@@ -108,3 +108,28 @@ a:hover {
     font-style: normal;
     font-size: 40px;
 }
+
+.pb-status-completed, .pb-status-failed, .pb-status-removed {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pb-status-completed:link, .pb-status-failed:link, .pb-status-removed:link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pb-status-completed:visited, .pb-status-failed:visited, .pb-status-removed:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pb-status-completed:link:active, .pb-status-failed:link:active, .pb-status-removed:link:active {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pb-status-completed:visited:active, .pb-status-failed:visited:active, .pb-status-removed:visited:active {
+    color: inherit;
+    text-decoration: none;
+}
