@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var favicon = require('serve-favicon');
 
 var commonUtils = require('./common-utils');
 var userDao = require('./dao/user-dao');
@@ -11,19 +12,41 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(express.static(__dirname + '/public'));
 app.use(session({
     secret: 'kuss',
     cookie: {
         maxAge: 30000
     }
 }));
+app.use(favicon(__dirname + '/public/img/icon.png'));
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/users', function(req, res) {
-    var users = userDao.getUsers();
-    res.end(JSON.stringify(users));
+function checkAuthSync(req, res) {
+    if (!req.session.username) {
+        res.redirect('/index.html');
+    } else {
+        next();
+    }
+}
+
+app.get('/index.html', function(req, res) {
+    delete req.session.username;
+    res.sendfile(__dirname + '/public/index.html');
 });
+
+app.get('/board.html', checkAuthSync, function(req, res) {
+    res.sendfile(__dirname + '/public/board.html');
+});
+
+app.use(express.static(__dirname + '/public'));
+
+function checkAuthAsync(req, res, next) {
+    if (!req.session.username) {
+        res.sendStatus(401);
+    } else {
+        next();
+    }
+}
 
 app.post('/users/login', function(req, res) {
     try {
@@ -45,7 +68,12 @@ app.post('/users/login', function(req, res) {
     }
 });
 
-app.post('/users/logout', function(req, res) {
+app.get('/users', checkAuthAsync, function(req, res) {
+    var users = userDao.getUsers();
+    res.end(JSON.stringify(users));
+});
+
+app.post('/users/logout', checkAuthAsync, function(req, res) {
     delete req.session.username;
     res.sendStatus(200);
 });
@@ -79,7 +107,7 @@ app.post('/users/register', function(req, res) {
     }
 });
 
-app.post('/promises', function(req, res) {
+app.post('/promises', checkAuthAsync, function(req, res) {
     try {
         var submittedPromise = req.body;
 
@@ -103,12 +131,12 @@ app.post('/promises', function(req, res) {
     }
 });
 
-app.get('/promises', function(req, res) {
+app.get('/promises', checkAuthAsync, function(req, res) {
     var promises = promiseDao.getPromisesByUsername(req.session.username);
     res.end(JSON.stringify(promises));
 });
 
-app.get('/promises/:id', function(req, res) {
+app.get('/promises/:id', checkAuthAsync, function(req, res) {
     var promise = promiseDao.getPromiseById(req.params.id);
     res.end(JSON.stringify(promise));
 });
