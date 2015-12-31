@@ -109,6 +109,7 @@
                     $('#createPromiseModalDescriptionField').val('');
                 });
 
+                // TODO: Candidate for removal
                 /*
                 $(function () {
                     $('#calendar').datetimepicker({
@@ -124,25 +125,20 @@
     <body class="pb-body">
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
-                <div class="collapse navbar-collapse pb-navbar-collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                            <div class="navbar-header">
-                                <a class="navbar-brand pb-brand">Promiseboard</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="navbar-header">
-                                <div class="navbar-brand">
-                                    <span class="badge">+3</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand pb-brand">Promiseboard</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <button data-toggle="modal" data-target="#createPromiseModal" type="button" class="btn btn-default navbar-btn pb-add-btn">
-                                <span class="glyphicon glyphicon-plus pb-navbar-icon"></span>
+                            <button data-toggle="modal" data-target="#createPromiseModal" type="button" class="btn btn-default navbar-btn">
+                                <span class="glyphicon glyphicon-plus"></span>&nbsp;New
                             </button>
                         </li>
                         <li class="dropdown">
@@ -157,13 +153,14 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
+                <div>
             </div>
         </nav>
 
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3">
+                    <!-- TODO: Candidate for removal -->
                     <!--
                     <div class="panel panel-default pb-container">
                         <div class="pb-datepicker" id="calendar"></div>
@@ -205,7 +202,7 @@
         </div>
 
         <div id="createPromiseModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog pb-modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -226,7 +223,7 @@
         </div>
 
         <div id="promiseCompletionModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog pb-modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -244,7 +241,7 @@
         </div>
 
         <div id="promiseFailureModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog pb-modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -262,7 +259,7 @@
         </div>
 
         <div id="promiseRemovalModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog pb-modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
