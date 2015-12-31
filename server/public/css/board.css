@@ -90,6 +90,10 @@ a:hover {
     font-size: 40px;
 }
 
+.pb-add-btn {
+    margin-left: 8px;
+}
+
 .pb-status-completed, .pb-status-failed, .pb-status-removed {
     color: inherit;
     text-decoration: none;
