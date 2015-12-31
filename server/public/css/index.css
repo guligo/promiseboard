@@ -30,5 +30,5 @@ body {
 }
 
 .pb-modal-dialog {
-    /* width: 350px; */
+    max-width: 350px;
 }
