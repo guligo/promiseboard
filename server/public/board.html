@@ -213,6 +213,20 @@
                             <label class="control-label" class="control-label" for="createPromiseModalDescriptionField">I promise...</label>
                             <textarea id="createPromiseModalDescriptionField" class="form-control" placeholder="Description"></textarea>
                         </div>
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="createPromiseModalDueDateField" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Due date&nbsp;<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="createPromiseModalDueDateField">
+                                    <li><a href="#">Today</a></li>
+                                    <li><a href="#">This week</a></li>
+                                    <li><a href="#">This month</a></li>
+                                    <li><a href="#">This year</a></li>
+                                    <li><a href="#">Until...</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="createPromiseModalCreateButton" type="button" class="btn btn-primary">Make</button>
@@ -231,6 +245,13 @@
                     </div>
                     <div class="modal-body">
                         <p>Promise is about to be completed. Are you sure you want to continue?</p>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputFile">Attachment</label>
+                                <input type="file" id="exampleInputFile">
+                                <p class="help-block">Attach proof of promise being completed (picture, video, etc.).</p>
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button id="promiseCompletionModalOkButton" type="button" class="btn btn-primary">Ok</button>
