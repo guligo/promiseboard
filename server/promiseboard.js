@@ -68,9 +68,10 @@ app.post('/users/login', function(req, res) {
     }
 });
 
-app.get('/users', checkAuthAsync, function(req, res) {
-    var users = userDao.getUsers();
-    res.end(JSON.stringify(users));
+app.get('/users/me', checkAuthAsync, function(req, res) {
+    res.end(JSON.stringify({
+        username: req.session.username
+    }));
 });
 
 app.post('/users/logout', checkAuthAsync, function(req, res) {

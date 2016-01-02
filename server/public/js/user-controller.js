@@ -43,7 +43,20 @@ var userController = (function() {
                 onSuccess();
             },
             error: function(error) {
-                onError(error.responseText);
+                console.error(error);
+            }
+        });
+    };
+
+    var _getMe = function(onSuccess) {
+        $.ajax({
+            url: '/users/me',
+            method: 'get',
+            success: function(user) {
+                onSuccess(JSON.parse(user));
+            },
+            error: function() {
+                onSuccess();
             }
         });
     };
@@ -59,6 +72,10 @@ var userController = (function() {
 
         register: function(data, onSuccess, onError) {
             _register(data, onSuccess, onError);
+        },
+
+        getMe: function(onSuccess) {
+            _getMe(onSuccess);
         }
     };
 
