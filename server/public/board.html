@@ -100,7 +100,7 @@
                     endOfToday.setMinutes(59);
                     endOfToday.setSeconds(59);
                     endOfToday.setMilliseconds(999);
-                    console.log(endOfToday);
+                    $('#createPromiseModalDueDate').text(endOfToday);
                 });
 
                 $('#createPromiseModalDueDateThisWeek').click(function() {
@@ -113,7 +113,7 @@
                     startOfThisWeek.setMilliseconds(0);
 
                     var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
-                    console.log(endOfThisWeek);
+                    $('#createPromiseModalDueDate').text(endOfThisWeek);
                 });
 
                 $('#createPromiseModalDueDateThisMonth').click(function() {
@@ -126,7 +126,7 @@
                     startOfNextMonth.setMilliseconds(0);
 
                     var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
-                    console.log(endOfThisMonth);
+                    $('#createPromiseModalDueDate').text(endOfThisMonth);
                 });
 
                 $('#createPromiseModalDueDateThisYear').click(function() {
@@ -140,11 +140,11 @@
                     startOfNextYear.setMilliseconds(0);
 
                     var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
-                    console.log(endOfThisYear);
+                    $('#createPromiseModalDueDate').text(endOfThisYear);
                 });
 
                 $('#createPromiseModalDueDateUntil').click(function() {
-                    console.log(new Date());
+                    $('#createPromiseModalDueDate').text(new Date());
                 });
 
                 $('#createPromiseModalCreateButton').click(function() {
@@ -160,6 +160,7 @@
 
                 $('#createPromiseModalCloseButton').click(function() {
                     $('#createPromiseModalDescriptionField').val('');
+                    $('#createPromiseModalDueDate').text('');
                 });
 
                 // TODO: Candidate for removal
@@ -288,6 +289,9 @@
                                         <a id="createPromiseModalDueDateUntil" href="#">Until...</a>
                                     </li>
                                 </ul>
+                                <span id="createPromiseModalDueDate">
+                                    <!-- placeholder -->
+                                </span>
                             </div>
                         </div>
                     </div>
