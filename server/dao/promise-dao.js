@@ -20,17 +20,18 @@ var _promises = [
     }
 ];
 
-var _createPromise = function(username, description) {
+var _createPromise = function(username, description, dueDate) {
     var id = _getMaxPromiseId() + 1;
     _promises.push({
         id: id,
         username: username,
         description: description,
+        dueDate: dueDate,
         status: PROMISE_COMMITED
     });
 }
 
-var _updatePromise = function(id, description, status) {
+var _updatePromise = function(id, description, dueDate, status) {
     var promise = _getPromiseById(id);
     promise.status = status;
 };
@@ -66,8 +67,8 @@ var _getMaxPromiseId = function() {
 }
 
 module.exports = {
-    createPromise: function(username, description) {
-        _createPromise(username, description);
+    createPromise: function(username, description, dueDate) {
+        _createPromise(username, description, new Date(dueDate));
     },
     updatePromise: function(id, description, status) {
         _updatePromise(Number(id), description, Number(status));

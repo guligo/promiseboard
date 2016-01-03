@@ -6,7 +6,8 @@ var promiseController = (function() {
             method: 'post',
             data: {
                 username: data.username,
-                description: data.description
+                description: data.description,
+                dueDate: data.dueDate
             },
             success: function() {
                 onSuccess();

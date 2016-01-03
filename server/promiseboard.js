@@ -112,14 +112,17 @@ app.post('/promises', checkAuthAsync, function(req, res) {
     try {
         var submittedPromise = req.body;
 
-        if (submittedPromise.description.length <= 0) {
+        if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
             throw commonUtils.createException('Description empty');
+        }
+        if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
+            throw commonUtils.createException('Due date empty');
         }
 
         if (submittedPromise.id !== undefined) {
-            promiseDao.updatePromise(submittedPromise.id, submittedPromise.description, submittedPromise.status);
+            promiseDao.updatePromise(submittedPromise.id, submittedPromise.description, submittedPromise.dueDate, submittedPromise.status);
         } else {
-            promiseDao.createPromise(req.session.username, submittedPromise.description);
+            promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate);
         }
         res.sendStatus(200);
     } catch (e) {

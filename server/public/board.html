@@ -39,6 +39,7 @@
                         promises.forEach(function(promise) {
                             var promiseElement = $('.pb-promise-wrapper');
                             promiseElement.find('.pb-promise-description').text(promise.description);
+                            promiseElement.find('.pb-promise-due-date').text(new Date(promise.dueDate));
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
@@ -153,7 +154,8 @@
 
                 $('#createPromiseModalCreateButton').click(function() {
                     promiseController.createPromise({
-                        description: $('#createPromiseModalDescriptionField').val()
+                        description: $('#createPromiseModalDescriptionField').val(),
+                        dueDate: $('#createPromiseModalDueDate').text()
                     }, function() {
                         $('#createPromiseModalCloseButton').click();
                         refreshPromiseList();
@@ -248,7 +250,13 @@
                         <!-- placeholder -->
                     </div>
                 </div>
-                <div class="pb-promise-footer-right">
+                <div class="pb-promise-footer pb-promise-footer-left">
+                    <label>Due date:</label>
+                    <span class="pb-promise-due-date">
+                        <!-- placeholder -->
+                    </span>
+                </div>
+                <div class="pb-promise-footer pb-promise-footer-right">
                     <a data-toggle="promiseCompletionModal" role="button" href="#" class="pb-status-completed">
                         <span class="glyphicon glyphicon-ok"></span>
                     </a>

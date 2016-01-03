@@ -65,6 +65,10 @@ a:hover {
     display: none;
 }
 
+.pb-promise-footer {
+    margin-top: 5px;
+}
+
 .pb-promise-footer-left {
     float: left;
 }
