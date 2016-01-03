@@ -9,13 +9,15 @@ var _promises = [
     {
         id: 1,
         username: 'guligo',
-        description: 'I promise to myself...',
+        description: 'To do something cool.',
+        dueDate: new Date(),
         status: PROMISE_COMMITED
     },
     {
         id: 2,
         username: 'guligo',
-        description: 'I promise to myself...',
+        description: 'To do something really cool.',
+        dueDate: new Date(),
         status: PROMISE_COMMITED
     }
 ];
@@ -70,8 +72,8 @@ module.exports = {
     createPromise: function(username, description, dueDate) {
         _createPromise(username, description, new Date(dueDate));
     },
-    updatePromise: function(id, description, status) {
-        _updatePromise(Number(id), description, Number(status));
+    updatePromise: function(id, description, dueDate, status) {
+        _updatePromise(Number(id), description, new Date(dueDate), Number(status));
     },
     getPromiseById: function(id) {
         return _getPromiseById(Number(id));

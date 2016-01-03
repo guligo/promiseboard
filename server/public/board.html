@@ -39,7 +39,7 @@
                         promises.forEach(function(promise) {
                             var promiseElement = $('.pb-promise-wrapper');
                             promiseElement.find('.pb-promise-description').text(promise.description);
-                            promiseElement.find('.pb-promise-due-date').text(new Date(promise.dueDate));
+                            promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
@@ -81,9 +81,16 @@
                                         });
                                     });
                                 });
-                            } else {
+
+                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                            } else if (Number(promise.status) === PROMISE_COMPLETED) {
                                 $('#promise' + promise.id + ' .pb-status-completed').hide();
                                 $('#promise' + promise.id + ' .pb-status-failed').hide();
+                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                            } else if (Number(promise.status) === PROMISE_FAILED) {
+                                $('#promise' + promise.id + ' .pb-status-completed').hide();
+                                $('#promise' + promise.id + ' .pb-status-failed').hide();
+                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
                             }
 
                             $('#promise' + promise.id + ' .pb-status-removed').click(function() {
@@ -179,8 +186,6 @@
                 */
 
                 refreshPromiseList();
-
-                console.log(document.cookie);
             });
         </script>
     </head>
@@ -251,8 +256,10 @@
                     </div>
                 </div>
                 <div class="pb-promise-footer pb-promise-footer-left">
-                    <label>Due date:</label>
-                    <span class="pb-promise-due-date">
+                    <label class="pb-promise-date-label">
+                        <!-- placeholder -->
+                    </label>
+                    <span class="pb-promise-date">
                         <!-- placeholder -->
                     </span>
                 </div>
