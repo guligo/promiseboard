@@ -39,7 +39,11 @@
                         promises.forEach(function(promise) {
                             var promiseElement = $('.pb-promise-wrapper');
                             promiseElement.find('.pb-promise-description').text(promise.description);
-                            promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
+                            if (promise.attachment) {
+                                promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
+                            } else {
+                                promiseElement.find('.pb-promise-attachment').html('<span>None</span>');
+                            }
                             promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
@@ -265,7 +269,7 @@
                     </div>
                 </div>
                 <div>
-                    <label>Attachment</label>
+                    <label class="pb-promise-attachment-label">I did it! Here's the proof:</label>
                     <div class="pb-promise-attachment">
                         <!-- placeholder -->
                     </div>

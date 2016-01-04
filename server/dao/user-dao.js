@@ -1,45 +1,64 @@
-var commonUtils = require('./../common-utils');
+const DATABASE_URL = 'postgres://postgres:secret@localhost:5432/promiseboard';
 
-var _users = [
-    {
-        username: 'guligo',
-        password: 'qwerty'
-    }
-];
+var pg = require('pg');
 
-var _createUser = function(username, password) {
-    _users.push({
-        username: username,
-        password: password
+var _init = function(callback) {
+    console.log('Initializing user DAO');
+
+    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('CREATE TABLE IF NOT EXISTS users(username VARCHAR(30) PRIMARY KEY, password VARCHAR(30) not null);')
+            .on('end', function(result) {
+                if (callback) {
+                    callback();
+                }
+            });
     });
 }
 
-var _getUsers = function() {
-    var users = commonUtils.clone(_users);
-    users.forEach(function(user) {
-        user.password = '****';
+var _createUser = function(username, password, callback) {
+    console.log('Creating user with username = [' + username + ']');
+
+    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('INSERT INTO users (username, password) VALUES($1, $2);', [username, password])
+            .on('end', function(result) {
+                callback();
+            });
     });
-    return users;
 }
 
-var _getUserByUsername = function(username) {
-    var resultingUser;
-    _users.forEach(function(user) {
-        if (user.username === username) {
-            resultingUser = user;
-        }
+var _getUserByUsername = function(username, callback) {
+    console.log('Getting user by username = [' + username + ']');
+
+    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('SELECT * FROM users WHERE username = $1 LIMIT 1;', [username])
+            .on('row', function(row) {
+                callback(row);
+            })
+            .on('end', function(result) {
+                if (result.rowCount === 0) {
+                    callback();
+                }
+            });
     });
-    return resultingUser;
 }
 
 module.exports = {
-    createUser: function (username, password) {
-        _createUser(username, password);
+    init: function() {
+        _init();
     },
-    getUsers: function () {
-        return _getUsers();
+    createUser: function (username, password, callback) {
+        _createUser(username, password, callback);
     },
-    getUserByUsername: function (username) {
-        return _getUserByUsername(username);
+    getUserByUsername: function (username, callback) {
+        _getUserByUsername(username, callback);
     }
 };

@@ -43,7 +43,7 @@ var userController = (function() {
                 onSuccess();
             },
             error: function(error) {
-                console.error(error);
+                onError(error.responseText);
             }
         });
     };

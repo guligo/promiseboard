@@ -6,6 +6,7 @@ var multipart = require('connect-multiparty');
 
 var commonUtils = require('./common-utils');
 var userDao = require('./dao/user-dao');
+userDao.init();
 var promiseDao = require('./dao/promise-dao');
 
 var app = express();
@@ -53,17 +54,17 @@ function checkAuthAsync(req, res, next) {
 app.post('/users/login', function(req, res) {
     try {
         var submittedUser = req.body;
-        var actualUser = userDao.getUserByUsername(submittedUser.username);
+        userDao.getUserByUsername(submittedUser.username, function(actualUser) {
+            if (actualUser === undefined) {
+                throw commonUtils.createException('User does not exist');
+            }
+            if (submittedUser.password !== actualUser.password) {
+                throw commonUtils.createException('Wrong password');
+            }
 
-        if (actualUser === undefined) {
-            throw commonUtils.createException('User does not exist');
-        }
-        if (submittedUser.password !== actualUser.password) {
-            throw commonUtils.createException('Wrong password');
-        }
-
-        req.session.username = actualUser.username;
-        res.sendStatus(200);
+            req.session.username = actualUser.username;
+            res.sendStatus(200);
+        });
     } catch (e) {
         console.error(e);
         res.sendStatus(500);
@@ -94,19 +95,22 @@ app.post('/users/register', function(req, res) {
         if (submittedUser.password !== submittedUser.confirm) {
             throw commonUtils.createException('Password and password confirmation do not match');
         }
-        if (getUserByUsername(submittedUser.username) !== undefined) {
-            throw commonUtils.createException('User already exists');
-        }
 
-        userDao.createUser(submittedUser.username, submittedUser.password);
-        res.sendStatus(200);
+        userDao.getUserByUsername(submittedUser.username, function(user) {
+            try {
+                if (user === undefined) {
+                    userDao.createUser(submittedUser.username, submittedUser.password, function() {
+                        res.sendStatus(200);
+                    });
+                } else {
+                    throw commonUtils.createException('User already exists');
+                }
+            } catch (e) {
+                commonUtils.handleException(e, res);
+            }
+        });
     } catch (e) {
-        console.error(e);
-        if (e.checked === true) {
-            res.status(500).send(e.text);
-        } else {
-            res.sendStatus(500);
-        }
+        commonUtils.handleException(e, res);
     }
 });
 

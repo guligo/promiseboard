@@ -131,6 +131,10 @@ a:hover {
     height: 200px;
 }
 
+.pb-promise-attachment-label {
+    margin-top: 5px;
+}
+
 /* TODO: Candidate for removal */
 
 .pb-datepicker table {
