@@ -1,3 +1,5 @@
+const DATABASE_URL = 'postgres://postgres:secret@localhost:5432/promiseboard';
+
 var commonUtils = require('./../common-utils');
 
 const PROMISE_DELETED = 0;
@@ -21,6 +23,22 @@ var _promises = [
         status: PROMISE_COMMITED
     }
 ];
+
+var _init = function(callback) {
+    console.log('Initializing promise DAO');
+
+    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('CREATE TABLE IF NOT EXISTS users(username VARCHAR(30) PRIMARY KEY, password VARCHAR(30) not null);')
+            .on('end', function(result) {
+                if (callback) {
+                    callback();
+                }
+            });
+    });
+}
 
 var _createPromise = function(username, description, dueDate) {
     var id = _getMaxPromiseId() + 1;
