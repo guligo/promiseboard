@@ -33,6 +33,11 @@ var _createPromise = function(username, description, dueDate) {
     });
 }
 
+var _createPromiseAttachment = function(id, attachment) {
+    var promise = _getPromiseById(id);
+    promise.attachment = attachment;
+}
+
 var _updatePromise = function(id, description, dueDate, status) {
     var promise = _getPromiseById(id);
     promise.status = status;
@@ -74,6 +79,9 @@ module.exports = {
     },
     updatePromise: function(id, description, dueDate, status) {
         _updatePromise(Number(id), description, new Date(dueDate), Number(status));
+    },
+    createPromiseAttachment: function(id, attachment) {
+        _createPromiseAttachment(Number(id), attachment);
     },
     getPromiseById: function(id) {
         return _getPromiseById(Number(id));

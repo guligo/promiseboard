@@ -127,6 +127,10 @@ a:hover {
     max-width: 450px;
 }
 
+.pb-promise-attachment img {
+    height: 200px;
+}
+
 /* TODO: Candidate for removal */
 
 .pb-datepicker table {

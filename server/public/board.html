@@ -39,6 +39,7 @@
                         promises.forEach(function(promise) {
                             var promiseElement = $('.pb-promise-wrapper');
                             promiseElement.find('.pb-promise-description').text(promise.description);
+                            promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
                             promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
@@ -66,8 +67,16 @@
                                     $('#promiseCompletionModal').modal('show');
                                     $('#promiseCompletionModalOkButton').off();
                                     $('#promiseCompletionModalOkButton').click(function() {
-                                        updatePromiseStatus(PROMISE_COMPLETED, function() {
-                                            $('#promiseCompletionModal').modal('hide');
+                                        var formData = new FormData();
+                                        formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
+
+                                        promiseController.createPromiseAttachment({
+                                            id: promise.id
+                                        },
+                                        formData, function() {
+                                            updatePromiseStatus(PROMISE_COMPLETED, function() {
+                                                $('#promiseCompletionModal').modal('hide');
+                                            });
                                         });
                                     });
                                 });
@@ -255,6 +264,12 @@
                         <!-- placeholder -->
                     </div>
                 </div>
+                <div>
+                    <label>Attachment</label>
+                    <div class="pb-promise-attachment">
+                        <!-- placeholder -->
+                    </div>
+                </div>
                 <div class="pb-promise-footer pb-promise-footer-left">
                     <label class="pb-promise-date-label">
                         <!-- placeholder -->
@@ -335,13 +350,13 @@
                     </div>
                     <div class="modal-body">
                         <p>Promise is about to be completed. Are you sure you want to continue?</p>
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Attachment</label>
-                                <input type="file" id="exampleInputFile">
-                                <p class="help-block">Attach proof of promise being completed (picture, video, etc.).</p>
-                            </div>
-                        </form>
+                        <div class="form-group">
+                            <label for="promiseCompletionModalAttachment">Attachment</label>
+                            <form enctype="multipart/form-data" id="promiseCompletionModalAttachmentForm">
+                                <input id="promiseCompletionModalAttachment" name="file"type="file" />
+                            </form>
+                            <p class="help-block">Attach proof of promise being completed (picture, video, etc.).</p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="promiseCompletionModalOkButton" type="button" class="btn btn-primary">Ok</button>
