@@ -1,7 +1,3 @@
-var _clone = function(object) {
-    return JSON.parse(JSON.stringify(object));
-}
-
 var _createException = function(text) {
     return {
         checked: true,
