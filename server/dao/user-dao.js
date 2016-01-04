@@ -4,7 +4,7 @@ var pg = require('pg');
 
 var _init = function(callback) {
     console.log('Initializing user DAO');
-    console.log(process.env.DATABASE_URL);
+    console.log('Database connection URL = [' + process.env.DATABASE_URL + ']');
 
     pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
         if (err) throw err;
