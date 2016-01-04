@@ -47,7 +47,6 @@
                                 }
                                 promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
-                                $('#promiseList').html('');
                                 $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
                                 if (Number(promise.status) === PROMISE_COMMITED) {
