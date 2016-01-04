@@ -36,86 +36,91 @@
                 var refreshPromiseList = function() {
                     $('#promiseList').empty();
                     promiseController.getPromises(function(promises) {
-                        promises.forEach(function(promise) {
-                            var promiseElement = $('.pb-promise-wrapper');
-                            promiseElement.find('.pb-promise-description').text(promise.description);
-                            if (promise.attachment) {
-                                promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
-                            } else {
-                                promiseElement.find('.pb-promise-attachment').html('<span>None</span>');
-                            }
-                            promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
+                        if (promises.length > 0) {
+                            promises.forEach(function(promise) {
+                                var promiseElement = $('.pb-promise-wrapper');
+                                promiseElement.find('.pb-promise-description').text(promise.description);
+                                if (promise.attachment) {
+                                    promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
+                                } else {
+                                    promiseElement.find('.pb-promise-attachment').html('<span>None</span>');
+                                }
+                                promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
-                            $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
+                                $('#promiseList').html('');
+                                $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
-                            if (Number(promise.status) === PROMISE_COMMITED) {
-                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
-                            } else if (Number(promise.status) === PROMISE_COMPLETED) {
-                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
-                            } else if (Number(promise.status) === PROMISE_FAILED) {
-                                $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
-                            }
+                                if (Number(promise.status) === PROMISE_COMMITED) {
+                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
+                                } else if (Number(promise.status) === PROMISE_COMPLETED) {
+                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
+                                } else if (Number(promise.status) === PROMISE_FAILED) {
+                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
+                                }
 
-                            var updatePromiseStatus = function(status, onSuccess) {
-                                promiseController.updatePromiseStatus({
-                                    id: promise.id,
-                                    status: status
-                                }, function() {
-                                    onSuccess();
-                                    refreshPromiseList();
-                                });
-                            }
+                                var updatePromiseStatus = function(status, onSuccess) {
+                                    promiseController.updatePromiseStatus({
+                                        id: promise.id,
+                                        status: status
+                                    }, function() {
+                                        onSuccess();
+                                        refreshPromiseList();
+                                    });
+                                }
 
-                            if (Number(promise.status) === PROMISE_COMMITED) {
-                                $('#promise' + promise.id + ' .pb-status-completed').click(function() {
-                                    $('#promiseCompletionModal').modal('show');
-                                    $('#promiseCompletionModalOkButton').off();
-                                    $('#promiseCompletionModalOkButton').click(function() {
-                                        var formData = new FormData();
-                                        formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
+                                if (Number(promise.status) === PROMISE_COMMITED) {
+                                    $('#promise' + promise.id + ' .pb-status-completed').click(function() {
+                                        $('#promiseCompletionModal').modal('show');
+                                        $('#promiseCompletionModalOkButton').off();
+                                        $('#promiseCompletionModalOkButton').click(function() {
+                                            var formData = new FormData();
+                                            formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
 
-                                        promiseController.createPromiseAttachment({
-                                            id: promise.id
-                                        },
-                                        formData, function() {
-                                            updatePromiseStatus(PROMISE_COMPLETED, function() {
-                                                $('#promiseCompletionModal').modal('hide');
+                                            promiseController.createPromiseAttachment({
+                                                id: promise.id
+                                            },
+                                            formData, function() {
+                                                updatePromiseStatus(PROMISE_COMPLETED, function() {
+                                                    $('#promiseCompletionModal').modal('hide');
+                                                });
                                             });
                                         });
                                     });
-                                });
 
-                                $('#promise' + promise.id + ' .pb-status-failed').click(function() {
-                                    $('#promiseFailureModal').modal('show');
-                                    $('#promiseFailureModalOkButton').off();
-                                    $('#promiseFailureModalOkButton').click(function() {
-                                        updatePromiseStatus(PROMISE_FAILED, function() {
-                                            $('#promiseFailureModal').modal('hide');
+                                    $('#promise' + promise.id + ' .pb-status-failed').click(function() {
+                                        $('#promiseFailureModal').modal('show');
+                                        $('#promiseFailureModalOkButton').off();
+                                        $('#promiseFailureModalOkButton').click(function() {
+                                            updatePromiseStatus(PROMISE_FAILED, function() {
+                                                $('#promiseFailureModal').modal('hide');
+                                            });
+                                        });
+                                    });
+
+                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                                } else if (Number(promise.status) === PROMISE_COMPLETED) {
+                                    $('#promise' + promise.id + ' .pb-status-completed').hide();
+                                    $('#promise' + promise.id + ' .pb-status-failed').hide();
+                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                                } else if (Number(promise.status) === PROMISE_FAILED) {
+                                    $('#promise' + promise.id + ' .pb-status-completed').hide();
+                                    $('#promise' + promise.id + ' .pb-status-failed').hide();
+                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                                }
+
+                                $('#promise' + promise.id + ' .pb-status-removed').click(function() {
+                                    $('#promiseRemovalModal').modal('show');
+                                    $('#promiseRemovalModalOkButton').off();
+                                    $('#promiseRemovalModalOkButton').click(function() {
+                                        updatePromiseStatus(PROMISE_DELETED, function() {
+                                            $('#promiseRemovalModal').modal('hide');
                                         });
                                     });
                                 });
-
-                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
-                            } else if (Number(promise.status) === PROMISE_COMPLETED) {
-                                $('#promise' + promise.id + ' .pb-status-completed').hide();
-                                $('#promise' + promise.id + ' .pb-status-failed').hide();
-                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
-                            } else if (Number(promise.status) === PROMISE_FAILED) {
-                                $('#promise' + promise.id + ' .pb-status-completed').hide();
-                                $('#promise' + promise.id + ' .pb-status-failed').hide();
-                                $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
-                            }
-
-                            $('#promise' + promise.id + ' .pb-status-removed').click(function() {
-                                $('#promiseRemovalModal').modal('show');
-                                $('#promiseRemovalModalOkButton').off();
-                                $('#promiseRemovalModalOkButton').click(function() {
-                                    updatePromiseStatus(PROMISE_DELETED, function() {
-                                        $('#promiseRemovalModal').modal('hide');
-                                    });
-                                });
                             });
-                        });
+                        } else {
+                            $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit your first promise!</span></div>');
+                        }
                     });
                 }
 

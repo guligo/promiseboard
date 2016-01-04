@@ -61,6 +61,12 @@ a:hover {
     padding-bottom: 0px;
 }
 
+.pb-promise-list-empty {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 .pb-promise-wrapper {
     display: none;
 }
