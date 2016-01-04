@@ -1,12 +1,11 @@
-const DATABASE_URL = 'postgres://postgres:secret@localhost:5432/promiseboard';
+const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
 
 var pg = require('pg');
 
 var _init = function(callback) {
-    console.log('Initializing user DAO');
-    console.log('Database connection URL = [' + process.env.DATABASE_URL + ']');
+    console.log('Initializing user DAO, database connection URL = [' + process.env.DATABASE_URL + ']');
 
-    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+    pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
@@ -22,7 +21,7 @@ var _init = function(callback) {
 var _createUser = function(username, password, callback) {
     console.log('Creating user with username = [' + username + ']');
 
-    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+    pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
@@ -36,7 +35,7 @@ var _createUser = function(username, password, callback) {
 var _getUserByUsername = function(username, callback) {
     console.log('Getting user by username = [' + username + ']');
 
-    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+    pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client

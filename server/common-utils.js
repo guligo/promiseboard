@@ -15,9 +15,6 @@ var _handleException = function(e, res) {
 }
 
 module.exports = {
-    clone: function(object) {
-        return _clone(object);
-    },
     createException: function(text) {
         return _createException(text);
     },
