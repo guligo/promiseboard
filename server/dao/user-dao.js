@@ -3,14 +3,20 @@ const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@loc
 var pg = require('pg');
 
 var _init = function(callback) {
-    console.log('Initializing user DAO, database connection URL = [' + process.env.DATABASE_URL + ']');
+    console.log('Initializing user DAO, database connection URL = [' + DATABASE_URL + ']');
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
-            .query('CREATE TABLE IF NOT EXISTS users(username VARCHAR(30) PRIMARY KEY, password VARCHAR(30) not null);')
+            .query('CREATE TABLE IF NOT EXISTS \
+                users ( \
+                    username VARCHAR(30) PRIMARY KEY, \
+                    password VARCHAR(30) NOT NULL \
+                );')
             .on('end', function(result) {
+                console.log('Creation of [users] table completed!');
+
                 if (callback) {
                     callback();
                 }
@@ -52,8 +58,8 @@ var _getUserByUsername = function(username, callback) {
 }
 
 module.exports = {
-    init: function() {
-        _init();
+    init: function(callback) {
+        _init(callback);
     },
     createUser: function (username, password, callback) {
         _createUser(username, password, callback);

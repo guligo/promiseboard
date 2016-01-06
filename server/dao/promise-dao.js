@@ -1,11 +1,13 @@
-const DATABASE_URL = 'postgres://postgres:secret@localhost:5432/promiseboard';
-
-var commonUtils = require('./../common-utils');
-
 const PROMISE_DELETED = 0;
 const PROMISE_COMMITED = 1;
 const PROMISE_COMPLETED = 2;
 const PROMISE_FAILED = 3;
+
+const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
+
+var pg = require('pg');
+
+var commonUtils = require('./../common-utils');
 
 var _promises = [
     {
@@ -25,14 +27,23 @@ var _promises = [
 ];
 
 var _init = function(callback) {
-    console.log('Initializing promise DAO');
+    console.log('Initializing promise DAO, database connection URL = [' + DATABASE_URL + ']');
 
-    pg.connect(process.env.DATABASE_URL || DATABASE_URL, function(err, client) {
+    pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
-            .query('CREATE TABLE IF NOT EXISTS users(username VARCHAR(30) PRIMARY KEY, password VARCHAR(30) not null);')
+            .query('CREATE TABLE IF NOT EXISTS \
+                promises (\
+                    id SERIAL PRIMARY KEY, \
+                    username VARCHAR(30) NOT NULL REFERENCES users (username), \
+                    description TEXT NOT NULL, \
+                    due_date TIMESTAMP NOT NULL, \
+                    status INTEGER NOT NULL \
+                );')
             .on('end', function(result) {
+                console.log('Creation of [promises] table completed!');
+
                 if (callback) {
                     callback();
                 }
@@ -92,6 +103,9 @@ var _getMaxPromiseId = function() {
 }
 
 module.exports = {
+    init: function(callback) {
+        _init(callback);
+    },
     createPromise: function(username, description, dueDate) {
         _createPromise(username, description, new Date(dueDate));
     },

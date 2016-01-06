@@ -6,8 +6,11 @@ var multipart = require('connect-multiparty');
 
 var commonUtils = require('./common-utils');
 var userDao = require('./dao/user-dao');
-userDao.init();
 var promiseDao = require('./dao/promise-dao');
+
+userDao.init(function() {
+    promiseDao.init();
+});
 
 var app = express();
 app.use(bodyParser());
