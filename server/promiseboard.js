@@ -130,23 +130,21 @@ app.post('/promises', checkAuthAsync, function(req, res) {
 
         if (submittedPromise.id !== undefined) {
             promiseDao.updatePromise(submittedPromise.id, submittedPromise.description, submittedPromise.dueDate, submittedPromise.status);
+            res.sendStatus(200);
         } else {
-            promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate);
+            promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate, function() {
+                res.sendStatus(200);
+            });
         }
-        res.sendStatus(200);
     } catch (e) {
-        console.error(e);
-        if (e.checked === true) {
-            res.status(500).send(e.text);
-        } else {
-            res.sendStatus(500);
-        }
+        commonUtils.handleException(e, res);
     }
 });
 
 app.get('/promises', checkAuthAsync, function(req, res) {
-    var promises = promiseDao.getPromisesByUsername(req.session.username);
-    res.end(JSON.stringify(promises));
+    var promises = promiseDao.getPromisesByUsername(req.session.username, function(promises) {
+        res.end(JSON.stringify(promises));
+    });
 });
 
 app.get('/promises/:id', checkAuthAsync, function(req, res) {

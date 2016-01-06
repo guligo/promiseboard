@@ -51,14 +51,20 @@ var _init = function(callback) {
     });
 }
 
-var _createPromise = function(username, description, dueDate) {
-    var id = _getMaxPromiseId() + 1;
-    _promises.push({
-        id: id,
-        username: username,
-        description: description,
-        dueDate: dueDate,
-        status: PROMISE_COMMITED
+var _createPromise = function(username, description, dueDate, callback) {
+    console.log('Creating promise for username = [' + username + '], description = [' + description + ']');
+
+    pg.connect(DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('INSERT INTO \
+                promises (username, description, due_date, status) \
+                VALUES ($1, $2, $3, 1);',
+                [username, description, dueDate])
+            .on('end', function(result) {
+                callback();
+            });
     });
 }
 
@@ -82,32 +88,32 @@ var _getPromiseById = function(id) {
     return resultingPromise;
 }
 
-var _getPromisesByUsername = function(username) {
-    var resultingPromises = [];
-    _promises.forEach(function(promise) {
-        if (promise.status && promise.status !== PROMISE_DELETED && promise.username === username) {
-            resultingPromises.push(promise);
-        }
-    });
-    return resultingPromises;
-}
+var _getPromisesByUsername = function(username, callback) {
+    console.log('Getting promises for username = [' + username + ']');
 
-var _getMaxPromiseId = function() {
-    var resultingId = 0;
-    _promises.forEach(function(promise) {
-        if (promise.id > resultingId) {
-            resultingId = promise.id;
-        }
+    pg.connect(DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        var resultingPromises = [];
+        client
+            .query('SELECT * FROM promises WHERE username = $1', [username])
+            .on('row', function(promise) {
+                resultingPromises.push(promise);
+            })
+            .on('end', function(result) {
+                if (callback) {
+                    callback(resultingPromises);
+                }
+            });
     });
-    return resultingId;
 }
 
 module.exports = {
     init: function(callback) {
         _init(callback);
     },
-    createPromise: function(username, description, dueDate) {
-        _createPromise(username, description, new Date(dueDate));
+    createPromise: function(username, description, dueDate, callback) {
+        _createPromise(username, description, new Date(dueDate), callback);
     },
     updatePromise: function(id, description, dueDate, status) {
         _updatePromise(Number(id), description, new Date(dueDate), Number(status));
@@ -118,10 +124,7 @@ module.exports = {
     getPromiseById: function(id) {
         return _getPromiseById(Number(id));
     },
-    getPromisesByUsername: function(username) {
-        return _getPromisesByUsername(username);
-    },
-    getMaxPromiseId: function() {
-        return _getMaxPromiseId();
+    getPromisesByUsername: function(username, callback) {
+        return _getPromisesByUsername(username, callback);
     }
 };
