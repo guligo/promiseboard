@@ -64,7 +64,10 @@ var _createPromise = function(username, description, dueDate, callback) {
                 VALUES ($1, $2, $3, 1);',
                 [username, description, dueDate])
             .on('end', function(result) {
-                callback();
+                if (callback) {
+                    console.log('Cool');
+                    callback();
+                }
             });
     });
 }
@@ -89,7 +92,7 @@ var _createPromiseAttachment = function(id, attachment, callback) {
 }
 
 var _updatePromiseStatus = function(id, status, callback) {
-    console.log('Update status of promise with id = [' + id + '], status = [' + status + ']');
+    console.log('Update status of promise with id = [' + id + '] to status = [' + status + ']');
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -107,14 +110,28 @@ var _updatePromiseStatus = function(id, status, callback) {
     });
 };
 
-var _getPromiseById = function(id) {
-    var resultingPromise;
-    _promises.forEach(function(promise) {
-        if (promise.id === id) {
-            resultingPromise = promise;
-        }
+var _getPromiseById = function(id, callback) {
+    console.log('Getting promise with id = [' + id + ']');
+
+    pg.connect(DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        var resultingPromise;
+        client
+            .query('SELECT * \
+                FROM promises \
+                WHERE id = $1 \
+                LIMIT 1;',
+                [id])
+            .on('row', function(row) {
+                resultingPromise = row;
+            })
+            .on('end', function(result) {
+                if (callback) {
+                    callback(resultingPromise);
+                }
+            });
     });
-    return resultingPromise;
 }
 
 var _getPromisesByUsername = function(username, callback) {
@@ -150,8 +167,8 @@ module.exports = {
     createPromiseAttachment: function(id, attachment, callback) {
         _createPromiseAttachment(Number(id), attachment, callback);
     },
-    getPromiseById: function(id) {
-        return _getPromiseById(Number(id));
+    getPromiseById: function(id, callback) {
+        return _getPromiseById(Number(id), callback);
     },
     getPromisesByUsername: function(username, callback) {
         return _getPromisesByUsername(username, callback);

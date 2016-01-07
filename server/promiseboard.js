@@ -149,8 +149,9 @@ app.get('/promises', checkAuthAsync, function(req, res) {
 });
 
 app.get('/promises/:id', checkAuthAsync, function(req, res) {
-    var promise = promiseDao.getPromiseById(req.params.id);
-    res.end(JSON.stringify(promise));
+    var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
+        res.end(JSON.stringify(promise));
+    });
 });
 
 var multipartMiddleware = multipart();
@@ -161,8 +162,9 @@ app.post('/promises/:id/attachment', multipartMiddleware, function(req, res) {
 });
 
 app.get('/promises/:id/attachment', function(req, res) {
-    var promise = promiseDao.getPromiseById(req.params.id);
-    res.sendfile(promise.attachment);
+    var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
+        res.sendfile(promise.attachment);
+    });
 });
 
 app.listen(app.get('port'), function() {

@@ -42,7 +42,9 @@
                                 promiseElement.find('.pb-promise-description').text(promise.description);
                                 if (promise.attachment) {
                                     promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
+                                    promiseElement.find('.pb-promise-attachment-group').attr('style', '');
                                 } else {
+                                    promiseElement.find('.pb-promise-attachment-group').attr('style', 'display: none;');
                                     promiseElement.find('.pb-promise-attachment').html('<span>None</span>');
                                 }
                                 promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
@@ -279,7 +281,7 @@
                         <!-- placeholder -->
                     </div>
                 </div>
-                <div>
+                <div class="pb-promise-attachment-group">
                     <label class="pb-promise-attachment-label">I did it! Here's the proof:</label>
                     <div class="pb-promise-attachment">
                         <!-- placeholder -->
