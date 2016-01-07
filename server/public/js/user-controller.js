@@ -1,4 +1,4 @@
-var userController = (function() {
+define(function() {
 
     var _logIn = function(data, onSuccess, onError) {
         $.ajax({
@@ -76,4 +76,4 @@ var userController = (function() {
         }
     };
 
-})();
+});

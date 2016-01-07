@@ -1,4 +1,4 @@
-var promiseController = (function() {
+define(function() {
 
     var _createPromise = function(data, onSuccess, onError) {
         $.ajax({
@@ -80,4 +80,4 @@ var promiseController = (function() {
         }
     };
 
-})();
+});

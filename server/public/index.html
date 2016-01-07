@@ -14,13 +14,14 @@
         <script src="js/jquery-1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.6/bootstrap.min.js"></script>
         <script src="js/require-2.1.22/require.js"></script>
-        <script src="js/user-controller.js"></script>
         <script>
             require.config({
                 baseUrl: 'js'
             });
 
-            require(['common-utils'], function(commonUtils) {
+            require(['user-controller', 'common-utils'],
+                function(userController, commonUtils) {
+
                 $(document).ready(function() {
                     var resetLoginModalFields = function() {
                         $('#loginModalUsernameGroup').removeClass('has-success');
