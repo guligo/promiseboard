@@ -9,25 +9,8 @@ var pg = require('pg');
 
 var commonUtils = require('./../common-utils');
 
-var _promises = [
-    {
-        id: 1,
-        username: 'guligo',
-        description: 'To do something cool.',
-        dueDate: new Date(),
-        status: PROMISE_COMMITED
-    },
-    {
-        id: 2,
-        username: 'guligo',
-        description: 'To do something really cool.',
-        dueDate: new Date(),
-        status: PROMISE_COMMITED
-    }
-];
-
 var _init = function(callback) {
-    console.log('Initializing promise DAO, database connection URL = [' + DATABASE_URL + ']');
+    console.log('Initializing promise DAO, database connection URL = [%s]', DATABASE_URL);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -53,7 +36,7 @@ var _init = function(callback) {
 }
 
 var _createPromise = function(username, description, dueDate, callback) {
-    console.log('Creating promise for username = [' + username + '], description = [' + description + ']');
+    console.log('Creating promise for username = [%s] with description = [%s], dueData = [%s]', username, description, dueDate);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -65,7 +48,6 @@ var _createPromise = function(username, description, dueDate, callback) {
                 [username, description, dueDate])
             .on('end', function(result) {
                 if (callback) {
-                    console.log('Cool');
                     callback();
                 }
             });
@@ -73,7 +55,7 @@ var _createPromise = function(username, description, dueDate, callback) {
 }
 
 var _createPromiseAttachment = function(id, attachment, callback) {
-    console.log('Creating attachment for promise with id = [' + id + '], attachment = [' + attachment + ']');
+    console.log('Creating attachment = [%s] for promise with id = [%s]', attachment, id);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -92,7 +74,7 @@ var _createPromiseAttachment = function(id, attachment, callback) {
 }
 
 var _updatePromiseStatus = function(id, status, callback) {
-    console.log('Update status of promise with id = [' + id + '] to status = [' + status + ']');
+    console.log('Updating status of promise with id = [%s] to status = [%s]', id, status);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -111,7 +93,7 @@ var _updatePromiseStatus = function(id, status, callback) {
 };
 
 var _getPromiseById = function(id, callback) {
-    console.log('Getting promise with id = [' + id + ']');
+    console.log('Getting promise with id = [%s]', id);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
@@ -135,14 +117,17 @@ var _getPromiseById = function(id, callback) {
 }
 
 var _getPromisesByUsername = function(username, callback) {
-    console.log('Getting promises for username = [' + username + ']');
+    console.log('Getting promises for username = [%s]', username);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         var resultingPromises = [];
         client
-            .query('SELECT * FROM promises WHERE username = $1', [username])
+            .query('SELECT * \
+                FROM promises \
+                WHERE username = $1;',
+                [username])
             .on('row', function(promise) {
                 resultingPromises.push(promise);
             })

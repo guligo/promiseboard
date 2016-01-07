@@ -148,12 +148,6 @@ app.get('/promises', checkAuthAsync, function(req, res) {
     });
 });
 
-app.get('/promises/:id', checkAuthAsync, function(req, res) {
-    var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
-        res.end(JSON.stringify(promise));
-    });
-});
-
 var multipartMiddleware = multipart();
 app.post('/promises/:id/attachment', multipartMiddleware, function(req, res) {
     var promise = promiseDao.createPromiseAttachment(req.params.id, req.files['file'].path, function() {

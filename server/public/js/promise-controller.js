@@ -35,19 +35,6 @@ var promiseController = (function() {
         });
     };
 
-    var _getPromise =  function(data, onSuccess) {
-        $.ajax({
-            url: '/promises/' + data.id,
-            method: 'get',
-            success: function(promise) {
-                onSuccess(JSON.parse(promise));
-            },
-            error: function() {
-                console.log(error);
-            }
-        });
-    };
-
     var _getPromises = function(onSuccess) {
         $.ajax({
             url: '/promises',
@@ -82,19 +69,12 @@ var promiseController = (function() {
         createPromise: function(data, onSuccess, onError) {
             _createPromise(data, onSuccess, onError);
         },
-
         createPromiseAttachment: function(data, formData, onSuccess) {
             _createPromiseAttachment(data, formData, onSuccess);
         },
-
-        getPromise: function(data, onSuccess) {
-            _getPromise(data, onSuccess);
-        },
-
         getPromises: function(onSuccess) {
             _getPromises(onSuccess);
         },
-
         updatePromiseStatus: function(data, onSuccess, onError) {
             _updatePromiseStatus(data, onSuccess, onError);
         }

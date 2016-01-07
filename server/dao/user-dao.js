@@ -25,13 +25,16 @@ var _init = function(callback) {
 }
 
 var _createUser = function(username, password, callback) {
-    console.log('Creating user with username = [' + username + ']');
+    console.log('Creating user with username = [%s]', username);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
-            .query('INSERT INTO users (username, password) VALUES($1, $2);', [username, password])
+            .query('INSERT INTO \
+                users (username, password) \
+                VALUES($1, $2);',
+                [username, password])
             .on('end', function(result) {
                 callback();
             });
@@ -39,13 +42,16 @@ var _createUser = function(username, password, callback) {
 }
 
 var _getUserByUsername = function(username, callback) {
-    console.log('Getting user by username = [' + username + ']');
+    console.log('Getting user by username = [%s]', username);
 
     pg.connect(DATABASE_URL, function(err, client) {
         if (err) throw err;
 
         client
-            .query('SELECT * FROM users WHERE username = $1 LIMIT 1;', [username])
+            .query('SELECT * \
+                FROM users \
+                WHERE username = $1 LIMIT 1;',
+                [username])
             .on('row', function(row) {
                 callback(row);
             })

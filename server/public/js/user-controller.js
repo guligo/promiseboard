@@ -65,15 +65,12 @@ var userController = (function() {
         logIn: function(data, onSuccess, onError) {
             _logIn(data, onSuccess, onError);
         },
-
         logOut: function(onSuccess) {
             _logOut(onSuccess);
         },
-
         register: function(data, onSuccess, onError) {
             _register(data, onSuccess, onError);
         },
-
         getMe: function(onSuccess) {
             _getMe(onSuccess);
         }
