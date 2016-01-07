@@ -41,11 +41,11 @@
                                 var promiseElement = $('.pb-promise-wrapper');
                                 promiseElement.find('.pb-promise-description').text(promise.description);
                                 if (promise.attachment) {
-                                    promiseElement.find('.pb-promise-attachment').html('<img src="promises/' + promise.id + '/attachment" />');
-                                    promiseElement.find('.pb-promise-attachment-group').attr('style', '');
+                                    promiseElement.find('.pb-promise-attachment').attr('style', '');
+                                    promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
                                 } else {
-                                    promiseElement.find('.pb-promise-attachment-group').attr('style', 'display: none;');
-                                    promiseElement.find('.pb-promise-attachment').html('<span>None</span>');
+                                    promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
+                                    promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
                                 }
                                 promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
@@ -239,9 +239,11 @@
                                 Welcome, <span id="username"><!-- placeholder --></span>!<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
+                                <!--
                                 <li>
                                     <a href="#">Settings</a>
                                 </li>
+                                -->
                                 <li>
                                     <a id="logoutLink" href="#">Logout</a>
                                 </li>
@@ -281,9 +283,11 @@
                         <!-- placeholder -->
                     </div>
                 </div>
-                <div class="pb-promise-attachment-group">
-                    <label class="pb-promise-attachment-label">I did it! Here's the proof:</label>
-                    <div class="pb-promise-attachment">
+                <div class="pb-promise-attachment">
+                    <label class="pb-promise-attachment-label">
+                        I did it! Here's the proof:
+                    </label>
+                    <div class="pb-promise-attachment-content">
                         <!-- placeholder -->
                     </div>
                 </div>

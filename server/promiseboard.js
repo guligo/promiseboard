@@ -37,11 +37,11 @@ function checkAuthSync(req, res, next) {
 
 app.get('/index.html', function(req, res) {
     delete req.session.username;
-    res.sendfile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/board.html', checkAuthSync, function(req, res) {
-    res.sendfile(__dirname + '/public/board.html');
+    res.sendFile(__dirname + '/public/board.html');
 });
 
 app.use(express.static(__dirname + '/public'));

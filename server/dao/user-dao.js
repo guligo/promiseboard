@@ -20,6 +20,7 @@ var _init = function(callback) {
                 if (callback) {
                     callback();
                 }
+                client.end();
             });
     });
 }
@@ -36,7 +37,10 @@ var _createUser = function(username, password, callback) {
                 VALUES($1, $2);',
                 [username, password])
             .on('end', function(result) {
-                callback();
+                if (callback) {
+                    callback();
+                }
+                client.end();
             });
     });
 }
@@ -59,6 +63,7 @@ var _getUserByUsername = function(username, callback) {
                 if (result.rowCount === 0) {
                     callback();
                 }
+                client.end();
             });
     });
 }

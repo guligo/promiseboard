@@ -31,6 +31,7 @@ var _init = function(callback) {
                 if (callback) {
                     callback();
                 }
+                client.end();
             });
     });
 }
@@ -50,6 +51,7 @@ var _createPromise = function(username, description, dueDate, callback) {
                 if (callback) {
                     callback();
                 }
+                client.end();
             });
     });
 }
@@ -69,6 +71,7 @@ var _createPromiseAttachment = function(id, attachment, callback) {
                 if (callback) {
                     callback();
                 }
+                client.end();
             });
     });
 }
@@ -88,6 +91,7 @@ var _updatePromiseStatus = function(id, status, callback) {
                 if (callback) {
                     callback();
                 }
+                client.end();
             });
     });
 };
@@ -112,6 +116,7 @@ var _getPromiseById = function(id, callback) {
                 if (callback) {
                     callback(resultingPromise);
                 }
+                client.end();
             });
     });
 }
@@ -135,6 +140,7 @@ var _getPromisesByUsername = function(username, callback) {
                 if (callback) {
                     callback(resultingPromises);
                 }
+                client.end();
             });
     });
 }
