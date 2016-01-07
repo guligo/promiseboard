@@ -39,7 +39,8 @@ var _init = function(callback) {
                     username VARCHAR(30) NOT NULL REFERENCES users (username), \
                     description TEXT NOT NULL, \
                     due_date TIMESTAMP NOT NULL, \
-                    status INTEGER NOT NULL \
+                    status INTEGER NOT NULL, \
+                    attachment TEXT \
                 );')
             .on('end', function(result) {
                 console.log('Creation of [promises] table completed!');
@@ -68,14 +69,42 @@ var _createPromise = function(username, description, dueDate, callback) {
     });
 }
 
-var _createPromiseAttachment = function(id, attachment) {
-    var promise = _getPromiseById(id);
-    promise.attachment = attachment;
+var _createPromiseAttachment = function(id, attachment, callback) {
+    console.log('Creating attachment for promise with id = [' + id + '], attachment = [' + attachment + ']');
+
+    pg.connect(DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('UPDATE promises \
+                SET attachment = $2 \
+                WHERE id = $1;',
+                [id, attachment])
+            .on('end', function(result) {
+                if (callback) {
+                    callback();
+                }
+            });
+    });
 }
 
-var _updatePromise = function(id, description, dueDate, status) {
-    var promise = _getPromiseById(id);
-    promise.status = status;
+var _updatePromiseStatus = function(id, status, callback) {
+    console.log('Update status of promise with id = [' + id + '], status = [' + status + ']');
+
+    pg.connect(DATABASE_URL, function(err, client) {
+        if (err) throw err;
+
+        client
+            .query('UPDATE promises \
+                SET status = $2 \
+                WHERE id = $1;',
+                [id, status])
+            .on('end', function(result) {
+                if (callback) {
+                    callback();
+                }
+            });
+    });
 };
 
 var _getPromiseById = function(id) {
@@ -115,11 +144,11 @@ module.exports = {
     createPromise: function(username, description, dueDate, callback) {
         _createPromise(username, description, new Date(dueDate), callback);
     },
-    updatePromise: function(id, description, dueDate, status) {
-        _updatePromise(Number(id), description, new Date(dueDate), Number(status));
+    updatePromiseStatus: function(id, status, callback) {
+        _updatePromiseStatus(Number(id), Number(status), callback);
     },
-    createPromiseAttachment: function(id, attachment) {
-        _createPromiseAttachment(Number(id), attachment);
+    createPromiseAttachment: function(id, attachment, callback) {
+        _createPromiseAttachment(Number(id), attachment, callback);
     },
     getPromiseById: function(id) {
         return _getPromiseById(Number(id));

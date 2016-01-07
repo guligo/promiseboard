@@ -62,23 +62,19 @@ var promiseController = (function() {
     };
 
     var _updatePromiseStatus = function(data, onSuccess, onError) {
-        _getPromise({
-            id: data.id
-        }, function(promise) {
-            promise.status = data.status;
-            $.ajax({
-                url: '/promises',
-                method: 'post',
-                data: promise,
-                success: function() {
-                    onSuccess();
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        }, function(error) {
-            console.log(error);
+        $.ajax({
+            url: '/promises',
+            method: 'post',
+            data: {
+                id: data.id,
+                status: data.status
+            },
+            success: function() {
+                onSuccess();
+            },
+            error: function(error) {
+                console.log(error);
+            }
         });
     };
 

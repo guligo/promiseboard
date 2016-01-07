@@ -72,17 +72,24 @@
                                         $('#promiseCompletionModal').modal('show');
                                         $('#promiseCompletionModalOkButton').off();
                                         $('#promiseCompletionModalOkButton').click(function() {
-                                            var formData = new FormData();
-                                            formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
+                                            if ($('#promiseCompletionModalAttachment')[0].files.length > 0) {
+                                                var formData = new FormData();
+                                                formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
 
-                                            promiseController.createPromiseAttachment({
-                                                id: promise.id
-                                            },
-                                            formData, function() {
+                                                promiseController.createPromiseAttachment({
+                                                        id: promise.id
+                                                    },
+                                                    formData, function() {
+                                                        updatePromiseStatus(PROMISE_COMPLETED, function() {
+                                                            $('#promiseCompletionModal').modal('hide');
+                                                        });
+                                                    }
+                                                );
+                                            } else {
                                                 updatePromiseStatus(PROMISE_COMPLETED, function() {
                                                     $('#promiseCompletionModal').modal('hide');
                                                 });
-                                            });
+                                            }
                                         });
                                     });
 

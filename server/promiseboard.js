@@ -121,17 +121,18 @@ app.post('/promises', checkAuthAsync, function(req, res) {
     try {
         var submittedPromise = req.body;
 
-        if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
-            throw commonUtils.createException('Description empty');
-        }
-        if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-            throw commonUtils.createException('Due date empty');
-        }
-
         if (submittedPromise.id !== undefined) {
-            promiseDao.updatePromise(submittedPromise.id, submittedPromise.description, submittedPromise.dueDate, submittedPromise.status);
-            res.sendStatus(200);
+            promiseDao.updatePromiseStatus(submittedPromise.id, submittedPromise.status, function() {
+                res.sendStatus(200);
+            });
         } else {
+            if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
+                throw commonUtils.createException('Description empty');
+            }
+            if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
+                throw commonUtils.createException('Due date empty');
+            }
+
             promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate, function() {
                 res.sendStatus(200);
             });
@@ -154,8 +155,9 @@ app.get('/promises/:id', checkAuthAsync, function(req, res) {
 
 var multipartMiddleware = multipart();
 app.post('/promises/:id/attachment', multipartMiddleware, function(req, res) {
-    var promise = promiseDao.createPromiseAttachment(req.params.id, req.files['file'].path);
-    res.sendStatus(200);
+    var promise = promiseDao.createPromiseAttachment(req.params.id, req.files['file'].path, function() {
+        res.sendStatus(200);
+    });
 });
 
 app.get('/promises/:id/attachment', function(req, res) {
