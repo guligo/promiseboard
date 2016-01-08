@@ -187,10 +187,6 @@
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisYear));
                     });
 
-                    $('#createPromiseModalDueDateUntil').click(function() {
-                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(new Date()));
-                    });
-
                     $('#createPromiseModalCreateButton').click(function() {
                         promiseController.createPromise({
                             description: $('#createPromiseModalDescriptionField').val(),
@@ -207,15 +203,6 @@
                         $('#createPromiseModalDescriptionField').val('');
                         $('#createPromiseModalDueDate').text('');
                     });
-
-                    // TODO: Candidate for removal
-                    /*
-                    $(function () {
-                        $('#calendar').datetimepicker({
-                            inline: true
-                        });
-                    });
-                    */
 
                     refreshPromiseList();
                 });
@@ -264,14 +251,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
-                    <!-- TODO: Candidate for removal -->
-                    <!--
-                    <div class="panel panel-default pb-container">
-                        <div class="pb-datepicker" id="calendar"></div>
-                    </div>
-                    -->
-                </div>
+                <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="panel panel-default pb-container">
                         <div id="promiseList" class="panel-body pb-promise-list">
@@ -351,9 +331,6 @@
                                     </li>
                                     <li>
                                         <a id="createPromiseModalDueDateThisYear" href="#">This year</a>
-                                    </li>
-                                    <li>
-                                        <a id="createPromiseModalDueDateUntil" href="#">Until...</a>
                                     </li>
                                 </ul>
                                 <span id="createPromiseModalDueDate">

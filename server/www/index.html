@@ -29,8 +29,6 @@
                     };
 
                     $('#loginModalLoginButton').click(function() {
-                        commonUtils.formatDate();
-
                         resetLoginModalFields();
                         userController.logIn({
                             username: $('#loginModalUsernameField').val(),
