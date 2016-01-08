@@ -5,7 +5,7 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './public/js/common-utils', './dao/user-dao', './dao/promise-dao'],
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao'],
     function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao) {
 
     var app = express();
@@ -20,7 +20,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
             maxAge: 300000
         }
     }));
-    app.use(favicon(__dirname + '/public/img/icon.png'));
+    app.use(favicon(__dirname + '/www/img/icon.png'));
     app.set('port', (process.env.PORT || 5000));
         function checkAuthSync(req, res, next) {
         if (!req.session.username) {
@@ -32,14 +32,14 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/index.html', function(req, res) {
         delete req.session.username;
-        res.sendFile(__dirname + '/public/index.html');
+        res.sendFile(__dirname + '/www/index.html');
     });
 
     app.get('/board.html', checkAuthSync, function(req, res) {
-        res.sendFile(__dirname + '/public/board.html');
+        res.sendFile(__dirname + '/www/board.html');
     });
 
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '/www'));
 
     function checkAuthAsync(req, res, next) {
         if (!req.session.username) {

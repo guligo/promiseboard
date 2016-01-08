@@ -1,4 +1,4 @@
-define(['pg', '../public/js/constantz'], function(pg, constants) {
+define(['pg', '../www/js/constantz'], function(pg, constants) {
 
     const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
 
