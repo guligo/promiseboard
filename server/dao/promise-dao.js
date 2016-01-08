@@ -29,6 +29,14 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         });
     }
 
+    var _rowToPromise = function(row) {
+        var promise = row;
+        promise.dueDate = new Date(promise.due_date);
+
+        delete promise.due_date;
+        return promise;
+    }
+
     var _createPromise = function(username, description, dueDate, callback) {
         console.log('Creating promise for username = [%s] with description = [%s], dueData = [%s]', username, description, dueDate);
 
@@ -103,7 +111,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     LIMIT 1;',
                     [id])
                 .on('row', function(row) {
-                    resultingPromise = row;
+                    resultingPromise = _rowToPromise(row);
                 })
                 .on('end', function(result) {
                     if (callback) {
@@ -126,8 +134,8 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     FROM promises \
                     WHERE username = $1;',
                     [username])
-                .on('row', function(promise) {
-                    resultingPromises.push(promise);
+                .on('row', function(row) {
+                    resultingPromises.push(_rowToPromise(row));
                 })
                 .on('end', function(result) {
                     if (callback) {

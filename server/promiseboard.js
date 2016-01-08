@@ -159,7 +159,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/promises/:id/attachment', function(req, res) {
         var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
-            res.sendfile(promise.attachment);
+            res.sendFile(promise.attachment);
         });
     });
 

@@ -43,7 +43,7 @@
                             promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
                             promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
                         }
-                        promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
+                        promiseElement.find('.pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
 
                         $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
@@ -144,7 +144,7 @@
                         endOfToday.setMinutes(59);
                         endOfToday.setSeconds(59);
                         endOfToday.setMilliseconds(999);
-                        $('#createPromiseModalDueDate').text(endOfToday);
+                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfToday));
                     });
 
                     $('#createPromiseModalDueDateThisWeek').click(function() {
@@ -157,7 +157,7 @@
                         startOfThisWeek.setMilliseconds(0);
 
                         var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
-                        $('#createPromiseModalDueDate').text(endOfThisWeek);
+                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisWeek));
                     });
 
                     $('#createPromiseModalDueDateThisMonth').click(function() {
@@ -170,7 +170,7 @@
                         startOfNextMonth.setMilliseconds(0);
 
                         var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
-                        $('#createPromiseModalDueDate').text(endOfThisMonth);
+                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisMonth));
                     });
 
                     $('#createPromiseModalDueDateThisYear').click(function() {
@@ -184,11 +184,11 @@
                         startOfNextYear.setMilliseconds(0);
 
                         var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
-                        $('#createPromiseModalDueDate').text(endOfThisYear);
+                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisYear));
                     });
 
                     $('#createPromiseModalDueDateUntil').click(function() {
-                        $('#createPromiseModalDueDate').text(new Date());
+                        $('#createPromiseModalDueDate').text(commonUtils.formatDate(new Date()));
                     });
 
                     $('#createPromiseModalCreateButton').click(function() {

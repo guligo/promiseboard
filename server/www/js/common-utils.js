@@ -16,8 +16,9 @@ define(function() {
         }
     }
 
-    var _formatDate = function() {
-        console.log('Cool');
+    var _formatDate = function(date) {
+        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' +
+            date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     }
 
     return {
@@ -27,8 +28,8 @@ define(function() {
         handleException: function(e, res) {
             return _handleException(e, res);
         },
-        formatDate: function() {
-            return _formatDate();
+        formatDate: function(date) {
+            return _formatDate(date);
         }
     }
 
