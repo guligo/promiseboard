@@ -1,11 +1,6 @@
-define(['pg'], function(pg) {
+define(['pg', '../public/js/constantz'], function(pg, constants) {
 
     const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
-
-    const PROMISE_DELETED = 0;
-    const PROMISE_COMMITED = 1;
-    const PROMISE_COMPLETED = 2;
-    const PROMISE_FAILED = 3;
 
     var _init = function(callback) {
         console.log('Initializing promise DAO, database connection URL = [%s]', DATABASE_URL);
@@ -43,8 +38,8 @@ define(['pg'], function(pg) {
             client
                 .query('INSERT INTO \
                     promises (username, description, due_date, status) \
-                    VALUES ($1, $2, $3, 1);',
-                    [username, description, dueDate])
+                    VALUES ($1, $2, $3, $4);',
+                    [username, description, dueDate, constants.PROMISE_COMMITED])
                 .on('end', function(result) {
                     if (callback) {
                         callback();

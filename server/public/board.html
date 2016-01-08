@@ -14,204 +14,212 @@
         <script src="js/bootstrap-3.3.6/bootstrap.min.js"></script>
         <script src="js/moment-2.10.6/moment.js"></script>
         <script src="js/bootstrap-datetimepicker-4.17.37/bootstrap-datetimepicker.min.js"></script>
-        <script src="js/user-controller.js"></script>
-        <script src="js/promise-controller.js"></script>
+        <script src="js/require-2.1.22/require.js"></script>
         <script>
-            const PROMISE_DELETED = 0;
-            const PROMISE_COMMITED = 1;
-            const PROMISE_COMPLETED = 2;
-            const PROMISE_FAILED = 3;
+            require.config({
+                baseUrl: 'js'
+            });
 
-            $(document).ready(function() {
-                userController.getMe(function(user) {
-                    $('#username').text(user.username);
-                });
+            require(['constantz', 'user-controller', 'promise-controller', 'common-utils'], function(constants, userController, promiseController, commonUtils) {
 
-                $('#logoutLink').click(function() {
-                    userController.logOut(function() {
-                        window.location.replace('index.html');
+                $(document).ready(function() {
+                    userController.getMe(function(user) {
+                        $('#username').text(user.username);
                     });
-                });
 
-                var refreshPromiseList = function() {
-                    $('#promiseList').empty();
-                    promiseController.getPromises(function(promises) {
-                        if (promises.length > 0) {
-                            promises.forEach(function(promise) {
-                                var promiseElement = $('.pb-promise-wrapper');
-                                promiseElement.find('.pb-promise-description').text(promise.description);
-                                if (promise.attachment) {
-                                    promiseElement.find('.pb-promise-attachment').attr('style', '');
-                                    promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
-                                } else {
-                                    promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
-                                    promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
-                                }
-                                promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
+                    $('#logoutLink').click(function() {
+                        userController.logOut(function() {
+                            window.location.replace('index.html');
+                        });
+                    });
 
-                                $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
+                    var renderPromise = function(promise) {
+                        var promiseElement = $('.pb-promise-wrapper');
+                        promiseElement.find('.pb-promise-description').text(promise.description);
+                        if (promise.attachment) {
+                            promiseElement.find('.pb-promise-attachment').attr('style', '');
+                            promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
+                        } else {
+                            promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
+                            promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
+                        }
+                        promiseElement.find('.pb-promise-date').text(new Date(promise.dueDate));
 
-                                if (Number(promise.status) === PROMISE_COMMITED) {
-                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
-                                } else if (Number(promise.status) === PROMISE_COMPLETED) {
-                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
-                                } else if (Number(promise.status) === PROMISE_FAILED) {
-                                    $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
-                                }
+                        $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
-                                var updatePromiseStatus = function(status, onSuccess) {
-                                    promiseController.updatePromiseStatus({
-                                        id: promise.id,
-                                        status: status
-                                    }, function() {
-                                        onSuccess();
-                                        refreshPromiseList();
-                                    });
-                                }
+                        if (Number(promise.status) === constants.PROMISE_COMMITED) {
+                            $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
+                        } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
+                            $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
+                        } else if (Number(promise.status) === constants.PROMISE_FAILED) {
+                            $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
+                        }
 
-                                if (Number(promise.status) === PROMISE_COMMITED) {
-                                    $('#promise' + promise.id + ' .pb-status-completed').click(function() {
-                                        $('#promiseCompletionModal').modal('show');
-                                        $('#promiseCompletionModalOkButton').off();
-                                        $('#promiseCompletionModalOkButton').click(function() {
-                                            if ($('#promiseCompletionModalAttachment')[0].files.length > 0) {
-                                                var formData = new FormData();
-                                                formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
+                        var updatePromiseStatus = function(status, onSuccess) {
+                            promiseController.updatePromiseStatus({
+                                id: promise.id,
+                                status: status
+                            }, function() {
+                                onSuccess();
+                                refreshPromiseList();
+                            });
+                        }
 
-                                                promiseController.createPromiseAttachment({
-                                                        id: promise.id
-                                                    },
-                                                    formData, function() {
-                                                        updatePromiseStatus(PROMISE_COMPLETED, function() {
-                                                            $('#promiseCompletionModal').modal('hide');
-                                                        });
-                                                    }
-                                                );
-                                            } else {
-                                                updatePromiseStatus(PROMISE_COMPLETED, function() {
+                        if (Number(promise.status) === constants.PROMISE_COMMITED) {
+                            $('#promise' + promise.id + ' .pb-status-completed').click(function() {
+                                $('#promiseCompletionModal').modal('show');
+                                $('#promiseCompletionModalOkButton').off();
+                                $('#promiseCompletionModalOkButton').click(function() {
+                                    if ($('#promiseCompletionModalAttachment')[0].files.length > 0) {
+                                        var formData = new FormData();
+                                        formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
+
+                                        promiseController.createPromiseAttachment({
+                                                id: promise.id
+                                            },
+                                            formData, function() {
+                                                updatePromiseStatus(constants.PROMISE_COMPLETED, function() {
                                                     $('#promiseCompletionModal').modal('hide');
                                                 });
                                             }
+                                        );
+                                    } else {
+                                        updatePromiseStatus(constants.PROMISE_COMPLETED, function() {
+                                            $('#promiseCompletionModal').modal('hide');
                                         });
-                                    });
+                                    }
+                                });
+                            });
 
-                                    $('#promise' + promise.id + ' .pb-status-failed').click(function() {
-                                        $('#promiseFailureModal').modal('show');
-                                        $('#promiseFailureModalOkButton').off();
-                                        $('#promiseFailureModalOkButton').click(function() {
-                                            updatePromiseStatus(PROMISE_FAILED, function() {
-                                                $('#promiseFailureModal').modal('hide');
-                                            });
-                                        });
-                                    });
-
-                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
-                                } else if (Number(promise.status) === PROMISE_COMPLETED) {
-                                    $('#promise' + promise.id + ' .pb-status-completed').hide();
-                                    $('#promise' + promise.id + ' .pb-status-failed').hide();
-                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
-                                } else if (Number(promise.status) === PROMISE_FAILED) {
-                                    $('#promise' + promise.id + ' .pb-status-completed').hide();
-                                    $('#promise' + promise.id + ' .pb-status-failed').hide();
-                                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
-                                }
-
-                                $('#promise' + promise.id + ' .pb-status-removed').click(function() {
-                                    $('#promiseRemovalModal').modal('show');
-                                    $('#promiseRemovalModalOkButton').off();
-                                    $('#promiseRemovalModalOkButton').click(function() {
-                                        updatePromiseStatus(PROMISE_DELETED, function() {
-                                            $('#promiseRemovalModal').modal('hide');
-                                        });
+                            $('#promise' + promise.id + ' .pb-status-failed').click(function() {
+                                $('#promiseFailureModal').modal('show');
+                                $('#promiseFailureModalOkButton').off();
+                                $('#promiseFailureModalOkButton').click(function() {
+                                    updatePromiseStatus(constants.PROMISE_FAILED, function() {
+                                        $('#promiseFailureModal').modal('hide');
                                     });
                                 });
                             });
-                        } else {
-                            $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit your first promise!</span></div>');
+
+                            $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                        } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
+                            $('#promise' + promise.id + ' .pb-status-completed').hide();
+                            $('#promise' + promise.id + ' .pb-status-failed').hide();
+                            $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                        } else if (Number(promise.status) === constants.PROMISE_FAILED) {
+                            $('#promise' + promise.id + ' .pb-status-completed').hide();
+                            $('#promise' + promise.id + ' .pb-status-failed').hide();
+                            $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
                         }
+
+                        $('#promise' + promise.id + ' .pb-status-removed').click(function() {
+                            $('#promiseRemovalModal').modal('show');
+                            $('#promiseRemovalModalOkButton').off();
+                            $('#promiseRemovalModalOkButton').click(function() {
+                                updatePromiseStatus(constants.PROMISE_DELETED, function() {
+                                    $('#promiseRemovalModal').modal('hide');
+                                });
+                            });
+                        });
+                    }
+
+                    var refreshPromiseList = function() {
+                        $('#promiseList').empty();
+                        promiseController.getPromises(function(promises) {
+                            if (promises.length > 0) {
+                                promises.forEach(function(promise) {
+                                    if (Number(promise.status) !== constants.PROMISE_DELETED) {
+                                        renderPromise(promise);
+                                    }
+                                });
+                            } else {
+                                $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit your first promise!</span></div>');
+                            }
+                        });
+                    }
+
+                    $('#createPromiseModalDueDateToday').click(function() {
+                        var endOfToday = new Date();
+                        endOfToday.setHours(23);
+                        endOfToday.setMinutes(59);
+                        endOfToday.setSeconds(59);
+                        endOfToday.setMilliseconds(999);
+                        $('#createPromiseModalDueDate').text(endOfToday);
                     });
-                }
 
-                $('#createPromiseModalDueDateToday').click(function() {
-                    var endOfToday = new Date();
-                    endOfToday.setHours(23);
-                    endOfToday.setMinutes(59);
-                    endOfToday.setSeconds(59);
-                    endOfToday.setMilliseconds(999);
-                    $('#createPromiseModalDueDate').text(endOfToday);
-                });
+                    $('#createPromiseModalDueDateThisWeek').click(function() {
+                        var today = new Date();
 
-                $('#createPromiseModalDueDateThisWeek').click(function() {
-                    var today = new Date();
+                        var startOfThisWeek = new Date(today.getTime() - ((today.getDay() - 1 >= 0 ? today.getDay() - 1 : 6) * 24 * 60 * 60  * 1000));
+                        startOfThisWeek.setHours(0);
+                        startOfThisWeek.setMinutes(0);
+                        startOfThisWeek.setSeconds(0);
+                        startOfThisWeek.setMilliseconds(0);
 
-                    var startOfThisWeek = new Date(today.getTime() - ((today.getDay() - 1 >= 0 ? today.getDay() - 1 : 6) * 24 * 60 * 60  * 1000));
-                    startOfThisWeek.setHours(0);
-                    startOfThisWeek.setMinutes(0);
-                    startOfThisWeek.setSeconds(0);
-                    startOfThisWeek.setMilliseconds(0);
-
-                    var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
-                    $('#createPromiseModalDueDate').text(endOfThisWeek);
-                });
-
-                $('#createPromiseModalDueDateThisMonth').click(function() {
-                    var startOfNextMonth = new Date();
-                    startOfNextMonth.setMonth((startOfNextMonth.getMonth() + 1) % 12);
-                    startOfNextMonth.setDate(1);
-                    startOfNextMonth.setHours(0);
-                    startOfNextMonth.setMinutes(0);
-                    startOfNextMonth.setSeconds(0);
-                    startOfNextMonth.setMilliseconds(0);
-
-                    var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
-                    $('#createPromiseModalDueDate').text(endOfThisMonth);
-                });
-
-                $('#createPromiseModalDueDateThisYear').click(function() {
-                    var startOfNextYear = new Date();
-                    startOfNextYear.setFullYear(startOfNextYear.getFullYear() + 1);
-                    startOfNextYear.setMonth(0);
-                    startOfNextYear.setDate(1);
-                    startOfNextYear.setHours(0);
-                    startOfNextYear.setMinutes(0);
-                    startOfNextYear.setSeconds(0);
-                    startOfNextYear.setMilliseconds(0);
-
-                    var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
-                    $('#createPromiseModalDueDate').text(endOfThisYear);
-                });
-
-                $('#createPromiseModalDueDateUntil').click(function() {
-                    $('#createPromiseModalDueDate').text(new Date());
-                });
-
-                $('#createPromiseModalCreateButton').click(function() {
-                    promiseController.createPromise({
-                        description: $('#createPromiseModalDescriptionField').val(),
-                        dueDate: $('#createPromiseModalDueDate').text()
-                    }, function() {
-                        $('#createPromiseModalCloseButton').click();
-                        refreshPromiseList();
-                    }, function(error) {
-                        console.error(error);
+                        var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
+                        $('#createPromiseModalDueDate').text(endOfThisWeek);
                     });
-                });
 
-                $('#createPromiseModalCloseButton').click(function() {
-                    $('#createPromiseModalDescriptionField').val('');
-                    $('#createPromiseModalDueDate').text('');
-                });
+                    $('#createPromiseModalDueDateThisMonth').click(function() {
+                        var startOfNextMonth = new Date();
+                        startOfNextMonth.setMonth((startOfNextMonth.getMonth() + 1) % 12);
+                        startOfNextMonth.setDate(1);
+                        startOfNextMonth.setHours(0);
+                        startOfNextMonth.setMinutes(0);
+                        startOfNextMonth.setSeconds(0);
+                        startOfNextMonth.setMilliseconds(0);
 
-                // TODO: Candidate for removal
-                /*
-                $(function () {
-                    $('#calendar').datetimepicker({
-                        inline: true
+                        var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
+                        $('#createPromiseModalDueDate').text(endOfThisMonth);
                     });
-                });
-                */
 
-                refreshPromiseList();
+                    $('#createPromiseModalDueDateThisYear').click(function() {
+                        var startOfNextYear = new Date();
+                        startOfNextYear.setFullYear(startOfNextYear.getFullYear() + 1);
+                        startOfNextYear.setMonth(0);
+                        startOfNextYear.setDate(1);
+                        startOfNextYear.setHours(0);
+                        startOfNextYear.setMinutes(0);
+                        startOfNextYear.setSeconds(0);
+                        startOfNextYear.setMilliseconds(0);
+
+                        var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
+                        $('#createPromiseModalDueDate').text(endOfThisYear);
+                    });
+
+                    $('#createPromiseModalDueDateUntil').click(function() {
+                        $('#createPromiseModalDueDate').text(new Date());
+                    });
+
+                    $('#createPromiseModalCreateButton').click(function() {
+                        promiseController.createPromise({
+                            description: $('#createPromiseModalDescriptionField').val(),
+                            dueDate: $('#createPromiseModalDueDate').text()
+                        }, function() {
+                            $('#createPromiseModalCloseButton').click();
+                            refreshPromiseList();
+                        }, function(error) {
+                            console.error(error);
+                        });
+                    });
+
+                    $('#createPromiseModalCloseButton').click(function() {
+                        $('#createPromiseModalDescriptionField').val('');
+                        $('#createPromiseModalDueDate').text('');
+                    });
+
+                    // TODO: Candidate for removal
+                    /*
+                    $(function () {
+                        $('#calendar').datetimepicker({
+                            inline: true
+                        });
+                    });
+                    */
+
+                    refreshPromiseList();
+                });
+
             });
         </script>
     </head>

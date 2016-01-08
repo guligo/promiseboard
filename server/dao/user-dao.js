@@ -3,7 +3,7 @@ define(['pg'], function(pg) {
     const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
 
     var _init = function(callback) {
-        console.log('Initializing user DAO, database connection URL = [' + DATABASE_URL + ']');
+        console.log('Initializing user DAO, database connection URL = [%s]', DATABASE_URL);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -67,8 +67,6 @@ define(['pg'], function(pg) {
                 });
         });
     }
-
-    console.log('Returning something in user DAO');
 
     return {
         init: function(callback) {
