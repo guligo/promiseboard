@@ -15,6 +15,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                         username VARCHAR(30) NOT NULL REFERENCES users (username), \
                         description TEXT NOT NULL, \
                         due_date TIMESTAMP NOT NULL, \
+                        status_change_date TIMESTAMP, \
                         status INTEGER NOT NULL, \
                         attachment TEXT \
                     );')
@@ -31,9 +32,21 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
 
     var _rowToPromise = function(row) {
         var promise = row;
-        promise.dueDate = new Date(promise.due_date);
+
+        if (promise.due_date) {
+            promise.dueDate = new Date(promise.due_date);
+        } else {
+            promise.dueDate = null;
+        }
+
+        if (promise.status_change_date) {
+            promise.statusChangeDate = new Date(promise.status_change_date);
+        } else {
+            promise.statusChangeDate = null;
+        }
 
         delete promise.due_date;
+        delete promise.status_change_date;
         return promise;
     }
 
@@ -65,9 +78,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
 
             client
                 .query('UPDATE promises \
-                    SET status = $2 \
+                    SET status = $2, status_change_date = $3 \
                     WHERE id = $1;',
-                    [id, status])
+                    [id, status, new Date()])
                 .on('end', function(result) {
                     if (callback) {
                         callback();

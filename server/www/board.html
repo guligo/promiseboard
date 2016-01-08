@@ -47,7 +47,6 @@
                             promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
                             promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
                         }
-                        promiseElement.find('.pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
 
                         $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
@@ -106,14 +105,19 @@
                             });
 
                             $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                            $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                         } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                             $('#promise' + promise.id + ' .pb-status-completed').hide();
                             $('#promise' + promise.id + ' .pb-status-failed').hide();
+
                             $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                            $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                         } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                             $('#promise' + promise.id + ' .pb-status-completed').hide();
                             $('#promise' + promise.id + ' .pb-status-failed').hide();
+
                             $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                            $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                         }
 
                         $('#promise' + promise.id + ' .pb-status-removed').click(function() {
