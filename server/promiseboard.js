@@ -43,6 +43,10 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         res.sendFile(__dirname + '/www/board.html');
     });
 
+    app.get('/settings.html', checkAuthSync, function(req, res) {
+        res.sendFile(__dirname + '/www/settings.html');
+    });
+
     app.use(express.static(__dirname + '/www'));
 
     function checkAuthAsync(req, res, next) {

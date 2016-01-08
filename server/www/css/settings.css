@@ -1,0 +1,7 @@
+body {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-image: url('../img/city.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}

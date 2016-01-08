@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Promiseboard</title>
+        <title>Promiseboard | Board</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Changing the way we make and keep our promises!" />
@@ -31,6 +31,10 @@
                         userController.logOut(function() {
                             window.location.replace('index.html');
                         });
+                    });
+
+                    $('#settingsLink').click(function() {
+                        window.location.replace('settings.html');
                     });
 
                     var renderPromise = function(promise) {
@@ -241,11 +245,9 @@
                                 Welcome, <span id="username"><!-- placeholder --></span>!<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <!--
                                 <li>
-                                    <a href="#">Settings</a>
+                                    <a id="settingsLink" href="#">Settings</a>
                                 </li>
-                                -->
                                 <li>
                                     <a id="logoutLink" href="#">Logout</a>
                                 </li>
