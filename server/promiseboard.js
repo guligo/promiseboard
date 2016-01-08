@@ -8,6 +8,10 @@ requirejs.config({
 requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao'],
     function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao) {
 
+    userDao.init(function() {
+        promiseDao.init();
+    })
+
     var app = express();
     app.use(bodyParser());
     app.use(bodyParser.json());
@@ -53,19 +57,22 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         try {
             var submittedUser = req.body;
             userDao.getUserByUsername(submittedUser.username, function(actualUser) {
-                if (actualUser === undefined) {
-                    throw commonUtils.createException('User does not exist');
-                }
-                if (submittedUser.password !== actualUser.password) {
-                    throw commonUtils.createException('Wrong password');
-                }
+                try {
+                    if (actualUser === undefined) {
+                        throw commonUtils.createException('User does not exist');
+                    }
+                    if (submittedUser.password !== actualUser.password) {
+                        throw commonUtils.createException('Wrong password');
+                    }
 
-                req.session.username = actualUser.username;
-                res.sendStatus(200);
+                    req.session.username = actualUser.username;
+                    res.sendStatus(200);
+                } catch (e) {
+                    commonUtils.handleException(e, res);
+                }
             });
         } catch (e) {
-            console.error(e);
-            res.sendStatus(500);
+            commonUtils.handleException(e, res);
         }
     });
 
