@@ -13,7 +13,8 @@
         "express-session": ">=1.12.1",
         "serve-favicon": ">=2.3.0",
         "connect-multiparty": ">=2.0.0",
-        "pg": ">=4.4.3"
+        "pg": ">=4.4.3",
+        "requirejs": ">=2.1.22"
     },
     "engines": {
         "node": "0.12.7"
