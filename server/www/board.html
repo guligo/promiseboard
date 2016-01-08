@@ -138,12 +138,16 @@
                         });
                     }
 
+                    var selectedDate;
+
                     $('#createPromiseModalDueDateToday').click(function() {
                         var endOfToday = new Date();
                         endOfToday.setHours(23);
                         endOfToday.setMinutes(59);
                         endOfToday.setSeconds(59);
                         endOfToday.setMilliseconds(999);
+
+                        selectedDate = endOfToday;
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfToday));
                     });
 
@@ -157,6 +161,7 @@
                         startOfThisWeek.setMilliseconds(0);
 
                         var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
+                        selectedDate = endOfThisWeek;
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisWeek));
                     });
 
@@ -170,6 +175,7 @@
                         startOfNextMonth.setMilliseconds(0);
 
                         var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
+                        selectedDate = endOfThisMonth;
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisMonth));
                     });
 
@@ -184,13 +190,14 @@
                         startOfNextYear.setMilliseconds(0);
 
                         var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
+                        selectedDate = endOfThisYear;
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisYear));
                     });
 
                     $('#createPromiseModalCreateButton').click(function() {
                         promiseController.createPromise({
                             description: $('#createPromiseModalDescriptionField').val(),
-                            dueDate: $('#createPromiseModalDueDate').text()
+                            dueDate: selectedDate
                         }, function() {
                             $('#createPromiseModalCloseButton').click();
                             refreshPromiseList();
