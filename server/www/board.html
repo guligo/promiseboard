@@ -74,7 +74,7 @@
                                         var formData = new FormData();
                                         formData.append('file', $('#promiseCompletionModalAttachment')[0].files[0]);
 
-                                        promiseController.createPromiseAttachment({
+                                        promiseController.updatePromiseAttachment({
                                                 id: promise.id
                                             },
                                             formData, function() {

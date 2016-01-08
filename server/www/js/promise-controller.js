@@ -18,23 +18,6 @@ define(function() {
         });
     };
 
-    var _createPromiseAttachment = function(data, formData, onSuccess) {
-        $.ajax({
-            url: '/promises/' + data.id + '/attachment',
-            method: 'post',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function() {
-                onSuccess();
-            },
-            error: function(error) {
-                console.error(error);
-            }
-        });
-    };
-
     var _getPromises = function(onSuccess) {
         $.ajax({
             url: '/promises',
@@ -65,18 +48,35 @@ define(function() {
         });
     };
 
+    var _updatePromiseAttachment = function(data, formData, onSuccess) {
+        $.ajax({
+            url: '/promises/' + data.id + '/attachment',
+            method: 'post',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function() {
+                onSuccess();
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    };
+
     return {
         createPromise: function(data, onSuccess, onError) {
             _createPromise(data, onSuccess, onError);
-        },
-        createPromiseAttachment: function(data, formData, onSuccess) {
-            _createPromiseAttachment(data, formData, onSuccess);
         },
         getPromises: function(onSuccess) {
             _getPromises(onSuccess);
         },
         updatePromiseStatus: function(data, onSuccess, onError) {
             _updatePromiseStatus(data, onSuccess, onError);
+        },
+        updatePromiseAttachment: function(data, formData, onSuccess) {
+            _updatePromiseAttachment(data, formData, onSuccess);
         }
     };
 

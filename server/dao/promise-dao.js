@@ -49,26 +49,6 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         });
     }
 
-    var _createPromiseAttachment = function(id, attachment, callback) {
-        console.log('Creating attachment = [%s] for promise with id = [%s]', attachment, id);
-
-        pg.connect(DATABASE_URL, function(err, client) {
-            if (err) throw err;
-
-            client
-                .query('UPDATE promises \
-                    SET attachment = $2 \
-                    WHERE id = $1;',
-                    [id, attachment])
-                .on('end', function(result) {
-                    if (callback) {
-                        callback();
-                    }
-                    client.end();
-                });
-        });
-    }
-
     var _updatePromiseStatus = function(id, status, callback) {
         console.log('Updating status of promise with id = [%s] to status = [%s]', id, status);
 
@@ -88,6 +68,26 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                 });
         });
     };
+
+    var _updatePromiseAttachment = function(id, attachment, callback) {
+        console.log('Updating attachment of promise with id = [%s] to attachment = [%s]', id, attachment);
+
+        pg.connect(DATABASE_URL, function(err, client) {
+            if (err) throw err;
+
+            client
+                .query('UPDATE promises \
+                    SET attachment = $2 \
+                    WHERE id = $1;',
+                    [id, attachment])
+                .on('end', function(result) {
+                    if (callback) {
+                        callback();
+                    }
+                    client.end();
+                });
+        });
+    }
 
     var _getPromiseById = function(id, callback) {
         console.log('Getting promise with id = [%s]', id);
@@ -148,8 +148,8 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         updatePromiseStatus: function(id, status, callback) {
             _updatePromiseStatus(Number(id), Number(status), callback);
         },
-        createPromiseAttachment: function(id, attachment, callback) {
-            _createPromiseAttachment(Number(id), attachment, callback);
+        updatePromiseAttachment: function(id, attachment, callback) {
+            _updatePromiseAttachment(Number(id), attachment, callback);
         },
         getPromiseById: function(id, callback) {
             return _getPromiseById(Number(id), callback);

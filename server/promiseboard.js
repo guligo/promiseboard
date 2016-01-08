@@ -152,7 +152,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     var multipartMiddleware = multipart();
     app.post('/promises/:id/attachment', multipartMiddleware, function(req, res) {
-        var promise = promiseDao.createPromiseAttachment(req.params.id, req.files['file'].path, function() {
+        var promise = promiseDao.updatePromiseAttachment(req.params.id, req.files['file'].path, function() {
             res.sendStatus(200);
         });
     });
