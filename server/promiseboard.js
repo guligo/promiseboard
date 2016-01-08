@@ -123,22 +123,16 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         try {
             var submittedPromise = req.body;
 
-            if (submittedPromise.id !== undefined) {
-                promiseDao.updatePromiseStatus(submittedPromise.id, submittedPromise.status, function() {
-                    res.sendStatus(200);
-                });
-            } else {
-                if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
-                    throw commonUtils.createException('Description empty');
-                }
-                if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-                    throw commonUtils.createException('Due date empty');
-                }
-
-                promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate, function() {
-                    res.sendStatus(200);
-                });
+            if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
+                throw commonUtils.createException('Description empty');
             }
+            if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
+                throw commonUtils.createException('Due date empty');
+            }
+
+            promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate, function() {
+                res.sendStatus(200);
+            });
         } catch (e) {
             commonUtils.handleException(e, res);
         }
@@ -147,6 +141,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
     app.get('/promises', checkAuthAsync, function(req, res) {
         var promises = promiseDao.getPromisesByUsername(req.session.username, function(promises) {
             res.end(JSON.stringify(promises));
+        });
+    });
+
+    app.post('/promises/:id/status', checkAuthAsync, function(req, res) {
+        var promise = promiseDao.updatePromiseStatus(req.params.id, req.body.status, function() {
+            res.sendStatus(200);
         });
     });
 

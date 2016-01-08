@@ -33,10 +33,9 @@ define(function() {
 
     var _updatePromiseStatus = function(data, onSuccess, onError) {
         $.ajax({
-            url: '/promises',
+            url: '/promises/' + data.id + '/status',
             method: 'post',
             data: {
-                id: data.id,
                 status: data.status
             },
             success: function() {
