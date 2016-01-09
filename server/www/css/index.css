@@ -40,6 +40,10 @@ body {
         margin-top: 15px;
     }
 
+    .pb-banner .jumbotron h2 {
+        font-size: 25px;
+    }
+
     .pb-banner .jumbotron p {
         font-size: 14px;
     }
