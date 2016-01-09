@@ -112,6 +112,10 @@ a:hover {
     .pb-brand-abbr {
         display: block;
     }
+
+    .pb-brand-score {
+        margin-left: -15px;
+    }
 }
 
 .pb-add-btn {
