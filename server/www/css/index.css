@@ -10,18 +10,16 @@ body {
     background-repeat: no-repeat;
 }
 
-@media only screen and (max-width: 500px) {
-    body {
-        background-size: auto 100%;
-    }
-}
-
 .pb-jumbotron {
     margin: auto;
 }
 
 .pb-banner {
-    margin-top: 150px;
+    margin-top: 100px;
+}
+
+.pb-warning {
+    margin-top: 15px;
 }
 
 .pb-banner-btn-group {
@@ -31,4 +29,14 @@ body {
 
 .pb-modal-dialog {
     max-width: 350px;
+}
+
+@media only screen and (max-width: 500px) {
+    body {
+        background-size: auto 100%;
+    }
+
+    .pb-banner {
+        margin-top: 15px;
+    }
 }
