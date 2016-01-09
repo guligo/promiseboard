@@ -148,6 +148,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         });
     });
 
+    app.get('/promises/score', checkAuthAsync, function(req, res) {
+        var promises = promiseDao.getScore(req.session.username, function(promises) {
+            res.end(JSON.stringify(promises));
+        });
+    });
+
     app.post('/promises/:id/status', checkAuthAsync, function(req, res) {
         var promise = promiseDao.updatePromiseStatus(req.params.id, req.body.status, function() {
             res.sendStatus(200);

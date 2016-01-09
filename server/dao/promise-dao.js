@@ -14,6 +14,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                         id SERIAL PRIMARY KEY, \
                         username VARCHAR(30) NOT NULL REFERENCES users (username), \
                         description TEXT NOT NULL, \
+                        creation_date TIMESTAMP NOT NULL, \
                         due_date TIMESTAMP NOT NULL, \
                         status_change_date TIMESTAMP, \
                         status INTEGER NOT NULL, \
@@ -33,18 +34,11 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
     var _rowToPromise = function(row) {
         var promise = row;
 
-        if (promise.due_date) {
-            promise.dueDate = new Date(promise.due_date);
-        } else {
-            promise.dueDate = null;
-        }
+        promise.creationDate = new Date(promise.creation_date);
+        promise.dueDate = new Date(promise.due_date);
+        promise.statusChangeDate = new Date(promise.status_change_date);
 
-        if (promise.status_change_date) {
-            promise.statusChangeDate = new Date(promise.status_change_date);
-        } else {
-            promise.statusChangeDate = null;
-        }
-
+        delete promise.creation_date;
         delete promise.due_date;
         delete promise.status_change_date;
         return promise;
@@ -58,9 +52,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
 
             client
                 .query('INSERT INTO \
-                    promises (username, description, due_date, status) \
-                    VALUES ($1, $2, $3, $4);',
-                    [username, description, dueDate, constants.PROMISE_COMMITED])
+                    promises (username, description, creation_date, due_date, status, status_change_date) \
+                    VALUES ($1, $2, $3, $4, $5, $3);',
+                    [username, description, new Date(), dueDate, constants.PROMISE_COMMITED])
                 .on('end', function(result) {
                     if (callback) {
                         callback();
@@ -145,7 +139,8 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
             client
                 .query('SELECT * \
                     FROM promises \
-                    WHERE username = $1;',
+                    WHERE username = $1 \
+                    ORDER BY status_change_date ASC;',
                     [username])
                 .on('row', function(row) {
                     resultingPromises.push(_rowToPromise(row));
@@ -157,6 +152,37 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     client.end();
                 });
         });
+    }
+
+    var _getScore = function(username, callback) {
+        console.log('Calculating score for username = [%s]', username);
+
+        _getPromisesByUsername(username, function(promises) {
+            var promisesCompleted = 0;
+            var promisesFailed = 0;
+            var points = 0;
+            promises.forEach(function(promise) {
+                if (promise.status === constants.PROMISE_COMPLETED) {
+                    promisesCompleted++;
+                    if (points < 2) {
+                        points++;
+                    }
+                } else if (promise.status === constants.PROMISE_FAILED) {
+                    promisesFailed--;
+                    if (points > -2) {
+                        points--;
+                    }
+                }
+            });
+
+            if (callback) {
+                callback({
+                    promisesCompleted: promisesCompleted,
+                    promisesFailed: promisesFailed,
+                    points: points
+                });
+            }
+        })
     }
 
     return {
@@ -177,6 +203,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         },
         getPromisesByUsername: function(username, callback) {
             return _getPromisesByUsername(username, callback);
+        },
+        getScore: function(username, callback) {
+            return _getScore(username, callback);
         }
     };
 

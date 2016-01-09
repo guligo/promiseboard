@@ -99,6 +99,11 @@ a:hover {
     display: none;
 }
 
+.pb-brand-score {
+    height: 50px;
+    padding: 0px;
+}
+
 @media only screen and (max-device-width: 480px) {
     .pb-brand {
         display: none;

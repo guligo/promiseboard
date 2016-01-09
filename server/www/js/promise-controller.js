@@ -31,6 +31,19 @@ define(function() {
         });
     };
 
+    var _getScore = function(onSuccess) {
+        $.ajax({
+            url: '/promises/score',
+            method: 'get',
+            success: function(score) {
+                onSuccess(JSON.parse(score));
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    };
+
     var _updatePromiseStatus = function(data, onSuccess, onError) {
         $.ajax({
             url: '/promises/' + data.id + '/status',
@@ -70,6 +83,9 @@ define(function() {
         },
         getPromises: function(onSuccess) {
             _getPromises(onSuccess);
+        },
+        getScore: function(onSuccess) {
+            _getScore(onSuccess);
         },
         updatePromiseStatus: function(data, onSuccess, onError) {
             _updatePromiseStatus(data, onSuccess, onError);
