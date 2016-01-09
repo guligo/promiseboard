@@ -86,12 +86,27 @@ a:hover {
     margin-bottom: 0px;
 }
 
-.pb-brand {
+.pb-brand, .pb-brand-abbr {
     text-align: center;
     font-family: 'AlexBrushRegular';
     font-weight: normal;
     font-style: normal;
     font-size: 40px;
+    display: block;
+}
+
+.pb-brand-abbr {
+    display: none;
+}
+
+@media only screen and (max-device-width: 480px) {
+    .pb-brand {
+        display: none;
+    }
+
+    .pb-brand-abbr {
+        display: block;
+    }
 }
 
 .pb-add-btn {
