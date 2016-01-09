@@ -140,8 +140,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                 .query('SELECT * \
                     FROM promises \
                     WHERE username = $1 \
+                    AND status != $2 \
                     ORDER BY status_change_date ASC;',
-                    [username])
+                    [username, constants.PROMISE_DELETED])
                 .on('row', function(row) {
                     resultingPromises.push(_rowToPromise(row));
                 })
@@ -160,16 +161,16 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         _getPromisesByUsername(username, function(promises) {
             var promisesCompleted = 0;
             var promisesFailed = 0;
-            var points = 0;
+            var points = constants.POINTS_NEUTRAL;
             promises.forEach(function(promise) {
                 if (promise.status === constants.PROMISE_COMPLETED) {
                     promisesCompleted++;
-                    if (points < 2) {
+                    if (points < constants.POINTS_EXCELLENT) {
                         points++;
                     }
                 } else if (promise.status === constants.PROMISE_FAILED) {
                     promisesFailed--;
-                    if (points > -2) {
+                    if (points > constants.POINTS_TERRIBLE) {
                         points--;
                     }
                 }

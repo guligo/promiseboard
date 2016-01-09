@@ -138,20 +138,20 @@
                                     }
                                 });
                             } else {
-                                $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit your first promise!</span></div>');
+                                $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit some promise or resolution!</span></div>');
                             }
                         });
 
                         promiseController.getScore(function(score) {
-                            if (score.ponts === -2) {
+                            if (score.points === constants.POINTS_TERRIBLE) {
                                 $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-lightning.svg');
-                            } else if (score.points === -1) {
+                            } else if (score.points === constants.POINTS_BAD) {
                                 $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-drizzle.svg');
-                            } else if (score.points === 0) {
+                            } else if (score.points === constants.POINTS_NEUTRAL) {
                                 $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud.svg');
-                            } else if (score.points === 1) {
+                            } else if (score.points === constants.POINTS_GOOD) {
                                 $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-sun.svg');
-                            } else if (score.points === 2) {
+                            } else if (score.points === constants.POINTS_EXCELLENT) {
                                 $('#score').attr('src', '/css/adam-whitcroft-climacons/sun.svg');
                             }
                         });
@@ -299,7 +299,7 @@
                 </div>
                 <div class="pb-promise-attachment">
                     <label class="pb-promise-attachment-label">
-                        I did it! Here's the proof:
+                        Here's the proof:
                     </label>
                     <div class="pb-promise-attachment-content">
                         <!-- placeholder -->
