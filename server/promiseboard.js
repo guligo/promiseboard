@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao'],
-    function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao', './services/instagram-service'],
+    function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao, instagramService) {
 
     userDao.init(function() {
         promiseDao.init();
@@ -44,6 +44,9 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
     });
 
     app.get('/settings.html', checkAuthSync, function(req, res) {
+        if (req.query.code) {
+            instagramService.authenticate(req.query.code);
+        }
         res.sendFile(__dirname + '/www/settings.html');
     });
 
