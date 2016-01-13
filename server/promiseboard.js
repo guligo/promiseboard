@@ -5,12 +5,14 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao', './services/instagram-service'],
-    function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao, instagramService) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service'],
+    function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao, userInstagramProfileDao, instagramService) {
 
     userDao.init(function() {
-        promiseDao.init();
-    })
+        promiseDao.init(function() {
+            userInstagramProfileDao.init();
+        });
+    });
 
     var app = express();
     app.use(bodyParser());
@@ -45,7 +47,14 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/settings.html', checkAuthSync, function(req, res) {
         if (req.query.code) {
-            instagramService.authenticate(req.query.code);
+            instagramService.authenticate(req.query.code, function(authenticationResponse) {
+                userInstagramProfileDao.createProfile(
+                    'guligo',
+                    authenticationResponse.user.username,
+                    authenticationResponse.user.id,
+                    authenticationResponse.access_token
+                );
+            });
         }
         res.sendFile(__dirname + '/www/settings.html');
     });
@@ -124,6 +133,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         } catch (e) {
             commonUtils.handleException(e, res);
         }
+    });
+
+    app.get('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
+        userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+            res.end(JSON.stringify(userInstagramProfile));
+        });
     });
 
     app.post('/promises', checkAuthAsync, function(req, res) {
