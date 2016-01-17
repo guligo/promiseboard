@@ -8,6 +8,8 @@
 
         <link rel="icon" href="img/icon.png" type="image/png" />
         <link rel="stylesheet" href="css/bootstrap-3.3.6/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="css/bootstrap-social-4.11.0/bootstrap-social.css" />
         <link rel="stylesheet" href="css/settings.css" />
 
         <script src="js/jquery-1.11.3/jquery.min.js"></script>
@@ -17,11 +19,14 @@
         <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="https://api.instagram.com/oauth/authorize/?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=http://localhost:5000/settings.html&response_type=code">Instagram</a>
+                    <a class="btn btn-block btn-social btn-instagram pb-social-button" href="https://api.instagram.com/oauth/authorize/?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=http://localhost:5000/settings.html&response_type=code">
+                        <span class="fa fa-instagram"></span> Connect with Instagram account
+                    </a>
+                    <a class="btn btn-block btn-social btn-facebook pb-social-button" href="#">
+                        <span class="fa fa-facebook"></span> Connect with Facebook account
+                    </a>
                     <br />
-                    <a href="#">Facebook</a>
-                    <br />
-                    <a href="board.html">Back</a>
+                    <a href="board.html" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

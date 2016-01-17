@@ -5,3 +5,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+.pb-social-button {
+    max-width: 275px;
+}
