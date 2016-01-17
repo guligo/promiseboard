@@ -48,12 +48,14 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
     app.get('/settings.html', checkAuthSync, function(req, res) {
         if (req.query.code) {
             instagramService.authenticate(req.query.code, function(authenticationResponse) {
-                userInstagramProfileDao.createProfile(
-                    'guligo',
-                    authenticationResponse.user.username,
-                    authenticationResponse.user.id,
-                    authenticationResponse.access_token
-                );
+                userInstagramProfileDao.deleteProfile('guligo', function() {
+                    userInstagramProfileDao.createProfile(
+                        'guligo',
+                        authenticationResponse.user.username,
+                        authenticationResponse.user.id,
+                        authenticationResponse.access_token
+                    );
+                });
             });
         }
         res.sendFile(__dirname + '/www/settings.html');
