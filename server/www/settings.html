@@ -50,11 +50,7 @@
 
                 var _getInstagramProfile = function() {
                     userController.getMyInstagramProfile(function(userInstagramProfile) {
-                        if (userInstagramProfile !== undefined) {
-                            _setInstagramProfileConnected(true);
-                        } else {
-                            _setInstagramProfileConnected(false);
-                        }
+                        _setInstagramProfileConnected(userInstagramProfile !== undefined);
                     });
                 };
 
@@ -69,9 +65,16 @@
         <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <p>
+                        Connect Promiseboard with your Instagram profile in order to use pictures and hashtags for commiting and completing your promises.
+                    </p>
                     <a id="socialBtnInstagram" class="btn btn-block btn-social btn-instagram pb-social-button pb-social-button-disconnected" href="#">
                         <span class="fa fa-instagram"></span> <span id="socialBtnInstagramText"><!-- placeholder --></span>
                     </a>
+                    <br />
+                    <p>
+                        Connect Promiseboard with your Facebook profile in order to invite friends, share your promises and "inflate" them by collecting likes.
+                    </p>
                     <a id="socialBtnFacebook" class="btn btn-block btn-social btn-facebook pb-social-button pb-social-button-disconnected" href="#">
                         <span class="fa fa-facebook"></span> Connect with Facebook account
                     </a>

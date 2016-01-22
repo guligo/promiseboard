@@ -53,12 +53,16 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
                         'guligo',
                         authenticationResponse.user.username,
                         authenticationResponse.user.id,
-                        authenticationResponse.access_token
+                        authenticationResponse.access_token,
+                        function() {
+                            res.sendFile(__dirname + '/www/settings.html');
+                        }
                     );
                 });
             });
+        } else {
+            res.sendFile(__dirname + '/www/settings.html');
         }
-        res.sendFile(__dirname + '/www/settings.html');
     });
 
     app.use(express.static(__dirname + '/www'));
