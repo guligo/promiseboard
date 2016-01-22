@@ -7,5 +7,9 @@ body {
 }
 
 .pb-social-button {
-    max-width: 275px;
+    max-width: 300px;
+}
+
+.pb-social-button-disconnected {
+    background-color: #aaaaaa;
 }

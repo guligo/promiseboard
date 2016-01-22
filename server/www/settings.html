@@ -14,15 +14,65 @@
 
         <script src="js/jquery-1.11.3/jquery.min.js"></script>
         <script src="js/bootstrap-3.3.6/bootstrap.min.js"></script>
+        <script src="js/require-2.1.22/require.js"></script>
+        <script>
+            require.config({
+                baseUrl: 'js'
+            });
+
+            require(['user-controller'], function(userController) {
+
+                var _setInstagramProfileConnected = function(flag) {
+                    var socialBtn = $('#socialBtnInstagram');
+                    var socialBtnText = $('#socialBtnInstagramText');
+
+                    socialBtn.removeClass('pb-social-button-disconnected');
+                    if (flag === true) {
+                        socialBtn.off('click');
+                        socialBtn.click(function() {
+                            userController.deleteMyInstagramProfile(function() {
+                                _getInstagramProfile();
+                            });
+                        });
+                        socialBtnText.text('Disconnect from Instagram account');
+                    } else {
+                        socialBtn.off('click');
+                        socialBtn.click(function() {
+                            window.location.replace(
+                                'https://api.instagram.com/oauth/authorize/' +
+                                '?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=http://localhost:5000/settings.html&response_type=code'
+                            );
+                        });
+                        socialBtn.addClass('pb-social-button-disconnected');
+                        socialBtnText.text('Connect with Instagram account');
+                    }
+                };
+
+                var _getInstagramProfile = function() {
+                    userController.getMyInstagramProfile(function(userInstagramProfile) {
+                        if (userInstagramProfile !== undefined) {
+                            _setInstagramProfileConnected(true);
+                        } else {
+                            _setInstagramProfileConnected(false);
+                        }
+                    });
+                };
+
+                $(document).ready(function() {
+                    _getInstagramProfile();
+                });
+
+            });
+        </script>
     </head>
     <body class="pb-body">
         <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a class="btn btn-block btn-social btn-instagram pb-social-button" href="https://api.instagram.com/oauth/authorize/?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=http://localhost:5000/settings.html&response_type=code">
-                        <span class="fa fa-instagram"></span> Connect with Instagram account
+                    <a id="socialBtnInstagram" class="btn btn-block btn-social btn-instagram pb-social-button pb-social-button-disconnected" href="#">
+                        <span class="fa fa-instagram"></span> <span id="socialBtnInstagramText"><!-- placeholder --></span>
                     </a>
-                    <a class="btn btn-block btn-social btn-facebook pb-social-button" href="#">
+                    <a id="socialBtnFacebook" class="btn btn-block btn-social btn-facebook pb-social-button pb-social-button-disconnected" href="#">
                         <span class="fa fa-facebook"></span> Connect with Facebook account
                     </a>
                     <br />

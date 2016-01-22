@@ -139,7 +139,17 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
         userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
-            res.end(JSON.stringify(userInstagramProfile));
+            if (userInstagramProfile === undefined) {
+                res.sendStatus(200);
+            } else {
+                res.end(JSON.stringify(userInstagramProfile));
+            }
+        });
+    });
+
+    app.delete('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
+        userInstagramProfileDao.deleteProfile(req.session.username, function() {
+            res.sendStatus(200);
         });
     });
 

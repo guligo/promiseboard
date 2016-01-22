@@ -61,6 +61,36 @@ define(function() {
         });
     };
 
+    var _getMyInstagramProfile = function(onSuccess, onError) {
+        $.ajax({
+            url: '/users/me/profile/instagram',
+            method: 'get',
+            success: function(userInstagramProfile) {
+                try {
+                    onSuccess(JSON.parse(userInstagramProfile));
+                } catch (e) {
+                    onSuccess();
+                }
+            },
+            error: function() {
+                onError();
+            }
+        });
+    };
+
+    var _deleteMyInstagramProfile = function(onSuccess, onError) {
+        $.ajax({
+            url: '/users/me/profile/instagram',
+            method: 'delete',
+            success: function() {
+                onSuccess();
+            },
+            error: function() {
+                onError();
+            }
+        });
+    };
+
     return {
         logIn: function(data, onSuccess, onError) {
             _logIn(data, onSuccess, onError);
@@ -73,6 +103,12 @@ define(function() {
         },
         getMe: function(onSuccess) {
             _getMe(onSuccess);
+        },
+        getMyInstagramProfile: function(onSuccess, onError) {
+            _getMyInstagramProfile(onSuccess, onError);
+        },
+        deleteMyInstagramProfile: function(onSuccess, onError) {
+            _deleteMyInstagramProfile(onSuccess, onError);
         }
     };
 
