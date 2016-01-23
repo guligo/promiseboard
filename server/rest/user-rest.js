@@ -1,5 +1,23 @@
 define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], function(constants, commonUtils, userDao) {
 
+    var _doLogin = function(submittedUser, onSuccess, onError) {
+        userDao.getUserByUsername(submittedUser.username, function(actualUser) {
+            try {
+                if (actualUser === undefined) {
+                    throw commonUtils.createException('User does not exist');
+                }
+                if (submittedUser.password !== actualUser.password) {
+                    throw commonUtils.createException('Wrong password');
+                }
+                if (onSuccess) {
+                    onSuccess();
+                }
+            } catch (e) {
+                onError(e);
+            }
+        });
+    }
+
     var _init = function(app, checkAuthAsync) {
 
         console.log('Initializing REST [%s] module', 'user');
@@ -7,20 +25,11 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
         app.post('/users/login', function(req, res) {
             try {
                 var submittedUser = req.body;
-                userDao.getUserByUsername(submittedUser.username, function(actualUser) {
-                    try {
-                        if (actualUser === undefined) {
-                            throw commonUtils.createException('User does not exist');
-                        }
-                        if (submittedUser.password !== actualUser.password) {
-                            throw commonUtils.createException('Wrong password');
-                        }
-
-                        req.session.username = actualUser.username;
-                        res.sendStatus(200);
-                    } catch (e) {
-                        commonUtils.handleException(e, res);
-                    }
+                _doLogin(submittedUser, function() {
+                    req.session.username = submittedUser.username;
+                    res.sendStatus(200);
+                }, function(e) {
+                    commonUtils.handleException(e, res);
                 });
             } catch (e) {
                 commonUtils.handleException(e, res);
@@ -56,7 +65,12 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
                     try {
                         if (user === undefined) {
                             userDao.createUser(submittedUser.username, submittedUser.password, function() {
-                                res.sendStatus(200);
+                                _doLogin(submittedUser, function() {
+                                    req.session.username = submittedUser.username;
+                                    res.sendStatus(200);
+                                }, function(e) {
+                                    commonUtils.handleException(e, res);
+                                });
                             });
                         } else {
                             throw commonUtils.createException('User already exists');

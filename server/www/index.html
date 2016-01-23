@@ -59,8 +59,7 @@
                             password: $('#registrationModalPasswordField').val(),
                             confirm: $('#registrationModalConfirmField').val()
                         }, function() {
-                            $('#registrationModalUsernameGroup').addClass('has-success');
-                            $('#registrationModalUsernameLabel').text('Registration was successful. Now try to log in!');
+                            window.location.replace('board.html');
                         }, function(text) {
                             $('#registrationModalUsernameGroup').addClass('has-error');
                             $('#registrationModalUsernameLabel').text(text);
