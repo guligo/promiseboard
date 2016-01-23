@@ -2,6 +2,9 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
     function(multipart, constants, commonUtils, promiseDao, userInstagramProfileDao, instagramService) {
 
     var _init = function(app, checkAuthAsync) {
+
+        console.log('Initializing REST [%s] module', 'promise');
+
         app.post('/promises', checkAuthAsync, function(req, res) {
             try {
                 var submittedPromise = req.body;
