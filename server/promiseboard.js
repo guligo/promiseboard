@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service', './rest/user-rest', './rest/promise-rest'],
-    function(express, bodyParser, session, favicon, constants, userDao, promiseDao, userInstagramProfileDao, instagramService, userRest, promiseRest) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service', './rest/user-rest', './rest/promise-rest', './rest/user-profile-rest'],
+    function(express, bodyParser, session, favicon, constants, userDao, promiseDao, userInstagramProfileDao, instagramService, userRest, promiseRest, userProfileRest) {
 
     var app = express();
     app.use(bodyParser());
@@ -22,12 +22,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     }));
     app.use(favicon(__dirname + '/www/img/icon.png'));
     app.set('port', (process.env.PORT || 5000));
-
-    userDao.init(function() {
-        promiseDao.init(function() {
-            userInstagramProfileDao.init();
-        });
-    });
+    app.use(express.static(__dirname + '/www'));
 
     function checkAuthSync(req, res, next) {
         if (!req.session.username) {
@@ -46,6 +41,16 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
             next();
         }
     }
+
+    userDao.init(function() {
+        promiseDao.init(function() {
+            userInstagramProfileDao.init();
+        });
+    });
+
+    userRest.init(app, checkAuthAsync);
+    promiseRest.init(app, checkAuthAsync);
+    userProfileRest.init(app, checkAuthAsync);
 
     app.get('/index.html', function(req, res) {
         delete req.session.username;
@@ -74,27 +79,6 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
         } else {
             res.sendFile(__dirname + '/www/settings.html');
         }
-    });
-
-    app.use(express.static(__dirname + '/www'));
-
-    userRest.init(app, checkAuthAsync);
-    promiseRest.init(app, checkAuthAsync);
-
-    app.get('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
-        userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
-            if (userInstagramProfile === undefined) {
-                res.sendStatus(200);
-            } else {
-                res.end(JSON.stringify(userInstagramProfile));
-            }
-        });
-    });
-
-    app.delete('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
-        userInstagramProfileDao.deleteProfile(req.session.username, function() {
-            res.sendStatus(200);
-        });
     });
 
     app.listen(app.get('port'), function() {

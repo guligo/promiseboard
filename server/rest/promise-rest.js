@@ -3,7 +3,7 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
 
     var _init = function(app, checkAuthAsync) {
 
-        console.log('Initializing REST [%s] module', 'promise');
+        console.log('Initializing REST [%s] module...', 'promise');
 
         app.post('/promises', checkAuthAsync, function(req, res) {
             try {
@@ -89,6 +89,9 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                 }
             });
         });
+
+        console.log('REST [%s] module initialized!', 'promise');
+
     }
 
     return {

@@ -20,7 +20,7 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
 
     var _init = function(app, checkAuthAsync) {
 
-        console.log('Initializing REST [%s] module', 'user');
+        console.log('Initializing REST [%s] module...', 'user');
 
         app.post('/users/login', function(req, res) {
             try {
@@ -83,6 +83,9 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
                 commonUtils.handleException(e, res);
             }
         });
+
+        console.log('REST [%s] module initialized!', 'user');
+
     }
 
     return {
