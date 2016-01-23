@@ -20,7 +20,7 @@
                 baseUrl: 'js'
             });
 
-            require(['constantz', 'user-controller', 'promise-controller', 'common-utils'], function(constants, userController, promiseController, commonUtils) {
+            require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'common-utils'], function(constants, userController, promiseController, commonUtils) {
 
                 $(document).ready(function() {
                     userController.getMe(function(user) {
