@@ -1,26 +1,31 @@
 {
-    "name":"promiseboard",
-    "version":"0.0.1",
-    "description":"",
-    "main":"promiseboard.js",
-    "scripts":{
-        "start":"node server/promiseboard.js"
-    },
-    "author":"guligo",
-    "dependencies": {
-        "express": ">=4.13.3",
-        "body-parser": ">=1.14.2",
-        "express-session": ">=1.12.1",
-        "serve-favicon": ">=2.3.0",
-        "connect-multiparty": ">=2.0.0",
-        "pg": ">=4.4.3",
-        "requirejs": ">=2.1.22"
-    },
-    "engines": {
-        "node": "0.12.7"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/heroku/node-js-getting-started"
-    }
+  "name": "promiseboard",
+  "version": "0.0.1",
+  "description": "",
+  "main": "promiseboard.js",
+  "scripts": {
+    "start": "node server/promiseboard.js",
+    "test": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec server/test/test.js"
+  },
+  "author": "guligo",
+  "dependencies": {
+    "express": ">=4.13.3",
+    "body-parser": ">=1.14.2",
+    "express-session": ">=1.12.1",
+    "serve-favicon": ">=2.3.0",
+    "connect-multiparty": ">=2.0.0",
+    "pg": ">=4.4.3",
+    "requirejs": ">=2.1.22"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4"
+  }
 }

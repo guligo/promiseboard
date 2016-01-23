@@ -17,12 +17,16 @@ define(function() {
     }
 
     var _formatDate = function(date) {
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' +
-            date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        if (date) {
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' +
+                date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        } else {
+            return '<unknown>';
+        }
     }
 
     var _isHttpUrl = function(url) {
-        return url && (url.indexOf('http') === 0 || url.indexOf('https') === 0);
+        return url != undefined && (url.indexOf('http') === 0 || url.indexOf('https') === 0);
     }
 
     return {
