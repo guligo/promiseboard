@@ -58,7 +58,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
                         authenticationResponse.user.id,
                         authenticationResponse.access_token,
                         function() {
-                            res.sendFile(__dirname + '/www/settings.html');
+                            res.redirect('/settings.html');
                         }
                     );
                 });
