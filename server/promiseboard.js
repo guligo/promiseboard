@@ -47,7 +47,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/settings.html', checkAuthSync, function(req, res) {
         if (req.query.code) {
-            instagramService.authenticate(req.query.code, function(authenticationResponse) {
+            instagramService.getAccessToken(req.query.code, function(authenticationResponse) {
                 userInstagramProfileDao.deleteProfile('guligo', function() {
                     userInstagramProfileDao.createProfile(
                         'guligo',
@@ -154,6 +154,19 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
     app.delete('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
         userInstagramProfileDao.deleteProfile(req.session.username, function() {
             res.sendStatus(200);
+        });
+    });
+
+    app.get('/users/me/profile/instagram/recent', checkAuthAsync, function(req, res) {
+        userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+            instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
+                result.data.forEach(function(recentMedia) {
+                    if (recentMedia.tags.indexOf('ipromise') > -1) {
+                        console.log(recentMedia);
+                    }
+                });
+                res.sendStatus(200);
+            });
         });
     });
 
