@@ -227,6 +227,11 @@
                         $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisYear));
                     });
 
+                    $('#createPromiseModelTagField').on('change keyup paste', function() {
+                        $('#createPromiseModelTagValue1').text($('#createPromiseModelTagField').val());
+                        $('#createPromiseModelTagValue2').text($('#createPromiseModelTagField').val());
+                    });
+
                     $('#createPromiseModalCreateButton').click(function() {
                         promiseController.createPromise({
                             description: $('#createPromiseModalDescriptionField').val(),
@@ -385,8 +390,12 @@
                                 <span id="createPromiseModelTagAddon" class="input-group-addon">#ipromise</span>
                                 <input id="createPromiseModelTagField" aria-describedby="createPromiseModelTagAddon" class="form-control" type="text" placeholder="You continue..." />
                             </div>
-                            In order to complete or fail promise via Instagram use <span class="label label-success">#ipromisexyz</span> <span class="label label-success">#completed</span> or
-                            <span class="label label-danger">#ipromisexyz</span> <span class="label label-danger">#failed</span>.
+                            In order to complete or fail promise via Instagram use
+                            <span class="label label-success">#ipromise<span id="createPromiseModelTagValue1">&nbsp;</span></span>
+                            <span class="label label-success">#completed</span>
+                            or
+                            <span class="label label-danger">#ipromise<span id="createPromiseModelTagValue2">&nbsp;</span></span>
+                            <span class="label label-danger">#failed</span>.
                         </div>
                     </div>
                     <div class="modal-footer">
