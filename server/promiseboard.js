@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/common-utils', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service'],
-    function(express, bodyParser, session, favicon, multipart, commonUtils, userDao, promiseDao, userInstagramProfileDao, instagramService) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connect-multiparty', './www/js/constantz', './www/js/common-utils', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service'],
+    function(express, bodyParser, session, favicon, multipart, constants, commonUtils, userDao, promiseDao, userInstagramProfileDao, instagramService) {
 
     userDao.init(function() {
         promiseDao.init(function() {
@@ -202,7 +202,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
                                     promise.tags.forEach(function(tag) {
                                         if (recentMedia.tags.indexOf(tag) > -1) {
                                             promise.attachment = recentMedia.images.standard_resolution.url;
-                                            promise.status = 2;
+                                            promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
                                         }
                                     });
                                 });
@@ -238,10 +238,9 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/promises/:id/attachment', function(req, res) {
         var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
-            if (promise.attachment && (promise.attachment.indexOf('http') > - 1|| promise.attachment.indexOf('https') > -1)) {
+            if (commonUtils.isHttpUrl(promise.attachment)) {
                 res.redirect(promise.attachment);
             } else {
-                console.log(promise.attachment);
                 res.sendFile(promise.attachment);
             }
         });

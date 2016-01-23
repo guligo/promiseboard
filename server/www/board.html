@@ -8,6 +8,8 @@
 
         <link rel="icon" href="img/icon.png" type="image/png" />
         <link rel="stylesheet" href="css/bootstrap-3.3.6/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="css/bootstrap-social-4.11.0/bootstrap-social.css" />
         <link rel="stylesheet" href="css/board.css" />
 
         <script src="js/jquery-1.11.3/jquery.min.js"></script>
@@ -54,7 +56,8 @@
 
                         if (Number(promise.status) === constants.PROMISE_COMMITED) {
                             $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
-                        } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
+                        } else if (Number(promise.status) === constants.PROMISE_COMPLETED
+                            || Number(promise.status) === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
                             $('#promise' + promise.id + ' .pb-promise').addClass('alert-success');
                         } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                             $('#promise' + promise.id + ' .pb-promise').addClass('alert-danger');
@@ -113,6 +116,12 @@
                             $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                             $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                            $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+                        } else if (Number(promise.status) === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
+                            $('#promise' + promise.id + ' .pb-status-completed').hide();
+                            $('#promise' + promise.id + ' .pb-status-failed').hide();
+
+                            $('#promise' + promise.id + ' .pb-promise-date-label').html('Completed via <div class="btn btn-social-icon btn-instagram"><span class="fa fa-instagram"></span></div> at:');
                             $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                         } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                             $('#promise' + promise.id + ' .pb-status-completed').hide();
