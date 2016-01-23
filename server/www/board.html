@@ -40,7 +40,11 @@
                         promiseElement.find('.pb-promise-description').text(promise.description);
                         if (promise.attachment) {
                             promiseElement.find('.pb-promise-attachment').attr('style', '');
-                            promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
+                            if (commonUtils.isHttpUrl(promise.attachment)) {
+                                promiseElement.find('.pb-promise-attachment-content').html('<img src="' + promise.attachment + '" />');
+                            } else {
+                                promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
+                            }
                         } else {
                             promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
                             promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');

@@ -21,6 +21,10 @@ define(function() {
             date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     }
 
+    var _isHttpUrl = function(url) {
+        return url && (url.indexOf('http') === 0 || url.indexOf('https') === 0);
+    }
+
     return {
         createException: function(text) {
             return _createException(text);
@@ -30,6 +34,9 @@ define(function() {
         },
         formatDate: function(date) {
             return _formatDate(date);
+        },
+        isHttpUrl: function(url) {
+            return _isHttpUrl(url);
         }
     }
 

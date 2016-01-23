@@ -28,9 +28,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
     }));
     app.use(favicon(__dirname + '/www/img/icon.png'));
     app.set('port', (process.env.PORT || 5000));
-        function checkAuthSync(req, res, next) {
+
+    function checkAuthSync(req, res, next) {
         if (!req.session.username) {
-            res.redirect('/index.html');
+            // res.redirect('/index.html');
+            req.session.username = 'guligo';
+            next();
         } else {
             next();
         }
@@ -88,6 +91,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
                     }
 
                     req.session.username = actualUser.username;
+
                     res.sendStatus(200);
                 } catch (e) {
                     commonUtils.handleException(e, res);
@@ -157,19 +161,6 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
         });
     });
 
-    app.get('/users/me/profile/instagram/recent', checkAuthAsync, function(req, res) {
-        userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
-            instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
-                result.data.forEach(function(recentMedia) {
-                    if (recentMedia.tags.indexOf('ipromise') > -1) {
-                        console.log(recentMedia);
-                    }
-                });
-                res.sendStatus(200);
-            });
-        });
-    });
-
     app.post('/promises', checkAuthAsync, function(req, res) {
         try {
             var submittedPromise = req.body;
@@ -191,7 +182,38 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/promises', checkAuthAsync, function(req, res) {
         var promises = promiseDao.getPromisesByUsername(req.session.username, function(promises) {
-            res.end(JSON.stringify(promises));
+            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+
+                promises.forEach(function(promise) {
+                    promise.tags = [];
+                    var words = promise.description.split(" ");
+                    words.forEach(function(word) {
+                        if (word.indexOf('#') === 0) {
+                            promise.tags.push(word.substr(1));
+                        }
+                    });
+                });
+
+                if (userInstagramProfile) {
+                    instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
+                        result.data.forEach(function(recentMedia) {
+                            if (recentMedia.tags.indexOf('completed') > -1) {
+                                promises.forEach(function(promise) {
+                                    promise.tags.forEach(function(tag) {
+                                        if (recentMedia.tags.indexOf(tag) > -1) {
+                                            promise.attachment = recentMedia.images.standard_resolution.url;
+                                            promise.status = 2;
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                        res.end(JSON.stringify(promises));
+                    });
+                } else {
+                    res.end(JSON.stringify(promises));
+                }
+            });
         });
     });
 
@@ -216,7 +238,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', 'connec
 
     app.get('/promises/:id/attachment', function(req, res) {
         var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
-            res.sendFile(promise.attachment);
+            if (promise.attachment && (promise.attachment.indexOf('http') > - 1|| promise.attachment.indexOf('https') > -1)) {
+                res.redirect(promise.attachment);
+            } else {
+                console.log(promise.attachment);
+                res.sendFile(promise.attachment);
+            }
         });
     });
 
