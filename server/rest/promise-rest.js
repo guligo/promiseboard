@@ -2,7 +2,6 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
     function(multipart, constants, commonUtils, promiseDao, userInstagramProfileDao, instagramService) {
 
     var _init = function(app, checkAuthAsync) {
-
         console.log('Initializing REST [%s] module...', 'promise');
 
         app.post('/promises', checkAuthAsync, function(req, res) {
@@ -16,7 +15,7 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                     throw commonUtils.createException('Due date empty');
                 }
 
-                promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.dueDate, function() {
+                promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.tag, submittedPromise.dueDate, function() {
                     res.sendStatus(200);
                 });
             } catch (e) {
@@ -91,7 +90,6 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         });
 
         console.log('REST [%s] module initialized!', 'promise');
-
     }
 
     return {

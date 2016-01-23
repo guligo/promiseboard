@@ -1,7 +1,6 @@
 define(['../dao/user-instagram-profile-dao'], function(userInstagramProfileDao) {
 
     var _init = function(app, checkAuthAsync) {
-
         console.log('Initializing REST [%s] module...', 'user-profile');
 
         app.get('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
@@ -21,7 +20,6 @@ define(['../dao/user-instagram-profile-dao'], function(userInstagramProfileDao) 
         });
 
         console.log('REST [%s] module initialized!', 'user-profile');
-
     }
 
     return {

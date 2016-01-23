@@ -19,7 +19,6 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
     }
 
     var _init = function(app, checkAuthAsync) {
-
         console.log('Initializing REST [%s] module...', 'user');
 
         app.post('/users/login', function(req, res) {
@@ -85,7 +84,6 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
         });
 
         console.log('REST [%s] module initialized!', 'user');
-
     }
 
     return {

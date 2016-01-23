@@ -7,6 +7,7 @@ define(function() {
             data: {
                 username: data.username,
                 description: data.description,
+                tag: data.tag,
                 dueDate: data.dueDate
             },
             success: function() {

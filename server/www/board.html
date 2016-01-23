@@ -230,6 +230,7 @@
                     $('#createPromiseModalCreateButton').click(function() {
                         promiseController.createPromise({
                             description: $('#createPromiseModalDescriptionField').val(),
+                            tag: $('#createPromiseModelTagField').val(),
                             dueDate: selectedDate
                         }, function() {
                             $('#createPromiseModalCloseButton').click();
@@ -381,8 +382,8 @@
                         <div class="form-group">
                             <label class="control-label" class="control-label" for="createPromiseModalDescriptionField">Tag</label>
                             <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">#ipromise</span>
-                                <input type="text" class="form-control" placeholder="You continue..." aria-describedby="basic-addon1">
+                                <span id="createPromiseModelTagAddon" class="input-group-addon">#ipromise</span>
+                                <input id="createPromiseModelTagField" aria-describedby="createPromiseModelTagAddon" class="form-control" type="text" placeholder="You continue..." />
                             </div>
                             In order to complete or fail promise via Instagram use <span class="label label-success">#ipromisexyz</span> <span class="label label-success">#completed</span> or
                             <span class="label label-danger">#ipromisexyz</span> <span class="label label-danger">#failed</span>.

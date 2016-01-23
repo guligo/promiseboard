@@ -14,6 +14,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                         id SERIAL PRIMARY KEY, \
                         username VARCHAR(30) NOT NULL REFERENCES users (username), \
                         description TEXT NOT NULL, \
+                        tag TEXT, \
                         creation_date TIMESTAMP NOT NULL, \
                         due_date TIMESTAMP NOT NULL, \
                         status_change_date TIMESTAMP, \
@@ -44,18 +45,19 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         return promise;
     }
 
-    var _createPromise = function(username, description, dueDate, callback) {
-        console.log('Creating promise for username = [%s] with description = [%s], dueData = [%s]', username, description, dueDate);
+    var _createPromise = function(username, description, tag, dueDate, callback) {
+        console.log('Creating promise for username = [%s] with description = [%s], tag = [%s], dueData = [%s]', username, description, tag, dueDate);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
             client
                 .query('INSERT INTO \
-                    promises (username, description, creation_date, due_date, status, status_change_date) \
-                    VALUES ($1, $2, $3, $4, $5, $3);',
-                    [username, description, new Date(), dueDate, constants.PROMISE_COMMITED])
+                    promises (username, description, tag, creation_date, due_date, status, status_change_date) \
+                    VALUES ($1, $2, $3, $4, $5, $6, $4);',
+                    [username, description, tag, new Date(), dueDate, constants.PROMISE_COMMITED])
                 .on('end', function(result) {
+                    console.log('!!!');
                     if (callback) {
                         callback();
                     }
@@ -190,8 +192,8 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         init: function(callback) {
             _init(callback);
         },
-        createPromise: function(username, description, dueDate, callback) {
-            _createPromise(username, description, new Date(dueDate), callback);
+        createPromise: function(username, description, tag, dueDate, callback) {
+            _createPromise(username, description, tag, new Date(dueDate), callback);
         },
         updatePromiseStatus: function(id, status, callback) {
             _updatePromiseStatus(Number(id), Number(status), callback);
