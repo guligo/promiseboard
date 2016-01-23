@@ -1,3 +1,8 @@
+Frequently used local dev commands:
+
+- npm start
+- npm test
+
 Frequently used deployment commands:
 
 - git push heroku master
