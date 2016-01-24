@@ -113,7 +113,7 @@
                                 });
                             });
 
-                            $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                            $('#promise' + promise.id + ' .pb-promise-date-label').text('Due:');
                             $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                         } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                             $('#promise' + promise.id + ' .pb-status-completed').hide();
@@ -315,7 +315,19 @@
         <div class="pb-promise-wrapper">
             <div class="pb-promise alert">
                 <div>
-                    <label>I promise...</label>
+                    <label class="pb-promise-header-left">I promise...</label>
+                    <div class="pb-promise-header-right">
+                        <a data-toggle="promiseCompletionModal" role="button" href="#" class="pb-status-completed">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </a>
+                        <a href="#" class="pb-status-failed">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        <a href="#" class="pb-status-removed">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                    <div class="pb-promise-header-clear"></div>
                     <div class="pb-promise-description">
                         <!-- placeholder -->
                     </div>
@@ -328,7 +340,7 @@
                         <!-- placeholder -->
                     </div>
                 </div>
-                <div class="pb-promise-footer pb-promise-footer-left">
+                <div class="pb-promise-footer">
                     <label class="pb-promise-date-label">
                         <!-- placeholder -->
                     </label>
@@ -336,18 +348,6 @@
                         <!-- placeholder -->
                     </span>
                 </div>
-                <div class="pb-promise-footer pb-promise-footer-right">
-                    <a data-toggle="promiseCompletionModal" role="button" href="#" class="pb-status-completed">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </a>
-                    <a href="#" class="pb-status-failed">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
-                    <a href="#" class="pb-status-removed">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </a>
-                </div>
-                <div class="pb-promise-footer-clear"></div>
                 <div class="pb-promise-tags pb-promise-tags-invisible">
                     In order to complete promise via Instagram use
                     <span class="label label-success">#promiseboard</span>

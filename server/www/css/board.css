@@ -69,15 +69,15 @@ a:hover {
     margin-top: 5px;
 }
 
-.pb-promise-footer-left {
+.pb-promise-header-left {
     float: left;
 }
 
-.pb-promise-footer-right {
+.pb-promise-header-right {
     float: right;
 }
 
-.pb-promise-footer-clear {
+.pb-promise-header-clear {
     clear: both;
 }
 
