@@ -39,6 +39,7 @@
 
                     var renderPromise = function(promise) {
                         var promiseElement = $('.pb-promise-wrapper');
+
                         promiseElement.find('.pb-promise-description').text(promise.description);
                         if (promise.attachment) {
                             promiseElement.find('.pb-promise-attachment').attr('style', '');
@@ -74,6 +75,9 @@
                         }
 
                         if (Number(promise.status) === constants.PROMISE_COMMITED) {
+                            $('#promise' + promise.id + ' .pb-promise-tags').removeClass('pb-promise-tags-invisible');
+                            $('#promise' + promise.id + ' .pb-promise-tags .pb-promise-tag').text(promise.tag);
+
                             $('#promise' + promise.id + ' .pb-status-completed').click(function() {
                                 $('#promiseCompletionModal').modal('show');
                                 $('#promiseCompletionModalOkButton').off();
@@ -344,6 +348,11 @@
                     </a>
                 </div>
                 <div class="pb-promise-footer-clear"></div>
+                <div class="pb-promise-tags pb-promise-tags-invisible">
+                    In order to complete promise via Instagram use
+                    <span class="label label-success">#promiseboard</span>
+                    <span class="label label-success">#ipromise<span class="pb-promise-tag">abc</span></span>
+                </div>
             </div>
         </div>
 
@@ -391,7 +400,7 @@
                             </div>
                             In order to complete promise via Instagram use
                             <span class="label label-success">#promiseboard</span>
-                            <span class="label label-success">#ipromise<span id="createPromiseModelTagValue">&nbsp;</span></span>.
+                            <span class="label label-success">#ipromise<span id="createPromiseModelTagValue">&nbsp;</span></span>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -159,6 +159,10 @@ a:hover {
     margin-top: 5px;
 }
 
+.pb-promise-tags-invisible {
+    display: none;
+}
+
 /* TODO: Candidate for removal */
 
 .pb-datepicker table {

@@ -33,7 +33,6 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
                             promises.forEach(function(promise) {
                                 result.data.forEach(function(recentMedia) {
-                                    console.log(recentMedia.tags);
                                     if (recentMedia.tags.indexOf(promise.tag) > -1 && recentMedia.tags.indexOf('promiseboard') > -1) {
                                         promise.attachment = recentMedia.images.standard_resolution.url;
                                         promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
