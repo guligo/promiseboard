@@ -6,7 +6,6 @@ define(function() {
         PROMISE_COMPLETED: 2,
         PROMISE_FAILED: 3,
         PROMISE_COMPLETED_VIA_INSTAGRAM: 4,
-        PROMISE_FAILED_VIA_INSTAGRAM: 5,
         POINTS_EXCELLENT: 2,
         POINTS_GOOD: 1,
         POINTS_NEUTRAL: 0,

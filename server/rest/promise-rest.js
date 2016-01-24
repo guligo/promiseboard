@@ -26,30 +26,15 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         app.get('/promises', checkAuthAsync, function(req, res) {
             var promises = promiseDao.getPromisesByUsername(req.session.username, function(promises) {
                 userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
-
-                    promises.forEach(function(promise) {
-                        promise.tags = [];
-                        var words = promise.description.split(" ");
-                        words.forEach(function(word) {
-                            if (word.indexOf('#') === 0) {
-                                promise.tags.push(word.substr(1));
-                            }
-                        });
-                    });
-
                     if (userInstagramProfile) {
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
-                            result.data.forEach(function(recentMedia) {
-                                if (recentMedia.tags.indexOf('completed') > -1) {
-                                    promises.forEach(function(promise) {
-                                        promise.tags.forEach(function(tag) {
-                                            if (recentMedia.tags.indexOf(tag) > -1) {
-                                                promise.attachment = recentMedia.images.standard_resolution.url;
-                                                promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
-                                            }
-                                        });
-                                    });
-                                }
+                            promises.forEach(function(promise) {
+                                result.data.forEach(function(recentMedia) {
+                                    if (recentMedia.tags.indexOf(promise.tag) > -1 && recentMedia.tags.indexOf('completed')) {
+                                        promise.attachment = recentMedia.images.standard_resolution.url;
+                                        promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
+                                    }
+                                });
                             });
                             res.end(JSON.stringify(promises));
                         });

@@ -57,7 +57,6 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     VALUES ($1, $2, $3, $4, $5, $6, $4);',
                     [username, description, tag, new Date(), dueDate, constants.PROMISE_COMMITED])
                 .on('end', function(result) {
-                    console.log('!!!');
                     if (callback) {
                         callback();
                     }
