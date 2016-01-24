@@ -9,13 +9,16 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                 var submittedPromise = req.body;
 
                 if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
-                    throw commonUtils.createException('Description empty');
+                    throw commonUtils.createException('Description is empty');
                 }
                 if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-                    throw commonUtils.createException('Due date empty');
+                    throw commonUtils.createException('Due date is empty');
+                }
+                if (submittedPromise.tag === undefined || submittedPromise.tag.length == 0) {
+                    throw commonUtils.createException('Tag is empty');
                 }
 
-                promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.tag, submittedPromise.dueDate, function() {
+                promiseDao.createPromise(req.session.username, submittedPromise.description, 'ipromise' + submittedPromise.tag, submittedPromise.dueDate, function() {
                     res.sendStatus(200);
                 });
             } catch (e) {
@@ -30,7 +33,7 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
                             promises.forEach(function(promise) {
                                 result.data.forEach(function(recentMedia) {
-                                    if (recentMedia.tags.indexOf(promise.tag) > -1 && recentMedia.tags.indexOf('completed')) {
+                                    if (recentMedia.tags.indexOf(promise.tag) > -1 && recentMedia.tags.indexOf('promiseboard')) {
                                         promise.attachment = recentMedia.images.standard_resolution.url;
                                         promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
                                     }

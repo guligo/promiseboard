@@ -22,7 +22,6 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     }));
     app.use(favicon(__dirname + '/www/img/icon.png'));
     app.set('port', (process.env.PORT || 5000));
-    app.use(express.static(__dirname + '/www'));
 
     function checkAuthSync(req, res, next) {
         if (!req.session.username) {
@@ -80,6 +79,8 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
             res.sendFile(__dirname + '/www/settings.html');
         }
     });
+
+    app.use(express.static(__dirname + '/www'));
 
     app.listen(app.get('port'), function() {
         console.log('Node app is running on port', app.get('port'));

@@ -20,7 +20,7 @@
                 baseUrl: 'js'
             });
 
-            require(['controllers/user-controller'], function(userController) {
+            require(['constantz', 'controllers/user-controller'], function(constants, userController) {
 
                 var _setInstagramProfileConnected = function(flag) {
                     var socialBtn = $('#socialBtnInstagram');
@@ -40,7 +40,7 @@
                         socialBtn.click(function() {
                             window.location.replace(
                                 'https://api.instagram.com/oauth/authorize/' +
-                                '?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=http://promiseboard.net/settings.html&response_type=code'
+                                '?client_id=155ca6567e7f4e88938be2c8ded2de58&redirect_uri=' + constants.INSTAGRAM_REDIRECT_URL + '&response_type=code'
                             );
                         });
                         socialBtn.addClass('pb-social-button-disconnected');

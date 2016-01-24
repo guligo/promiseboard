@@ -10,7 +10,8 @@ define(function() {
         POINTS_GOOD: 1,
         POINTS_NEUTRAL: 0,
         POINTS_BAD: -1,
-        POINTS_TERRIBLE: -2
+        POINTS_TERRIBLE: -2,
+        INSTAGRAM_REDIRECT_URL: 'http://localhost:5000/settings.html'
     }
 
 });
