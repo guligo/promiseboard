@@ -104,6 +104,11 @@ a:hover {
     padding: 0px;
 }
 
+.pb-promise-attachment-content img {
+    width: auto;
+    height: 200px;
+}
+
 @media only screen and (max-device-width: 480px) {
     .pb-brand {
         display: none;
@@ -115,6 +120,11 @@ a:hover {
 
     .pb-brand-score {
         margin-left: -15px;
+    }
+
+    .pb-promise-attachment-content img {
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -149,10 +159,6 @@ a:hover {
 
 .pb-modal-dialog {
     max-width: 450px;
-}
-
-.pb-promise-attachment-content img {
-    height: 200px;
 }
 
 .pb-promise-attachment-label {
