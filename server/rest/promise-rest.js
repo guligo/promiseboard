@@ -5,25 +5,27 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         console.log('Initializing REST [%s] module...', 'promise');
 
         app.post('/promises', checkAuthAsync, function(req, res) {
-            try {
-                var submittedPromise = req.body;
+            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+                try {
+                    var submittedPromise = req.body;
 
-                if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
-                    throw commonUtils.createException('Description is empty');
-                }
-                if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-                    throw commonUtils.createException('Due date is empty');
-                }
-                if (submittedPromise.tag === undefined || submittedPromise.tag.length == 0) {
-                    throw commonUtils.createException('Tag is empty');
-                }
+                    if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
+                        throw commonUtils.createException('Description is empty');
+                    }
+                    if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
+                        throw commonUtils.createException('Due date is empty');
+                    }
+                    if (userInstagramProfile != undefined && (submittedPromise.tag == undefined || submittedPromise.tag.length == 0)) {
+                        throw commonUtils.createException('Tag is empty');
+                    }
 
-                promiseDao.createPromise(req.session.username, submittedPromise.description, 'ipromise' + submittedPromise.tag, submittedPromise.dueDate, function() {
-                    res.sendStatus(200);
-                });
-            } catch (e) {
-                commonUtils.handleException(e, res);
-            }
+                    promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.tag ? 'ipromise' + submittedPromise.tag : undefined, submittedPromise.dueDate, function() {
+                        res.sendStatus(200);
+                    });
+                } catch (e) {
+                    commonUtils.handleException(e, res);
+                }
+            });
         });
 
         app.get('/promises', checkAuthAsync, function(req, res) {

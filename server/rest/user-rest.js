@@ -1,4 +1,5 @@
-define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], function(constants, commonUtils, userDao) {
+define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-instagram-profile-dao'],
+    function(constants, commonUtils, userDao, userInstagramProfileDao) {
 
     var _doLogin = function(submittedUser, onSuccess, onError) {
         userDao.getUserByUsername(submittedUser.username, function(actualUser) {
@@ -24,7 +25,7 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
         app.post('/users/login', function(req, res) {
             try {
                 var submittedUser = req.body;
-                _doLogin(submittedUser, function() {
+                _doLogin(submittedUser, function(userInstagramProfile) {
                     req.session.username = submittedUser.username;
                     res.sendStatus(200);
                 }, function(e) {
@@ -36,9 +37,12 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao'], fun
         });
 
         app.get('/users/me', checkAuthAsync, function(req, res) {
-            res.end(JSON.stringify({
-                username: req.session.username
-            }));
+            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+                res.end(JSON.stringify({
+                    username: req.session.username,
+                    hasInstagramProfile: (userInstagramProfile != undefined)
+                }));
+            })
         });
 
         app.post('/users/logout', checkAuthAsync, function(req, res) {

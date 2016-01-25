@@ -164,7 +164,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
             var promisesFailed = 0;
             var points = constants.POINTS_NEUTRAL;
             promises.forEach(function(promise) {
-                if (promise.status === constants.PROMISE_COMPLETED) {
+                if (promise.status === constants.PROMISE_COMPLETED || promise.status === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
                     promisesCompleted++;
                     if (points < constants.POINTS_EXCELLENT) {
                         points++;

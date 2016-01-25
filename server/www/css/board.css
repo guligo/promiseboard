@@ -169,6 +169,10 @@ a:hover {
     display: none;
 }
 
+.pb-invisible {
+    display: none;
+}
+
 /* TODO: Candidate for removal */
 
 .pb-datepicker table {
