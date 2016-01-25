@@ -29,6 +29,27 @@ define(function() {
         return url != undefined && (url.indexOf('http') === 0 || url.indexOf('https') === 0);
     }
 
+    var _calculateTimeLeft = function(dueDate) {
+        var timeLeft = dueDate.getTime() - new Date().getTime();
+
+        var millisecondsInDay = 24 * 60 * 60 * 1000;
+        var millisecondsInHour = 60 * 60 * 1000;
+        var millisecondsInMinute = 60 * 1000;
+
+        var delta = timeLeft - timeLeft % millisecondsInDay;
+        var daysLeft = delta / millisecondsInDay;
+
+        delta = timeLeft - daysLeft * millisecondsInDay;
+        delta = delta - delta % millisecondsInHour;
+        var hoursLeft = delta / millisecondsInHour;
+
+        delta = timeLeft - daysLeft * millisecondsInDay - hoursLeft * millisecondsInHour;
+        delta = delta - delta % millisecondsInMinute;
+        var minutesLeft = delta / millisecondsInMinute;
+
+        return daysLeft + ' days, ' + hoursLeft + ' hours, ' + minutesLeft + ' minutes';
+    }
+
     return {
         createException: function(text) {
             return _createException(text);
@@ -41,6 +62,9 @@ define(function() {
         },
         isHttpUrl: function(url) {
             return _isHttpUrl(url);
+        },
+        calculateTimeLeft: function(dueDate) {
+            return _calculateTimeLeft(dueDate);
         }
     }
 

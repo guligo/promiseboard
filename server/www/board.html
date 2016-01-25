@@ -117,7 +117,10 @@
                                 });
 
                                 $('#promise' + promise.id + ' .pb-promise-date-label').text('Due:');
-                                $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+                                $('#promise' + promise.id + ' .pb-promise-date').text(
+                                    commonUtils.formatDate(new Date(promise.dueDate)) + ' ' +
+                                    '(' + commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ')'
+                                );
                             } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                                 $('#promise' + promise.id + ' .pb-status-completed').hide();
                                 $('#promise' + promise.id + ' .pb-status-failed').hide();
