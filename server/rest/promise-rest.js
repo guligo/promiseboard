@@ -41,7 +41,17 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
                                     }
                                 });
                             });
-                            res.end(JSON.stringify(promises));
+
+                            promises.forEach(function(promise) {
+                                var now = new Date();
+                                if (promise.status === constants.PROMISE_COMMITED && promise.dueDate.getTime() < now.getTime()) {
+                                    promise.status = constants.PROMISE_FAILED;
+                                }
+                            });
+
+                            promiseDao.updatePromiseStatuses(promises, function() {
+                                res.end(JSON.stringify(promises));
+                            });
                         });
                     } else {
                         res.end(JSON.stringify(promises));
@@ -57,7 +67,7 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         });
 
         app.post('/promises/:id/status', checkAuthAsync, function(req, res) {
-            var promise = promiseDao.updatePromiseStatus(req.params.id, req.body.status, function() {
+            promiseDao.updatePromiseStatus(req.params.id, req.body.status, function() {
                 res.sendStatus(200);
             });
         });

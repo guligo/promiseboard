@@ -85,6 +85,27 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         });
     };
 
+    var _updatePromiseStatuses = function(promises, callback) {
+        __updatePromiseStatuses(promises, 0, function() {
+            if (callback) {
+                callback();
+            }
+        })
+    }
+
+    var __updatePromiseStatuses = function(promises, index, callback) {
+        var promise = promises[index];
+        _updatePromiseStatus(promise.id, promise.status, function() {
+            if (index < promises.length - 1) {
+                __updatePromiseStatuses(promises, index + 1, callback);
+            } else {
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    }
+
     var _updatePromiseAttachment = function(id, attachment, callback) {
         console.log('Updating attachment of promise with id = [%s] to attachment = [%s]', id, attachment);
 
@@ -196,6 +217,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         },
         updatePromiseStatus: function(id, status, callback) {
             _updatePromiseStatus(Number(id), Number(status), callback);
+        },
+        updatePromiseStatuses: function(promises, callback) {
+            _updatePromiseStatuses(promises, callback);
         },
         updatePromiseAttachment: function(id, attachment, callback) {
             _updatePromiseAttachment(Number(id), attachment, callback);
