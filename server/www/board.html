@@ -184,9 +184,10 @@
                         var selectedDate;
 
                         $('#createPromiseModal').on('shown.bs.modal', function() {
-                            $('#createPromiseModalTagField').addClass('pb-invisible');
+                            $('#createPromiseModalTagGroup').addClass('pb-invisible');
+                            console.log(user);
                             if (user.hasInstagramProfile) {
-                                $('#createPromiseModalTagField').removeClass('pb-invisible');
+                                $('#createPromiseModalTagGroup').removeClass('pb-invisible');
                             }
                         })
 
