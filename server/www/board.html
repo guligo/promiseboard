@@ -185,11 +185,10 @@
 
                         $('#createPromiseModal').on('shown.bs.modal', function() {
                             $('#createPromiseModalTagGroup').addClass('pb-invisible');
-                            console.log(user);
                             if (user.hasInstagramProfile) {
                                 $('#createPromiseModalTagGroup').removeClass('pb-invisible');
                             }
-                        })
+                        });
 
                         $('#createPromiseModalDueDateToday').click(function() {
                             var endOfToday = new Date();
@@ -246,7 +245,12 @@
                         });
 
                         $('#createPromiseModalTagField').on('change keyup paste', function() {
-                            $('#createPromiseModalTagValue').text($('#createPromiseModalTagField').val());
+                            if ($('#createPromiseModalTagField').val() && $('#createPromiseModalTagField').val() !== '') {
+                                $('#createPromiseModalTagValue').text($('#createPromiseModalTagField').val());
+                                $('#createPromiseModalTagDescription').attr('style', '');
+                            } else {
+                                $('#createPromiseModalTagDescription').attr('style', 'display: none;');
+                            }
                         });
 
                         $('#createPromiseModalCreateButton').click(function() {
@@ -262,9 +266,11 @@
                             });
                         });
 
-                        $('#createPromiseModalCloseButton').click(function() {
+                        $('#createPromiseModal').on('hidden.bs.modal', function () {
                             $('#createPromiseModalDescriptionField').val('');
                             $('#createPromiseModalDueDate').text('');
+                            $('#createPromiseModalTagField').val('');
+                            $('#createPromiseModalTagDescription').attr('style', 'display: none;');
                         });
 
                         refreshPromiseList(user);
@@ -412,9 +418,11 @@
                                 <span id="createPromiseModalTagForm" class="input-group-addon">#ipromise</span>
                                 <input id="createPromiseModalTagField" aria-describedby="createPromiseModalTagForm" class="form-control" type="text" placeholder="You continue..." />
                             </div>
-                            In order to complete promise via Instagram use
-                            <span class="label label-success">#promiseboard</span>
-                            <span class="label label-success">#ipromise<span id="createPromiseModalTagValue">&nbsp;</span></span>
+                            <div id="createPromiseModalTagDescription" style="display: none;">
+                                In order to complete promise via Instagram use
+                                <span class="label label-success">#promiseboard</span>
+                                <span class="label label-success">#ipromise<span id="createPromiseModalTagValue">&nbsp;</span></span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
