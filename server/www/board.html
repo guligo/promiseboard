@@ -55,6 +55,7 @@
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
+                            $('#promise' + promise.id + ' .pb-infdef').attr('style', 'display: none;');
                             if (Number(promise.status) === constants.PROMISE_COMMITED) {
                                 $('#promise' + promise.id + ' .pb-promise').addClass('alert-warning');
                             } else if (Number(promise.status) === constants.PROMISE_COMPLETED
@@ -75,6 +76,7 @@
                             }
 
                             if (Number(promise.status) === constants.PROMISE_COMMITED) {
+                                $('#promise' + promise.id + ' .pb-infdef').attr('style', '');
                                 $('#promise' + promise.id + ' .pb-promise-tags').addClass('pb-promise-tags-invisible');
                                 if (user.hasInstagramProfile && promise.tag) {
                                     $('#promise' + promise.id + ' .pb-promise-tags').removeClass('pb-promise-tags-invisible');
@@ -345,7 +347,15 @@
                 <div>
                     <label class="pb-promise-header-left">I promise...</label>
                     <div class="pb-promise-header-right">
-                        <a data-toggle="promiseCompletionModal" role="button" href="#" class="pb-status-completed">
+                        <span class="pb-infdef">
+                            <a href="#" class="pb-inflate">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a>
+                            <a href="#" class="pb-deflate">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </a>
+                        </span>
+                        <a href="#" class="pb-status-completed" data-toggle="promiseCompletionModal" role="button">
                             <span class="glyphicon glyphicon-ok"></span>
                         </a>
                         <a href="#" class="pb-status-failed">
