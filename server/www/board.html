@@ -2,7 +2,7 @@
     <head>
         <title>Promiseboard | Board</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Changing the way we make and keep our promises!" />
         <meta name="keywords" content="promise,resolution,board,commit,keep">
 
@@ -261,16 +261,22 @@
                             }, function() {
                                 $('#createPromiseModalCloseButton').click();
                                 refreshPromiseList(user);
-                            }, function(error) {
-                                console.error(error);
+                            }, function(text) {
+                                $('#createPromiseModalDescriptionGroup').addClass('has-error');
+                                $('#createPromiseModalDescriptionLabel').text(text);
                             });
                         });
 
-                        $('#createPromiseModal').on('hidden.bs.modal', function () {
+                        var clearCreatePromiseModal = function() {
+                            $('#createPromiseModalDescriptionGroup').removeClass('has-error');
                             $('#createPromiseModalDescriptionField').val('');
                             $('#createPromiseModalDueDate').text('');
                             $('#createPromiseModalTagField').val('');
                             $('#createPromiseModalTagDescription').attr('style', 'display: none;');
+                        }
+
+                        $('#createPromiseModal').on('hidden.bs.modal', function () {
+                            clearCreatePromiseModal();
                         });
 
                         refreshPromiseList(user);
@@ -384,8 +390,8 @@
                         <h4 class="modal-title">Your promise</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label class="control-label" class="control-label" for="createPromiseModalDescriptionField">I promise...</label>
+                        <div id="createPromiseModalDescriptionGroup" class="form-group">
+                            <label id="createPromiseModalDescriptionLabel" class="control-label" for="createPromiseModalDescriptionField">I promise...</label>
                             <textarea id="createPromiseModalDescriptionField" class="form-control" placeholder="Description"></textarea>
                         </div>
                         <div class="form-group">
