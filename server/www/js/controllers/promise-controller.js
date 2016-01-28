@@ -63,7 +63,7 @@ define(function() {
 
     var _updatePromiseAttachment = function(data, formData, onSuccess) {
         $.ajax({
-            url: '/promises/' + data.id + '/attachment',
+            url: '/attachment/' + data.id,
             method: 'post',
             data: formData,
             cache: false,

@@ -3,7 +3,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
     const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
 
     var _init = function(callback) {
-        console.log('Initializing promise DAO, database connection URL = [%s]', DATABASE_URL);
+        console.log('Initializing [%s] DAO, database connection URL = [%s]', 'promise', DATABASE_URL);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -18,8 +18,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                         creation_date TIMESTAMP NOT NULL, \
                         due_date TIMESTAMP NOT NULL, \
                         status_change_date TIMESTAMP, \
-                        status INTEGER NOT NULL, \
-                        attachment TEXT \
+                        status INTEGER NOT NULL \
                     );')
                 .on('end', function(result) {
                     console.log('Creation of [promises] table completed!');
@@ -103,26 +102,6 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     callback();
                 }
             }
-        });
-    }
-
-    var _updatePromiseAttachment = function(id, attachment, callback) {
-        console.log('Updating attachment of promise with id = [%s] to attachment = [%s]', id, attachment);
-
-        pg.connect(DATABASE_URL, function(err, client) {
-            if (err) throw err;
-
-            client
-                .query('UPDATE promises \
-                    SET attachment = $2 \
-                    WHERE id = $1;',
-                    [id, attachment])
-                .on('end', function(result) {
-                    if (callback) {
-                        callback();
-                    }
-                    client.end();
-                });
         });
     }
 
@@ -220,9 +199,6 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         },
         updatePromiseStatuses: function(promises, callback) {
             _updatePromiseStatuses(promises, callback);
-        },
-        updatePromiseAttachment: function(id, attachment, callback) {
-            _updatePromiseAttachment(Number(id), attachment, callback);
         },
         getPromiseById: function(id, callback) {
             return _getPromiseById(Number(id), callback);

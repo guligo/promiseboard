@@ -20,7 +20,8 @@
                 baseUrl: 'js'
             });
 
-            require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'common-utils'], function(constants, userController, promiseController, commonUtils) {
+            require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'common-utils'],
+                function(constants, userController, promiseController, attachmentController, commonUtils) {
 
                 $(document).ready(function() {
 
@@ -39,19 +40,17 @@
 
                         var renderPromise = function(promise, user) {
                             var promiseElement = $('.pb-promise-wrapper');
-
                             promiseElement.find('.pb-promise-description').text(promise.description);
-                            if (promise.attachment) {
-                                promiseElement.find('.pb-promise-attachment').attr('style', '');
-                                if (commonUtils.isHttpUrl(promise.attachment)) {
-                                    promiseElement.find('.pb-promise-attachment-content').html('<img src="' + promise.attachment + '" />');
+
+                            attachmentController.hasAttachment({id: promise.id}, function(result) {
+                                if (result.flag === true) {
+                                    $('#promise' + promise.id + ' .pb-promise-attachment').attr('style', '');
+                                    $('#promise' + promise.id + ' .pb-promise-attachment-content').html('<img src="attachment/' + promise.id + '/data" />');
                                 } else {
-                                    promiseElement.find('.pb-promise-attachment-content').html('<img src="promises/' + promise.id + '/attachment" />');
+                                    $('#promise' + promise.id + ' .pb-promise-attachment').attr('style', 'display: none;');
+                                    $('#promise' + promise.id + ' .pb-promise-attachment-content').html('<span>None</span>');
                                 }
-                            } else {
-                                promiseElement.find('.pb-promise-attachment').attr('style', 'display: none;');
-                                promiseElement.find('.pb-promise-attachment-content').html('<span>None</span>');
-                            }
+                            });
 
                             $('#promiseList').append(promiseElement.prop('outerHTML').replace('class="pb-promise-wrapper"', 'id="promise' + promise.id + '"'));
 
@@ -331,6 +330,17 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="panel panel-default pb-container">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default">Commited</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default">Completed</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default">Failed</button>
+                            </div>
+                        </div>
                         <div id="promiseList" class="panel-body pb-promise-list">
                             <div style="width: 100%; text-align: center; margin-bottom: 15px;">
                                 <img src="img/loader.gif" />

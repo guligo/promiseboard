@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './services/instagram-service', './rest/user-rest', './rest/promise-rest', './rest/user-profile-rest'],
-    function(express, bodyParser, session, favicon, constants, userDao, promiseDao, userInstagramProfileDao, instagramService, userRest, promiseRest, userProfileRest) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './dao/attachment-dao', './services/instagram-service', './rest/user-rest', './rest/promise-rest', './rest/user-profile-rest', './rest/attachment-rest'],
+    function(express, bodyParser, session, favicon, constants, userDao, promiseDao, userInstagramProfileDao, attachmentDao, instagramService, userRest, promiseRest, userProfileRest, attachmentRest) {
 
     var app = express();
     app.use(bodyParser());
@@ -43,13 +43,16 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
 
     userDao.init(function() {
         promiseDao.init(function() {
-            userInstagramProfileDao.init();
+            userInstagramProfileDao.init(function() {
+                attachmentDao.init();
+            });
         });
     });
 
     userRest.init(app, checkAuthAsync);
     promiseRest.init(app, checkAuthAsync);
     userProfileRest.init(app, checkAuthAsync);
+    attachmentRest.init(app, checkAuthAsync);
 
     app.get('/index.html', function(req, res) {
         delete req.session.username;
