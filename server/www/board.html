@@ -153,12 +153,36 @@
                             });
                         }
 
-                        var refreshPromiseList = function(user) {
+                        var refreshStatistics = function(promises) {
+                            var numberOfPromisesCommited = 0;
+                            var numberOfPromisesCompleted = 0;
+                            var numberOfPromisesFailed = 0;
+
+                            promises.forEach(function(promise) {
+                                var status = Number(promise.status);
+                                if (status === constants.PROMISE_COMMITED) {
+                                    numberOfPromisesCommited++;
+                                } else if (status === constants.PROMISE_COMPLETED || status === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
+                                    numberOfPromisesCompleted++;
+                                } else if (status === constants.PROMISE_FAILED) {
+                                    numberOfPromisesFailed++;
+                                }
+                            });
+
+                            $('#numberOfPromisesCommited').text(numberOfPromisesCommited);
+                            $('#numberOfPromisesCompleted').text(numberOfPromisesCompleted);
+                            $('#numberOfPromisesFailed').text(numberOfPromisesFailed);
+                        };
+
+                        var refreshPromiseList = function(user, filter) {
                             promiseController.getPromises(function(promises) {
                                 $('#promiseList').empty();
+
+                                refreshStatistics(promises);
                                 if (promises.length > 0) {
                                     promises.forEach(function(promise) {
-                                        if (Number(promise.status) !== constants.PROMISE_DELETED) {
+                                        if (Number(promise.status) !== constants.PROMISE_DELETED
+                                            && (!filter || filter && filter(Number(promise.status)))) {
                                             renderPromise(promise, user);
                                         }
                                     });
@@ -280,7 +304,28 @@
                             clearCreatePromiseModal();
                         });
 
-                        refreshPromiseList(user);
+                        $('#showPromisesCommited').click(function() {
+                            refreshPromiseList(user, function(status) {
+                                return status === constants.PROMISE_COMMITED
+                            });
+                        });
+
+                        $('#showPromisesCompleted').click(function() {
+                            refreshPromiseList(user, function(status) {
+                                return status === constants.PROMISE_COMPLETED
+                                    || status === constants.PROMISE_COMPLETED_VIA_INSTAGRAM
+                            });
+                        });
+
+                        $('#showPromisesFailed').click(function() {
+                            refreshPromiseList(user, function(status) {
+                                return status === constants.PROMISE_FAILED
+                            });
+                        });
+
+                        refreshPromiseList(user, function(status) {
+                            return status === constants.PROMISE_COMMITED
+                        });
                     });
                 });
             });
@@ -332,13 +377,22 @@
                     <div class="panel panel-default pb-container">
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default">Commited</button>
+                                <button id="showPromisesCommited" type="button" class="btn btn-default">
+                                    Commited
+                                    <span id="numberOfPromisesCommited" class="label label-default"><!-- placeholder --></span>
+                                </button>
                             </div>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default">Completed</button>
+                                <button id="showPromisesCompleted" type="button" class="btn btn-default">
+                                    Completed
+                                    <span id="numberOfPromisesCompleted" class="label label-success"><!-- placeholder --></span>
+                                </button>
                             </div>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default">Failed</button>
+                                <button id="showPromisesFailed" type="button" class="btn btn-default">
+                                    Failed
+                                    <span id="numberOfPromisesFailed" class="label label-danger"><!-- placeholder --></span>
+                                </button>
                             </div>
                         </div>
                         <div id="promiseList" class="panel-body pb-promise-list">
