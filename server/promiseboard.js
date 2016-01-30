@@ -60,16 +60,8 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     app.get('/settings.html', checkAuthSync, function(req, res) {
         if (req.query.code) {
             instagramService.getAccessToken(req.query.code, function(authenticationResponse) {
-                userInstagramProfileDao.deleteProfile('guligo', function() {
-                    userInstagramProfileDao.createProfile(
-                        'guligo',
-                        authenticationResponse.user.username,
-                        authenticationResponse.user.id,
-                        authenticationResponse.access_token,
-                        function() {
-                            res.redirect('/settings.html');
-                        }
-                    );
+                userInstagramProfileDao.recreateProfile(req.session.username, authenticationResponse, function() {
+                    res.redirect('/settings.html');
                 });
             });
         } else {

@@ -92,6 +92,18 @@ define(['pg'], function(pg) {
         });
     }
 
+    var _recreateProfile = function(username, authenticationResponse, callback) {
+        _deleteProfile(username, function() {
+            _createProfile(
+                username,
+                authenticationResponse.user.username,
+                authenticationResponse.user.id,
+                authenticationResponse.access_token,
+                callback
+            );
+        });
+    }
+
     return {
         init: function(callback) {
             _init(callback);
@@ -104,7 +116,10 @@ define(['pg'], function(pg) {
         },
         deleteProfile: function(username, callback) {
             _deleteProfile(username, callback);
+        },
+        recreateProfile: function(username, authenticationResponse, callback) {
+            _recreateProfile(username, authenticationResponse, callback);
         }
-    }
+    };
 
 });
