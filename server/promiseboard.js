@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/user-dao', './dao/promise-dao', './dao/user-instagram-profile-dao', './dao/attachment-dao', './services/instagram-service', './rest/user-rest', './rest/promise-rest', './rest/user-profile-rest', './rest/attachment-rest'],
-    function(express, bodyParser, session, favicon, constants, userDao, promiseDao, userInstagramProfileDao, attachmentDao, instagramService, userRest, promiseRest, userProfileRest, attachmentRest) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/init-dao', './dao/user-instagram-profile-dao', './services/instagram-service', './rest/init-rest'],
+    function(express, bodyParser, session, favicon, constants, initDao, userInstagramProfileDao, instagramService, initRest) {
 
     var app = express();
     app.use(bodyParser());
@@ -14,6 +14,10 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+    app.use(function(err, req, res, next) {
+        console.error(err.stack);
+        res.status(500).send('Oops, something broke!');
+    });
     app.use(session({
         secret: 'kuss',
         cookie: {
@@ -41,18 +45,8 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
         }
     }
 
-    userDao.init(function() {
-        promiseDao.init(function() {
-            userInstagramProfileDao.init(function() {
-                attachmentDao.init();
-            });
-        });
-    });
-
-    userRest.init(app, checkAuthAsync);
-    promiseRest.init(app, checkAuthAsync);
-    userProfileRest.init(app, checkAuthAsync);
-    attachmentRest.init(app, checkAuthAsync);
+    initDao.init();
+    initRest.init(app, checkAuthAsync);
 
     app.get('/index.html', function(req, res) {
         delete req.session.username;
