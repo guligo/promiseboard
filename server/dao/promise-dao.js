@@ -85,11 +85,17 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
     };
 
     var _updatePromiseStatuses = function(promises, callback) {
-        __updatePromiseStatuses(promises, 0, function() {
+        if (promises && promises.length > 0) {
+            __updatePromiseStatuses(promises, 0, function() {
+                if (callback) {
+                    callback();
+                }
+            });
+        } else {
             if (callback) {
                 callback();
             }
-        })
+        }
     }
 
     var __updatePromiseStatuses = function(promises, index, callback) {

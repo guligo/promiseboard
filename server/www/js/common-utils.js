@@ -50,6 +50,26 @@ define(function() {
         return daysLeft + ' days, ' + hoursLeft + ' hours, ' + minutesLeft + ' minutes';
     }
 
+    var _dateBefore = function(date1, date2) {
+        return date1.getTime() < date2.getTime();
+    };
+
+    var _dateBeforeOrEquals = function(date1, date2) {
+        return _dateBefore(date1, date2) || _dateEquals(date1, date2);
+    };
+
+    var _dateAfter = function(date1, date2) {
+        return date1.getTime() > date2.getTime();
+    };
+
+    var _dateAfterOrEquals = function(date1, date2) {
+        return _dateAfter(date1, date2) || _dateEquals(date1, date2);
+    };
+
+    var _dateEquals = function(date1, date2) {
+        return date1.getTime() === date2.getTime();
+    };
+
     return {
         createException: function(text) {
             return _createException(text);
@@ -65,6 +85,21 @@ define(function() {
         },
         calculateTimeLeft: function(dueDate) {
             return _calculateTimeLeft(dueDate);
+        },
+        dateBefore: function(date1, date2) {
+            return _dateBefore(date1, date2);
+        },
+        dateBeforeOrEquals: function(date1, date2) {
+            return _dateBeforeOrEquals(date1, date2);
+        },
+        dateAfter: function(date1, date2) {
+            return _dateAfter(date1, date2);
+        },
+        dateAfterOrEquals: function(date1, date2) {
+            return _dateAfterOrEquals(date1, date2);
+        },
+        dateEquals: function(date1, date2) {
+            return _dateEquals(date1, date2);
         }
     }
 

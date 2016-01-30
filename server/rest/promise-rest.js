@@ -1,5 +1,15 @@
-define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '../dao/promise-dao', '../dao/user-instagram-profile-dao', '../services/instagram-service'],
-    function(multipart, constants, commonUtils, promiseDao, userInstagramProfileDao, instagramService) {
+define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/promise-dao', '../dao/user-instagram-profile-dao', '../dao/attachment-dao', '../services/instagram-service'],
+    function(request, constants, commonUtils, promiseDao, userInstagramProfileDao, attachmentDao, instagramService) {
+
+    var _getDataFromUrl = function(url, callback) {
+        request.defaults({ encoding: null }).get(url, function (error, response, data) {
+            if (!error && response.statusCode == 200) {
+                if (callback) {
+                    callback(data);
+                }
+            }
+        });
+    }
 
     var _init = function(app, checkAuthAsync) {
         console.log('Initializing REST [%s] module...', 'promise');
@@ -29,24 +39,32 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         });
 
         app.get('/promises', checkAuthAsync, function(req, res) {
-            var promises = promiseDao.getPromisesByUsername(req.session.username, function(promises) {
+            promiseDao.getPromisesByUsername(req.session.username, function(promises) {
                 userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
                     if (userInstagramProfile) {
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
                             promises.forEach(function(promise) {
                                 result.data.forEach(function(recentMedia) {
-                                    if (recentMedia.tags.indexOf(promise.tag) > -1 && recentMedia.tags.indexOf('promiseboard') > -1) {
-                                        promise.attachment = recentMedia.images.standard_resolution.url;
+                                    var recentMediaCreationDate = new Date(Number(recentMedia.caption.created_time  * 1000));
+
+                                    if (recentMedia.tags.indexOf(promise.tag) > -1
+                                        && recentMedia.tags.indexOf('promiseboard') > -1
+                                        && commonUtils.dateBeforeOrEquals(promise.creationDate, recentMediaCreationDate)
+                                        && commonUtils.dateBeforeOrEquals(new Date(), promise.dueDate)) {
+
+                                        _getDataFromUrl(recentMedia.images.standard_resolution.url, function(data) {
+                                            attachmentDao.createAttachment({
+                                                promiseId: promise.id,
+                                                data: data
+                                            });
+                                        });
                                         promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
+                                    } else if (promise.status === constants.PROMISE_COMMITED
+                                        && commonUtils.dateAfter(new Date(), promise.dueDate)) {
+
+                                        promise.status = constants.PROMISE_FAILED;
                                     }
                                 });
-                            });
-
-                            promises.forEach(function(promise) {
-                                var now = new Date();
-                                if (promise.status === constants.PROMISE_COMMITED && promise.dueDate.getTime() < now.getTime()) {
-                                    promise.status = constants.PROMISE_FAILED;
-                                }
                             });
 
                             promiseDao.updatePromiseStatuses(promises, function() {
@@ -69,23 +87,6 @@ define(['connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '
         app.post('/promises/:id/status', checkAuthAsync, function(req, res) {
             promiseDao.updatePromiseStatus(req.params.id, req.body.status, function() {
                 res.sendStatus(200);
-            });
-        });
-
-        var multipartMiddleware = multipart();
-        app.post('/promises/:id/attachment', multipartMiddleware, function(req, res) {
-            var promise = promiseDao.updatePromiseAttachment(req.params.id, req.files['file'].path, function() {
-                res.sendStatus(200);
-            });
-        });
-
-        app.get('/promises/:id/attachment', function(req, res) {
-            var promise = promiseDao.getPromiseById(req.params.id, function(promise) {
-                if (commonUtils.isHttpUrl(promise.attachment)) {
-                    res.redirect(promise.attachment);
-                } else {
-                    res.sendFile(promise.attachment);
-                }
             });
         });
 
