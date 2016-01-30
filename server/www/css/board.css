@@ -173,16 +173,8 @@ a:hover {
     display: none;
 }
 
-/* TODO: Candidate for removal */
-
-.pb-datepicker table {
-    font-size: 14px !important;
-}
-
-.pb-datepicker .picker-switch {
-    height: 5px;
-}
-
-.pb-datepicker .picker-switch .table-condensed {
-    display: none;
+.pb-promise-list-loader {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: center;
 }

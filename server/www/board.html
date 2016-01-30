@@ -175,9 +175,10 @@
                         };
 
                         var refreshPromiseList = function(user, filter) {
+                            $('#promiseList').html('<div class="pb-promise-list-loader"><img src="img/loader.gif" /></div>');
+
                             promiseController.getPromises(function(promises) {
                                 $('#promiseList').empty();
-
                                 refreshStatistics(promises);
                                 if (promises.length > 0) {
                                     promises.forEach(function(promise) {
@@ -396,9 +397,7 @@
                             </div>
                         </div>
                         <div id="promiseList" class="panel-body pb-promise-list">
-                            <div style="width: 100%; text-align: center; margin-bottom: 15px;">
-                                <img src="img/loader.gif" />
-                            </div>
+                            <!-- placeholder -->
                         </div>
                     </div>
                 </div>
