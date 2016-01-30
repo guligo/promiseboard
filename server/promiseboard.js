@@ -29,9 +29,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
 
     function checkAuthSync(req, res, next) {
         if (!req.session.username) {
-            // res.redirect('/index.html');
-            req.session.username = 'guligo';
-            next();
+            res.redirect('/index.html');
         } else {
             next();
         }
