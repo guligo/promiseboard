@@ -56,11 +56,11 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
 
     app.get('/index.html', function(req, res) {
         delete req.session.username;
-        res.sendFile(__dirname + '/www/index.html');
+        res.sendFile(__dirname + '/www/views/index.html');
     });
 
     app.get('/board.html', checkAuthSync, function(req, res) {
-        res.sendFile(__dirname + '/www/board.html');
+        res.sendFile(__dirname + '/www/views/board.html');
     });
 
     app.get('/settings.html', checkAuthSync, function(req, res) {
@@ -79,7 +79,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
                 });
             });
         } else {
-            res.sendFile(__dirname + '/www/settings.html');
+            res.sendFile(__dirname + '/www/views/settings.html');
         }
     });
 
