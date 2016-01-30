@@ -1,31 +1,29 @@
-define(['../dao/user-instagram-profile-dao'], function(userInstagramProfileDao) {
+define(['../dao/user-profile-dao'], function(userProfileDao) {
 
     var _init = function(app, checkAuthAsync) {
-        console.log('Initializing REST [%s] module...', 'user-profile');
+        console.log('Initializing REST [%s] module', 'user-profile');
 
         app.get('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
-            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
-                if (userInstagramProfile === undefined) {
+            userProfileDao.getInstagramProfile(req.session.username, function(instagramProfile) {
+                if (instagramProfile === undefined) {
                     res.sendStatus(200);
                 } else {
-                    res.end(JSON.stringify(userInstagramProfile));
+                    res.end(JSON.stringify(instagramProfile));
                 }
             });
         });
 
         app.delete('/users/me/profile/instagram', checkAuthAsync, function(req, res) {
-            userInstagramProfileDao.deleteProfile(req.session.username, function() {
+            userProfileDao.deleteInstagramProfile(req.session.username, function() {
                 res.sendStatus(200);
             });
         });
-
-        console.log('REST [%s] module initialized!', 'user-profile');
-    }
+    };
 
     return {
         init: function(app, checkAuthAsync) {
             _init(app, checkAuthAsync);
         }
-    }
+    };
 
 });

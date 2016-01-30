@@ -1,5 +1,5 @@
-define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-instagram-profile-dao'],
-    function(crypto, constants, commonUtils, userDao, userInstagramProfileDao) {
+define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-profile-dao'],
+    function(crypto, constants, commonUtils, userDao, userProfileDao) {
 
     var _doLogin = function(submittedUser, onSuccess, onError) {
         var dto = {
@@ -24,12 +24,12 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
     };
 
     var _init = function(app, checkAuthAsync) {
-        console.log('Initializing REST [%s] module...', 'user');
+        console.log('Initializing REST [%s] module', 'user');
 
         app.post('/users/login', function(req, res) {
             try {
                 var submittedUser = req.body;
-                _doLogin(submittedUser, function(userInstagramProfile) {
+                _doLogin(submittedUser, function(instagramProfile) {
                     req.session.username = submittedUser.username;
                     res.sendStatus(200);
                 }, function(e) {
@@ -45,10 +45,10 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
                 username: req.session.username
             };
 
-            userInstagramProfileDao.getProfile(dto, function(userInstagramProfile) {
+            userProfileDao.getInstagramProfile(dto, function(instagramProfile) {
                 res.end(JSON.stringify({
                     username: req.session.username,
-                    hasInstagramProfile: (userInstagramProfile != undefined)
+                    hasInstagramProfile: (instagramProfile != undefined)
                 }));
             })
         });
@@ -103,8 +103,6 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
                 commonUtils.handleException(e, res);
             }
         });
-
-        console.log('REST [%s] module initialized!', 'user');
     };
 
     return {

@@ -2,7 +2,7 @@ define(['fs', 'connect-multiparty', '../www/js/constantz', '../www/js/common-uti
     function(fs, multipart, constants, commonUtils, attachmentDao) {
 
     var _init = function(app, checkAuthAsync) {
-        console.log('Initializing REST [%s] module...', 'attachment');
+        console.log('Initializing REST [%s] module', 'attachment');
 
         var multipartMiddleware = multipart();
         app.post('/attachment/:promiseId', multipartMiddleware, function(req, res) {
@@ -39,14 +39,12 @@ define(['fs', 'connect-multiparty', '../www/js/constantz', '../www/js/common-uti
                 res.end(attachment.data, 'binary');
             });
         });
-
-        console.log('REST [%s] module initialized!', 'user');
-    }
+    };
 
     return {
         init: function(app, checkAuthAsync) {
             _init(app, checkAuthAsync);
         }
-    }
+    };
 
 });

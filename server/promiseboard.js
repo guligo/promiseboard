@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/init-dao', './dao/user-instagram-profile-dao', './services/instagram-service', './rest/init-rest'],
-    function(express, bodyParser, session, favicon, constants, initDao, userInstagramProfileDao, instagramService, initRest) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/init-dao', './dao/user-profile-dao', './services/instagram-service', './rest/init-rest'],
+    function(express, bodyParser, session, favicon, constants, initDao, userProfileDao, instagramService, initRest) {
 
     var app = express();
     app.use(bodyParser());
@@ -63,7 +63,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     app.get('/settings.html', checkAuthSync, function(req, res) {
         if (req.query.code) {
             instagramService.getAccessToken(req.query.code, function(authenticationResponse) {
-                userInstagramProfileDao.recreateProfile(req.session.username, authenticationResponse, function() {
+                userProfileDao.recreateInstagramProfile(req.session.username, authenticationResponse, function() {
                     res.redirect('/settings.html');
                 });
             });

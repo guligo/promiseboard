@@ -1,5 +1,5 @@
-define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/promise-dao', '../dao/user-instagram-profile-dao', '../dao/attachment-dao', '../services/instagram-service'],
-    function(request, constants, commonUtils, promiseDao, userInstagramProfileDao, attachmentDao, instagramService) {
+define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/promise-dao', '../dao/user-profile-dao', '../dao/attachment-dao', '../services/instagram-service'],
+    function(request, constants, commonUtils, promiseDao, userProfileDao, attachmentDao, instagramService) {
 
     var _getDataFromUrl = function(url, callback) {
         request.defaults({ encoding: null }).get(url, function (error, response, data) {
@@ -9,13 +9,13 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                 }
             }
         });
-    }
+    };
 
     var _init = function(app, checkAuthAsync) {
-        console.log('Initializing REST [%s] module...', 'promise');
+        console.log('Initializing REST [%s] module', 'promise');
 
         app.post('/promises', checkAuthAsync, function(req, res) {
-            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+            userProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
                 try {
                     var submittedPromise = req.body;
 
@@ -40,7 +40,7 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
 
         app.get('/promises', checkAuthAsync, function(req, res) {
             promiseDao.getPromisesByUsername(req.session.username, function(promises) {
-                userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+                userProfileDao.getInstagramProfile(req.session.username, function(userInstagramProfile) {
                     if (userInstagramProfile) {
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
                             promises.forEach(function(promise) {
@@ -89,14 +89,12 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                 res.sendStatus(200);
             });
         });
-
-        console.log('REST [%s] module initialized!', 'promise');
-    }
+    };
 
     return {
         init: function(app, checkAuthAsync) {
             _init(app, checkAuthAsync);
         }
-    }
+    };
 
 });

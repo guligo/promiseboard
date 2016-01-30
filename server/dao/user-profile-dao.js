@@ -10,7 +10,7 @@ define(['pg'], function(pg) {
 
             client
                 .query('CREATE TABLE IF NOT EXISTS \
-                    user_instagram_profiles ( \
+                    instagram_profiles ( \
                         username VARCHAR(30) NOT NULL REFERENCES users (username) PRIMARY KEY, \
                         instagram_username TEXT NOT NULL, \
                         user_id TEXT NOT NULL, \
@@ -27,7 +27,7 @@ define(['pg'], function(pg) {
         });
     }
 
-    var _createProfile = function(username, instagramUsername, userId, token, callback) {
+    var _createInstagramProfile = function(username, instagramUsername, userId, token, callback) {
         console.log(
             'Creating instagram profile for username = [%s] with instagram username = [%s], user id = [%s] and token = [%s]',
             username, instagramUsername, userId, token
@@ -38,7 +38,7 @@ define(['pg'], function(pg) {
 
             client
                 .query('INSERT INTO \
-                    user_instagram_profiles (username, instagram_username, user_id, token) \
+                    instagram_profiles (username, instagram_username, user_id, token) \
                     VALUES ($1, $2, $3, $4);',
                     [username, instagramUsername, userId, token])
                 .on('end', function(result) {
@@ -50,7 +50,7 @@ define(['pg'], function(pg) {
         });
     }
 
-    var _getProfile = function(username, callback) {
+    var _getInstagramProfile = function(username, callback) {
         console.log('Getting instagram profile for user with username = [%s]', username);
 
         pg.connect(DATABASE_URL, function(err, client) {
@@ -58,7 +58,7 @@ define(['pg'], function(pg) {
 
             var resultingProfile;
             client
-                .query('SELECT * FROM user_instagram_profiles \
+                .query('SELECT * FROM instagram_profiles \
                     WHERE username = $1;',
                     [username])
                 .on('row', function(row) {
@@ -73,14 +73,14 @@ define(['pg'], function(pg) {
         });
     }
 
-    var _deleteProfile = function(username, callback) {
+    var _deleteInstagramProfile = function(username, callback) {
         console.log('Removing instagram profile for user with username = [%s]', username);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
             client
-                .query('DELETE FROM user_instagram_profiles \
+                .query('DELETE FROM instagram_profiles \
                     WHERE username = $1;',
                     [username])
                 .on('end', function(result) {
@@ -92,9 +92,9 @@ define(['pg'], function(pg) {
         });
     }
 
-    var _recreateProfile = function(username, authenticationResponse, callback) {
-        _deleteProfile(username, function() {
-            _createProfile(
+    var _recreateInstagramProfile = function(username, authenticationResponse, callback) {
+        _deleteInstagramProfile(username, function() {
+            _createInstagramProfile(
                 username,
                 authenticationResponse.user.username,
                 authenticationResponse.user.id,
@@ -108,17 +108,17 @@ define(['pg'], function(pg) {
         init: function(callback) {
             _init(callback);
         },
-        createProfile: function(username, instagramUsername, userId, token, callback) {
-            _createProfile(username, instagramUsername, userId, token, callback);
+        createInstagramProfile: function(username, instagramUsername, userId, token, callback) {
+            _createInstagramProfile(username, instagramUsername, userId, token, callback);
         },
-        getProfile: function(username, callback) {
-            _getProfile(username, callback);
+        getInstagramProfile: function(username, callback) {
+            _getInstagramProfile(username, callback);
         },
-        deleteProfile: function(username, callback) {
-            _deleteProfile(username, callback);
+        deleteInstagramProfile: function(username, callback) {
+            _deleteInstagramProfile(username, callback);
         },
-        recreateProfile: function(username, authenticationResponse, callback) {
-            _recreateProfile(username, authenticationResponse, callback);
+        recreateInstagramProfile: function(username, authenticationResponse, callback) {
+            _recreateInstagramProfile(username, authenticationResponse, callback);
         }
     };
 
