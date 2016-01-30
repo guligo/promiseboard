@@ -46,6 +46,11 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     initDao.init();
     initRest.init(app, checkAuthAsync);
 
+    app.get('/', function(req, res) {
+        delete req.session.username;
+        res.sendFile(__dirname + '/www/views/index.html');
+    });
+
     app.get('/index.html', function(req, res) {
         delete req.session.username;
         res.sendFile(__dirname + '/www/views/index.html');
