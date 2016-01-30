@@ -1,13 +1,17 @@
-define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-instagram-profile-dao'],
-    function(constants, commonUtils, userDao, userInstagramProfileDao) {
+define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-instagram-profile-dao'],
+    function(crypto, constants, commonUtils, userDao, userInstagramProfileDao) {
 
     var _doLogin = function(submittedUser, onSuccess, onError) {
-        userDao.getUserByUsername(submittedUser.username, function(actualUser) {
+        var dto = {
+            username: submittedUser.username
+        };
+
+        userDao.getUserByUsername(dto, function(actualUser) {
             try {
                 if (actualUser === undefined) {
                     throw commonUtils.createException('User does not exist');
                 }
-                if (submittedUser.password !== actualUser.password) {
+                if (crypto.createHash('md5').update(submittedUser.password).digest("hex") !== actualUser.password) {
                     throw commonUtils.createException('Wrong password');
                 }
                 if (onSuccess) {
@@ -17,7 +21,7 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../
                 onError(e);
             }
         });
-    }
+    };
 
     var _init = function(app, checkAuthAsync) {
         console.log('Initializing REST [%s] module...', 'user');
@@ -37,7 +41,11 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../
         });
 
         app.get('/users/me', checkAuthAsync, function(req, res) {
-            userInstagramProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+            var dto = {
+                username: req.session.username
+            };
+
+            userInstagramProfileDao.getProfile(dto, function(userInstagramProfile) {
                 res.end(JSON.stringify({
                     username: req.session.username,
                     hasInstagramProfile: (userInstagramProfile != undefined)
@@ -64,10 +72,19 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../
                     throw commonUtils.createException('Password and password confirmation do not match');
                 }
 
-                userDao.getUserByUsername(submittedUser.username, function(user) {
+                var dto = {
+                    username: submittedUser.username
+                };
+
+                userDao.getUserByUsername(dto, function(user) {
                     try {
                         if (user === undefined) {
-                            userDao.createUser(submittedUser.username, submittedUser.password, function() {
+                            var dto = {
+                                username: submittedUser.username,
+                                password: crypto.createHash('md5').update(submittedUser.password).digest("hex")
+                            };
+
+                            userDao.createUser(dto, function() {
                                 _doLogin(submittedUser, function() {
                                     req.session.username = submittedUser.username;
                                     res.sendStatus(200);
@@ -88,12 +105,12 @@ define(['../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../
         });
 
         console.log('REST [%s] module initialized!', 'user');
-    }
+    };
 
     return {
         init: function(app, checkAuthAsync) {
             _init(app, checkAuthAsync);
         }
-    }
+    };
 
 });

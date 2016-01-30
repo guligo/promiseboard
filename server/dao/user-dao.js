@@ -12,7 +12,7 @@ define(['pg'], function(pg) {
                 .query('CREATE TABLE IF NOT EXISTS \
                     users ( \
                         username VARCHAR(30) PRIMARY KEY, \
-                        password VARCHAR(30) NOT NULL \
+                        password VARCHAR(32) NOT NULL \
                     );')
                 .on('end', function(result) {
                     console.log('Creation of [users] table completed!');
@@ -23,10 +23,10 @@ define(['pg'], function(pg) {
                     client.end();
                 });
         });
-    }
+    };
 
-    var _createUser = function(username, password, callback) {
-        console.log('Creating user with username = [%s]', username);
+    var _createUser = function(dto, callback) {
+        console.log('Creating user with username = [%s] and password = [%s]', dto.username, dto.password);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -35,7 +35,7 @@ define(['pg'], function(pg) {
                 .query('INSERT INTO \
                     users (username, password) \
                     VALUES($1, $2);',
-                    [username, password])
+                    [dto.username, dto.password])
                 .on('end', function(result) {
                     if (callback) {
                         callback();
@@ -43,10 +43,10 @@ define(['pg'], function(pg) {
                     client.end();
                 });
         });
-    }
+    };
 
-    var _getUserByUsername = function(username, callback) {
-        console.log('Getting user by username = [%s]', username);
+    var _getUserByUsername = function(dto, callback) {
+        console.log('Getting user by username = [%s]', dto.username);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -55,7 +55,7 @@ define(['pg'], function(pg) {
                 .query('SELECT * \
                     FROM users \
                     WHERE username = $1 LIMIT 1;',
-                    [username])
+                    [dto.username])
                 .on('row', function(row) {
                     callback(row);
                 })
@@ -66,18 +66,18 @@ define(['pg'], function(pg) {
                     client.end();
                 });
         });
-    }
+    };
 
     return {
         init: function(callback) {
             _init(callback);
         },
-        createUser: function (username, password, callback) {
-            _createUser(username, password, callback);
+        createUser: function (dto, callback) {
+            _createUser(dto, callback);
         },
-        getUserByUsername: function (username, callback) {
-            _getUserByUsername(username, callback);
+        getUserByUsername: function (dto, callback) {
+            _getUserByUsername(dto, callback);
         }
-    }
+    };
 
 });
