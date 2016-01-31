@@ -58,6 +58,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 if (Number(promise.status) === constants.PROMISE_COMMITED) {
                     $('#promise' + promise.id + ' .pb-infdef').attr('style', '');
                     $('#promise' + promise.id + ' .pb-promise-tags').addClass('pb-promise-tags-invisible');
+
                     if (user.hasInstagramProfile && promise.tag) {
                         $('#promise' + promise.id + ' .pb-promise-tags').removeClass('pb-promise-tags-invisible');
                         $('#promise' + promise.id + ' .pb-promise-tags .pb-promise-tag').text(promise.tag);
@@ -99,10 +100,9 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     });
 
                     $('#promise' + promise.id + ' .pb-promise-date-label').text('Due:');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(
-                        commonUtils.formatDate(new Date(promise.dueDate)) + ' ' +
-                        '(' + commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ')'
-                    );
+                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+                    $('#promise' + promise.id + ' .pb-promise-time-left').text(commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
+                    $('#promise' + promise.id + ' .pb-progress').removeClass('pb-progress-invisible');
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();

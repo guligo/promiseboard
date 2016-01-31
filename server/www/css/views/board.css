@@ -82,8 +82,11 @@ a:hover {
 }
 
 .pb-progress {
-    width: 75px;
     margin-bottom: 0px;
+}
+
+.pb-progress-invisible {
+    display: none;
 }
 
 .pb-brand, .pb-brand-abbr {
@@ -165,6 +168,10 @@ a:hover {
     margin-top: 5px;
 }
 
+.pb-promise-tags {
+    margin-top: 5px;
+}
+
 .pb-promise-tags-invisible {
     display: none;
 }
@@ -177,6 +184,10 @@ a:hover {
     width: 100%;
     margin-bottom: 15px;
     text-align: center;
+}
+
+.pb-progess {
+    margin-bottom: 0px;
 }
 
 #createPromiseModalTagDescription {
