@@ -11,7 +11,7 @@ define(function() {
         POINTS_NEUTRAL: 0,
         POINTS_BAD: -1,
         POINTS_TERRIBLE: -2,
-        INSTAGRAM_REDIRECT_URL: 'http://promiseboard.net/settings.html'
+        INSTAGRAM_REDIRECT_URL: 'http://localhost:5000/settings.html'
     }
 
 });
