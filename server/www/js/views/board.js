@@ -208,6 +208,17 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfToday));
             });
 
+            $('#createPromiseModalDueDateTomorrow').click(function() {
+                var endOfTomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+                endOfTomorrow.setHours(23);
+                endOfTomorrow.setMinutes(59);
+                endOfTomorrow.setSeconds(59);
+                endOfTomorrow.setMilliseconds(999);
+
+                selectedDate = endOfTomorrow;
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfTomorrow));
+            });
+
             $('#createPromiseModalDueDateThisWeek').click(function() {
                 var today = new Date();
 
@@ -269,6 +280,8 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#createPromiseModalCloseButton').click();
                     refreshPromiseList(user);
                 }, function(text) {
+                    console.log(text);
+
                     $('#createPromiseModalDescriptionGroup').addClass('has-error');
                     $('#createPromiseModalDescriptionLabel').text(text);
                 });

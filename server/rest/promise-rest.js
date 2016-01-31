@@ -15,18 +15,18 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
         console.log('Initializing REST [%s] module', 'promise');
 
         app.post('/promises', checkAuthAsync, function(req, res) {
-            userProfileDao.getProfile(req.session.username, function(userInstagramProfile) {
+            userProfileDao.getInstagramProfile(req.session.username, function(instagramProfile) {
                 try {
                     var submittedPromise = req.body;
 
                     if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
-                        throw commonUtils.createException('Description is empty');
+                        throw commonUtils.createException('Description is empty', 'description');
                     }
                     if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-                        throw commonUtils.createException('Due date is empty');
+                        throw commonUtils.createException('Due date is empty', 'dueDate');
                     }
-                    if (userInstagramProfile != undefined && (submittedPromise.tag == undefined || submittedPromise.tag.length == 0)) {
-                        throw commonUtils.createException('Tag is empty');
+                    if (instagramProfile != undefined && (submittedPromise.tag == undefined || submittedPromise.tag.length == 0)) {
+                        throw commonUtils.createException('Tag is empty', 'tag');
                     }
 
                     promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.tag ? 'ipromise' + submittedPromise.tag : undefined, submittedPromise.dueDate, function() {

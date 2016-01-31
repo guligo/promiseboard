@@ -1,9 +1,10 @@
 define(function() {
 
-    var _createException = function(text) {
+    var _createException = function(text, field) {
         return {
             checked: true,
-            text: text
+            text: text,
+            field: field
         };
     }
 
