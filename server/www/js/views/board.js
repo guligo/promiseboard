@@ -103,6 +103,10 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
                     $('#promise' + promise.id + ' .pb-promise-time-left').text(commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
                     $('#promise' + promise.id + ' .pb-progress').removeClass('pb-progress-invisible');
+
+                    var d1 = new Date(promise.dueDate).getTime() - new Date(promise.creationDate).getTime();
+                    var d2 = new Date(promise.dueDate).getTime() - new Date().getTime();
+                    $('#promise' + promise.id + ' .pb-progress .progress-bar-success').attr('style', 'width: ' + d2 / d1 * 100 + '%');
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
