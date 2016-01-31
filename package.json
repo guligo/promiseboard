@@ -15,7 +15,9 @@
         "serve-favicon": ">=2.3.0",
         "connect-multiparty": ">=2.0.0",
         "pg": ">=4.4.3",
-        "requirejs": ">=2.1.22"
+        "requirejs": ">=2.1.22",
+        "request": ">=2.69.0",
+        "crypto": ">=0.0.3"
     },
     "engines": {
         "node": "0.12.7"
