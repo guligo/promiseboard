@@ -19,10 +19,12 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
         res.status(500).send('Oops, something broke!');
     });
     app.use(session({
-        secret: 'kuss',
+        secret: 'salt',
         cookie: {
-            maxAge: 300000
-        }
+            expires: new Date(Date.now() + 10 * 60 * 1000),
+            maxAge: 10 * 60 * 1000
+        },
+        rolling: true
     }));
     app.use(favicon(__dirname + '/www/img/icon.png'));
     app.set('port', (process.env.PORT || 5000));
@@ -36,6 +38,7 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     }
 
     function checkAuthAsync(req, res, next) {
+        console.log(req.session);
         if (!req.session.username) {
             res.sendStatus(401);
         } else {
