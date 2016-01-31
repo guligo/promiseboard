@@ -11,13 +11,12 @@ define(['pg'], function(pg) {
             client
                 .query('CREATE TABLE IF NOT EXISTS \
                     scores (\
-                        due_date TIMESTAMP NOT NULL, \
-                        id SERIAL PRIMARY KEY, \
                         promise_id INTEGER NOT NULL REFERENCES promises (id), \
-                        data BYTEA NOT NULL \
+                        creation_date TIMESTAMP NOT NULL, \
+                        score INTEGER NOT NULL \
                     );')
                 .on('end', function(result) {
-                    console.log('Creation of [%s] table completed!', 'attachment');
+                    console.log('Creation of [%s] table completed!', 'scores');
 
                     if (callback) {
                         callback();
@@ -25,19 +24,31 @@ define(['pg'], function(pg) {
                     client.end();
                 });
         });
-    }
+    };
 
-    var _createAttachment = function(dto, callback) {
-        console.log('Creating an attachment for promise with id = [%s]', dto.promiseId);
+    var _inflate = function(dto, callback) {
+        console.log('Inflating promise with id = [%s]', dto.promiseId);
 
+        dto.score = +1;
+        _createScore(dto);
+    };
+
+    var _deflate = function(dto, callback) {
+        console.log('Deflating promise with id = [%s]', dto.promiseId);
+
+        dto.score = -1;
+        _createScore(dto);
+    };
+
+    var _createScore = function(dto, callback) {
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
             client
                 .query('INSERT INTO \
-                    attachments (promise_id, data) \
-                    VALUES ($1, $2);',
-                    [dto.promiseId, dto.data])
+                    scores (promise_id, creation_date, score) \
+                    VALUES($1, $2, $3);',
+                    [dto.promiseId, new Date(), dto.score])
                 .on('end', function(result) {
                     if (callback) {
                         callback();
@@ -45,73 +56,18 @@ define(['pg'], function(pg) {
                     client.end();
                 });
         });
-    }
-
-    var _getAttachment = function(dto, callback) {
-        console.log('Retrieving an attachment for promise with id = [%s]', dto.promiseId);
-
-        pg.connect(DATABASE_URL, function(err, client) {
-            if (err) throw err;
-
-            var resultingAttachment;
-            client
-                .query('SELECT * \
-                    FROM attachments \
-                    WHERE promise_id = $1 \
-                    LIMIT 1;',
-                    [dto.promiseId])
-                .on('row', function(row) {
-                    resultingAttachment = row;
-                })
-                .on('end', function() {
-                    if (callback) {
-                        callback(resultingAttachment);
-                    }
-                    client.end();
-                });
-        });
-    }
-
-    var _hasAttachment = function(dto, callback) {
-        console.log('Retrieving an attachment for promise with id = [%s]', dto.promiseId);
-
-        pg.connect(DATABASE_URL, function(err, client) {
-            if (err) throw err;
-
-            var resultingAttachment;
-            client
-                .query('SELECT promise_id \
-                    FROM attachments \
-                    WHERE promise_id = $1 \
-                    LIMIT 1;',
-                    [dto.promiseId])
-                .on('row', function(row) {
-                    resultingAttachment = row;
-                })
-                .on('end', function() {
-                    if (callback) {
-                        callback({
-                            flag: resultingAttachment != undefined
-                        });
-                    }
-                    client.end();
-                });
-        });
-    }
+    };
 
     return {
         init: function(callback) {
             _init(callback);
         },
-        createAttachment: function(dto, callback) {
-            _createAttachment(dto, callback);
+        inflate: function(dto, callback) {
+            _inflate(dto, callback);
         },
-        getAttachment: function(dto, callback) {
-            _getAttachment(dto, callback);
+        deflate: function(dto, callback) {
+            _deflate(dto, callback);
         },
-        hasAttachment: function(dto, callback) {
-            _hasAttachment(dto, callback);
-        }
     };
 
 });

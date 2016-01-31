@@ -38,7 +38,6 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     }
 
     function checkAuthAsync(req, res, next) {
-        console.log(req.session);
         if (!req.session.username) {
             res.sendStatus(401);
         } else {
