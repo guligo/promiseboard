@@ -19,14 +19,18 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                 try {
                     var submittedPromise = req.body;
 
-                    if (submittedPromise.description === undefined || submittedPromise.description.length <= 0) {
+                    if (submittedPromise.description === undefined || submittedPromise.description.length === 0) {
                         throw commonUtils.createException('Description is empty', 'description');
-                    }
-                    if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
-                        throw commonUtils.createException('Due date is empty', 'dueDate');
-                    }
-                    if (instagramProfile != undefined && (submittedPromise.tag == undefined || submittedPromise.tag.length == 0)) {
-                        throw commonUtils.createException('Tag is empty', 'tag');
+                    } else if (submittedPromise.description.length > 140) {
+                        throw commonUtils.createException('Maximum description length is 140 characters', 'description');
+                    } else if (submittedPromise.dueDate === undefined || submittedPromise.dueDate.length == 0) {
+                        throw commonUtils.createException('Due date is empty', 'description');
+                    } else if (instagramProfile && submittedPromise.tag) {
+                        if (submittedPromise.tag.length > 0 && submittedPromise.tag.length < 3) {
+                            throw commonUtils.createException('Minimum tag length is 3 characters', 'tag');
+                        } else if (submittedPromise.tag.length > 30) {
+                            throw commonUtils.createException('Maximum tag length is 30 characters', 'tag');
+                        }
                     }
 
                     promiseDao.createPromise(req.session.username, submittedPromise.description, submittedPromise.tag ? 'ipromise' + submittedPromise.tag : undefined, submittedPromise.dueDate, function() {

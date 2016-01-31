@@ -279,21 +279,27 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 }, function() {
                     $('#createPromiseModalCloseButton').click();
                     refreshPromiseList(user);
-                }, function(text) {
-                    console.log(text);
-
-                    $('#createPromiseModalDescriptionGroup').addClass('has-error');
-                    $('#createPromiseModalDescriptionLabel').text(text);
+                }, function(error) {
+                    if (error.field === 'description') {
+                        $('#createPromiseModalDescriptionGroup').addClass('has-error');
+                        $('#createPromiseModalDescriptionLabel').text(error.text);
+                    } else if (error.field == 'tag') {
+                        $('#createPromiseModalTagGroup').addClass('has-error');
+                        $('#createPromiseModalTagLabel').text(error.text);
+                    }
                 });
             });
 
             var clearCreatePromiseModal = function() {
+                $('#createPromiseModalDescriptionLabel').text('Description');
                 $('#createPromiseModalDescriptionGroup').removeClass('has-error');
                 $('#createPromiseModalDescriptionField').val('');
                 $('#createPromiseModalDueDate').text('');
+                $('#createPromiseModalTagLabel').text('');
+                $('#createPromiseModalTagGroup').removeClass('has-error');
                 $('#createPromiseModalTagField').val('');
                 $('#createPromiseModalTagDescription').attr('style', 'display: none;');
-            }
+            };
 
             $('#createPromiseModal').on('hidden.bs.modal', function () {
                 clearCreatePromiseModal();

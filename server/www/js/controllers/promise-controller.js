@@ -14,7 +14,7 @@ define(function() {
                 onSuccess();
             },
             error: function(error) {
-                onError(error.responseText);
+                onError(JSON.parse(error.responseText));
             }
         });
     };

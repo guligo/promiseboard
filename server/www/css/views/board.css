@@ -178,3 +178,7 @@ a:hover {
     margin-bottom: 15px;
     text-align: center;
 }
+
+#createPromiseModalTagDescription {
+    margin-top: 5px;
+}

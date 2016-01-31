@@ -41,11 +41,7 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
         });
 
         app.get('/users/me', checkAuthAsync, function(req, res) {
-            var dto = {
-                username: req.session.username
-            };
-
-            userProfileDao.getInstagramProfile(dto, function(instagramProfile) {
+            userProfileDao.getInstagramProfile(req.session.username, function(instagramProfile) {
                 res.end(JSON.stringify({
                     username: req.session.username,
                     hasInstagramProfile: (instagramProfile != undefined)

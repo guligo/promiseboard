@@ -11,7 +11,11 @@ define(function() {
     var _handleException = function(e, res) {
         console.error(e);
         if (e.checked === true) {
-            res.status(500).send(e.text);
+            if (!e.field) {
+                res.status(500).send(e.text);
+            } else {
+                res.status(500).send(JSON.stringify(e));
+            }
         } else {
             res.sendStatus(500);
         }
@@ -72,8 +76,8 @@ define(function() {
     };
 
     return {
-        createException: function(text) {
-            return _createException(text);
+        createException: function(text, field) {
+            return _createException(text, field);
         },
         handleException: function(e, res) {
             return _handleException(e, res);
