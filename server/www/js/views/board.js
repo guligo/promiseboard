@@ -2,8 +2,8 @@ require.config({
     baseUrl: 'js'
 });
 
-require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'common-utils'],
-    function(constants, userController, promiseController, attachmentController, commonUtils) {
+require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'controllers/score-controller', 'common-utils'],
+    function(constants, userController, promiseController, attachmentController, scoreController, commonUtils) {
 
     $(document).ready(function() {
         $('#logoutLink').click(function() {
@@ -63,6 +63,18 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                         $('#promise' + promise.id + ' .pb-promise-tags').removeClass('pb-promise-tags-invisible');
                         $('#promise' + promise.id + ' .pb-promise-tags .pb-promise-tag').text(promise.tag);
                     }
+
+                    $('#promise' + promise.id + ' .pb-inflate').click(function() {
+                        scoreController.inflate({
+                            promiseId: promise.id
+                        });
+                    });
+
+                    $('#promise' + promise.id + ' .pb-deflate').click(function() {
+                        scoreController.deflate({
+                            promiseId: promise.id
+                        });
+                    });
 
                     $('#promise' + promise.id + ' .pb-status-completed').click(function() {
                         $('#promiseCompletionModal').modal('show');

@@ -26,20 +26,6 @@ define(['pg'], function(pg) {
         });
     };
 
-    var _inflate = function(dto, callback) {
-        console.log('Inflating promise with id = [%s]', dto.promiseId);
-
-        dto.score = +1;
-        _createScore(dto);
-    };
-
-    var _deflate = function(dto, callback) {
-        console.log('Deflating promise with id = [%s]', dto.promiseId);
-
-        dto.score = -1;
-        _createScore(dto);
-    };
-
     var _createScore = function(dto, callback) {
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -62,12 +48,9 @@ define(['pg'], function(pg) {
         init: function(callback) {
             _init(callback);
         },
-        inflate: function(dto, callback) {
-            _inflate(dto, callback);
-        },
-        deflate: function(dto, callback) {
-            _deflate(dto, callback);
-        },
+        createScore: function(dto, callback) {
+            _createScore(dto, callback);
+        }
     };
 
 });
