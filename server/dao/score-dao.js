@@ -98,6 +98,12 @@ define(['pg'], function(pg) {
         });
     };
 
+    var _getLatestScoreDateByUser = function(dto, callback) {
+        // select creation_date from scores
+        // where promise_id in (select id from promises where username = $1)
+        // order by creation_date desc limit 1;
+    };
+
     return {
         init: function(callback) {
             _init(callback);
