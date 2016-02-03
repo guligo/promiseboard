@@ -46,6 +46,24 @@ define(function() {
         });
     };
 
+    var _getScoreByPromiseStatus = function(dto, onSuccess, onError) {
+        $.ajax({
+            url: '/promises/score/' + dto.status + '/sum',
+            method: 'get',
+            data: {
+                score: dto.status
+            },
+            success: function(score) {
+                if (onSuccess) {
+                    onSuccess(JSON.parse(score));
+                }
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    };
+
     return {
         inflate: function(dto, onSuccess, onError) {
             _inflate(dto, onSuccess, onError);
@@ -55,6 +73,9 @@ define(function() {
         },
         getScore: function(dto, onSuccess, onError) {
             _getScore(dto, onSuccess, onError);
+        },
+        getScoreByPromiseStatus: function(dto, onSuccess, onError) {
+            _getScoreByPromiseStatus(dto, onSuccess, onError);
         }
     };
 

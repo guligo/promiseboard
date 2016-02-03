@@ -23,6 +23,16 @@ define(['../dao/score-dao'], function(scoreDao) {
                 res.end(JSON.stringify(score));
             });
         });
+
+        app.get('/promises/score/:status/sum', checkAuthAsync, function(req, res) {
+            var dto = {
+                status: req.params.status
+            };
+
+            scoreDao.getScoreByPromiseStatus(dto, function(score) {
+                res.end(JSON.stringify(score));
+            });
+        });
     };
 
     return {

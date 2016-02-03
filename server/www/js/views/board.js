@@ -164,23 +164,23 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
             var refreshStatistics = function(promises) {
                 var numberOfPromisesCommited = 0;
-                var numberOfPromisesCompleted = 0;
-                var numberOfPromisesFailed = 0;
-
                 promises.forEach(function(promise) {
                     var status = Number(promise.status);
                     if (status === constants.PROMISE_COMMITED) {
                         numberOfPromisesCommited++;
-                    } else if (status === constants.PROMISE_COMPLETED || status === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
-                        numberOfPromisesCompleted++;
-                    } else if (status === constants.PROMISE_FAILED) {
-                        numberOfPromisesFailed++;
                     }
                 });
-
                 $('#numberOfPromisesCommited').text(numberOfPromisesCommited);
-                $('#numberOfPromisesCompleted').text(numberOfPromisesCompleted);
-                $('#numberOfPromisesFailed').text(numberOfPromisesFailed);
+
+                scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED}, function(score1) {
+                    scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED_VIA_INSTAGRAM}, function(score2) {
+                        $('#numberOfPromisesCompleted').text(score1.score + score2.score);
+                    });
+                });
+
+                scoreController.getScoreByPromiseStatus({status: constants.PROMISE_FAILED}, function(score) {
+                    $('#numberOfPromisesFailed').text(score.score);
+                });
             };
 
             var refreshPromiseList = function(user, filter) {

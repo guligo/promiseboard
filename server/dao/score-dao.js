@@ -45,6 +45,8 @@ define(['pg'], function(pg) {
     };
 
     var _getScore = function(dto, callback) {
+        console.log('Retrieving score for promise with id = [%s]', dto.promiseId);
+
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
@@ -67,6 +69,35 @@ define(['pg'], function(pg) {
         });
     };
 
+    var _getScoreByPromiseStatus = function(dto, callback) {
+        console.log('Retrieving overall score for promises with status = [%s]', dto.status);
+
+        pg.connect(DATABASE_URL, function(err, client) {
+            if (err) throw err;
+
+            var resultingScore = {score: 0};
+            client
+                .query('SELECT SUM(score) \
+                    FROM scores \
+                    WHERE promise_id in ( \
+                        SELECT id \
+                        FROM promises \
+                        WHERE status = $1 \
+                    ) \
+                    GROUP BY promise_id;',
+                    [dto.status])
+                .on('row', function(row) {
+                    resultingScore = {score: row.sum >= 0 ? row.sum : 0};
+                })
+                .on('end', function(result) {
+                    if (callback) {
+                        callback(resultingScore);
+                    }
+                    client.end();
+                });
+        });
+    };
+
     return {
         init: function(callback) {
             _init(callback);
@@ -76,6 +107,9 @@ define(['pg'], function(pg) {
         },
         getScore: function(dto, callback) {
             _getScore(dto, callback);
+        },
+        getScoreByPromiseStatus: function(dto, callback) {
+            _getScoreByPromiseStatus(dto, callback);
         }
     };
 
