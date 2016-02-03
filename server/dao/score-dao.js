@@ -87,11 +87,11 @@ define(['pg'], function(pg) {
                     GROUP BY promise_id;',
                     [dto.status])
                 .on('row', function(row) {
-                    resultingScore = {score: row.sum >= 0 ? row.sum : 0};
+                    resultingScore.score += Number(row.sum);
                 })
                 .on('end', function(result) {
                     if (callback) {
-                        callback(resultingScore);
+                        callback({score: resultingScore.score});
                     }
                     client.end();
                 });

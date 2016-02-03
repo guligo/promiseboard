@@ -7,7 +7,11 @@ define(function() {
 
     var _deflate = function(dto, onSuccess, onError) {
         dto.score = -1;
-        _addScore(dto, onSuccess, onError);
+        _getScore(dto, function(score) {
+            if (score > 0) {
+                _addScore(dto, onSuccess, onError);
+            }
+        });
     };
 
     var _addScore = function(dto, onSuccess, onError) {
@@ -32,9 +36,6 @@ define(function() {
         $.ajax({
             url: '/promises/' + dto.promiseId + '/score',
             method: 'get',
-            data: {
-                score: dto.score
-            },
             success: function(score) {
                 if (onSuccess) {
                     onSuccess(JSON.parse(score));
@@ -50,9 +51,6 @@ define(function() {
         $.ajax({
             url: '/promises/score/' + dto.status + '/sum',
             method: 'get',
-            data: {
-                score: dto.status
-            },
             success: function(score) {
                 if (onSuccess) {
                     onSuccess(JSON.parse(score));
