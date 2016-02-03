@@ -44,12 +44,38 @@ define(['pg'], function(pg) {
         });
     };
 
+    var _getScore = function(dto, callback) {
+        pg.connect(DATABASE_URL, function(err, client) {
+            if (err) throw err;
+
+            var resultingScore = {score: 0};
+            client
+                .query('SELECT SUM(score) \
+                    FROM scores \
+                    WHERE promise_id = $1 \
+                    GROUP BY promise_id;',
+                    [dto.promiseId])
+                .on('row', function(row) {
+                    resultingScore = {score: row.sum >= 0 ? row.sum : 0};
+                })
+                .on('end', function(result) {
+                    if (callback) {
+                        callback(resultingScore);
+                    }
+                    client.end();
+                });
+        });
+    };
+
     return {
         init: function(callback) {
             _init(callback);
         },
         createScore: function(dto, callback) {
             _createScore(dto, callback);
+        },
+        getScore: function(dto, callback) {
+            _getScore(dto, callback);
         }
     };
 

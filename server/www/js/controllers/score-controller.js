@@ -12,13 +12,33 @@ define(function() {
 
     var _addScore = function(dto, onSuccess, onError) {
         $.ajax({
-            url: '/promise/' + dto.promiseId + '/score',
+            url: '/promises/' + dto.promiseId + '/score',
             method: 'post',
             data: {
                 score: dto.score
             },
             success: function() {
-                onSuccess();
+                if (onSuccess) {
+                    onSuccess();
+                }
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    };
+
+    var _getScore = function(dto, onSuccess, onError) {
+        $.ajax({
+            url: '/promises/' + dto.promiseId + '/score',
+            method: 'get',
+            data: {
+                score: dto.score
+            },
+            success: function(score) {
+                if (onSuccess) {
+                    onSuccess(JSON.parse(score));
+                }
             },
             error: function(error) {
                 console.error(error);
@@ -32,6 +52,9 @@ define(function() {
         },
         deflate: function(dto, onSuccess) {
             _deflate(dto, onSuccess);
+        },
+        getScore: function(dto, onSuccess, onError) {
+            _getScore(dto, onSuccess, onError);
         }
     };
 

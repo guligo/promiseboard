@@ -1,5 +1,5 @@
-define(['./user-dao', './promise-dao', './user-profile-dao', './attachment-dao'],
-    function(userDao, promiseDao, userProfileDao, attachmentDao) {
+define(['./user-dao', './promise-dao', './user-profile-dao', './attachment-dao', './score-dao'],
+    function(userDao, promiseDao, userProfileDao, attachmentDao, scoreDao) {
 
     var _init = function(callback) {
         console.log('Initializing DAOs');
@@ -7,7 +7,9 @@ define(['./user-dao', './promise-dao', './user-profile-dao', './attachment-dao']
         userDao.init(function() {
             promiseDao.init(function() {
                 userProfileDao.init(function() {
-                    attachmentDao.init(callback);
+                    attachmentDao.init(function() {
+                        scoreDao.init(callback);
+                    });
                 });
             });
         });

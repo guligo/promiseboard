@@ -125,18 +125,30 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                     $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+
+                    scoreController.getScore({promiseId: promise.id}, function(score) {
+                        console.log(score.score);
+                    });
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                     $('#promise' + promise.id + ' .pb-promise-date-label').html('Completed via <div class="btn btn-social-icon btn-instagram"><span class="fa fa-instagram"></span></div> at:');
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+
+                    scoreController.getScore({promiseId: promise.id}, function(score) {
+                        console.log(score.score);
+                    });
                 } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                     $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+
+                    scoreController.getScore({promiseId: promise.id}, function(score) {
+                        console.log(score.score);
+                    });
                 }
 
                 $('#promise' + promise.id + ' .pb-status-removed').click(function() {
