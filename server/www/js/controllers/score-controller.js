@@ -1,20 +1,20 @@
 define(function() {
 
-    var _inflate = function(dto, onSuccess, onError) {
+    var _inflate = function(dto, onSuccess) {
         dto.score = +1;
-        _addScore(dto, onSuccess, onError);
+        _addScore(dto, onSuccess);
     };
 
-    var _deflate = function(dto, onSuccess, onError) {
+    var _deflate = function(dto, onSuccess) {
         dto.score = -1;
         _getScore(dto, function(score) {
             if (score > 0) {
-                _addScore(dto, onSuccess, onError);
+                _addScore(dto, onSuccess);
             }
         });
     };
 
-    var _addScore = function(dto, onSuccess, onError) {
+    var _addScore = function(dto, onSuccess) {
         $.ajax({
             url: '/promises/' + dto.promiseId + '/score',
             method: 'post',
@@ -32,7 +32,7 @@ define(function() {
         });
     };
 
-    var _getScore = function(dto, onSuccess, onError) {
+    var _getScore = function(dto, onSuccess) {
         $.ajax({
             url: '/promises/' + dto.promiseId + '/score',
             method: 'get',
@@ -78,17 +78,17 @@ define(function() {
     };
 
     return {
-        inflate: function(dto, onSuccess, onError) {
-            _inflate(dto, onSuccess, onError);
+        inflate: function(dto, onSuccess) {
+            _inflate(dto, onSuccess);
         },
         deflate: function(dto, onSuccess) {
             _deflate(dto, onSuccess);
         },
-        getScore: function(dto, onSuccess, onError) {
-            _getScore(dto, onSuccess, onError);
+        getScore: function(dto, onSuccess) {
+            _getScore(dto, onSuccess);
         },
-        getScoreByPromiseStatus: function(dto, onSuccess, onError) {
-            _getScoreByPromiseStatus(dto, onSuccess, onError);
+        getScoreByPromiseStatus: function(dto, onSuccess) {
+            _getScoreByPromiseStatus(dto, onSuccess);
         },
         getLatestScoreDate: function(onSuccess) {
             _getLatestScoreDate(onSuccess);

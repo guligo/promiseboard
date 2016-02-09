@@ -19,7 +19,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
         userController.getMe(function(user) {
             $('#username').text(user.username);
 
-            var renderPromise = function(promise, user) {
+            var renderPromise = function(promise, user, infdef) {
                 var promiseElement = $('.pb-promise-wrapper');
                 promiseElement.find('.pb-promise-description').text(promise.description);
 
@@ -56,25 +56,29 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 }
 
                 if (Number(promise.status) === constants.PROMISE_COMMITED) {
-                    $('#promise' + promise.id + ' .pb-infdef').attr('style', '');
                     $('#promise' + promise.id + ' .pb-promise-tags').addClass('pb-promise-tags-invisible');
-
                     if (user.hasInstagramProfile && promise.tag) {
                         $('#promise' + promise.id + ' .pb-promise-tags').removeClass('pb-promise-tags-invisible');
                         $('#promise' + promise.id + ' .pb-promise-tags .pb-promise-tag').text(promise.tag);
                     }
 
-                    $('#promise' + promise.id + ' .pb-inflate').click(function() {
-                        scoreController.inflate({
-                            promiseId: promise.id
+                    if (infdef) {
+                        $('#promise' + promise.id + ' .pb-infdef').attr('style', '');
+                        $('#promise' + promise.id + ' .pb-inflate').click(function() {
+                            scoreController.inflate({
+                                promiseId: promise.id
+                            }, function() {
+                                $('#showPromisesCommited').click();
+                            });
                         });
-                    });
-
-                    $('#promise' + promise.id + ' .pb-deflate').click(function() {
-                        scoreController.deflate({
-                            promiseId: promise.id
+                        $('#promise' + promise.id + ' .pb-deflate').click(function() {
+                            scoreController.deflate({
+                                promiseId: promise.id
+                            }, function() {
+                                $('#showPromisesCommited').click();
+                            });
                         });
-                    });
+                    }
 
                     $('#promise' + promise.id + ' .pb-status-completed').click(function() {
                         $('#promiseCompletionModal').modal('show');
@@ -190,9 +194,11 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promiseList').empty();
                     refreshStatistics(promises);
                     scoreController.getLatestScoreDate(function(scoreDate) {
+                        var infdef = false;
                         var deltaTime = 0;
                         if (!scoreDate.date || (deltaTime = new Date().getTime() - new Date(scoreDate.date).getTime()) >= 60 * 60 * 1000) {
                             $('#scorePool span').html('Allocate 1 point');
+                            infdef = true;
                         } else {
                             $('#scorePool span').html((60 - Math.round(deltaTime / 60 / 1000)) + ' min. left');
                         }
@@ -202,7 +208,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                             promises.forEach(function(promise) {
                                 if (Number(promise.status) !== constants.PROMISE_DELETED
                                     && (!filter || filter && filter(Number(promise.status)))) {
-                                    renderPromise(promise, user);
+                                    renderPromise(promise, user, infdef);
                                     filteredPromiseCount++;
                                 }
                             });
