@@ -3,6 +3,16 @@ define(['../dao/score-dao'], function(scoreDao) {
     var _init = function(app, checkAuthAsync) {
         console.log('Initializing REST [%s] module', 'score');
 
+        app.get('/promises/score/date', checkAuthAsync, function(req, res) {
+            var dto = {
+                username: req.session.username
+            };
+
+            scoreDao.getLatestScoreDateByUser(dto, function(scoreDate) {
+                res.end(JSON.stringify(scoreDate));
+            });
+        });
+
         app.post('/promises/:promiseId/score', checkAuthAsync, function(req, res) {
             var dto = {
                 promiseId: req.params.promiseId,

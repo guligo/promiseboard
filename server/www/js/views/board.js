@@ -184,27 +184,38 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
             };
 
             var refreshPromiseList = function(user, filter) {
+                $('#scorePool span').html('?');
+                $('#scorePool').attr('style', 'display: none;');
                 $('#promiseList').html('<div class="pb-promise-list-loader"><img src="img/loader.gif" /></div>');
 
                 promiseController.getPromises(function(promises) {
                     $('#promiseList').empty();
                     refreshStatistics(promises);
-
-                    var filteredPromiseCount = 0;
-                    if (promises.length > 0) {
-                        promises.forEach(function(promise) {
-                            if (Number(promise.status) !== constants.PROMISE_DELETED
-                                && (!filter || filter && filter(Number(promise.status)))) {
-                                renderPromise(promise, user);
-                                filteredPromiseCount++;
-                            }
-                        });
-                        if (filteredPromiseCount === 0) {
-                            $('#promiseList').html('<div class="pb-promise-list-empty"><span>Promise list is empty</span></div>');
+                    scoreController.getLatestScoreDate(function(scoreDate) {
+                        if (!scoreDate.date || new Date().getTime() - new Date(scoreDate.date).getTime() >= 60 * 60 * 1000) {
+                            $('#scorePool span').html('You can allocate 1 point');
+                            $('#scorePool').attr('style', '');
+                        } else {
+                            $('#scorePool span').html('X minutes left');
+                            $('#scorePool').attr('style', '');
                         }
-                    } else {
-                        $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit some promise or resolution!</span></div>');
-                    }
+
+                        var filteredPromiseCount = 0;
+                        if (promises.length > 0) {
+                            promises.forEach(function(promise) {
+                                if (Number(promise.status) !== constants.PROMISE_DELETED
+                                    && (!filter || filter && filter(Number(promise.status)))) {
+                                    renderPromise(promise, user);
+                                    filteredPromiseCount++;
+                                }
+                            });
+                            if (filteredPromiseCount === 0) {
+                                $('#promiseList').html('<div class="pb-promise-list-empty"><span>Promise list is empty</span></div>');
+                            }
+                        } else {
+                            $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit some promise or resolution!</span></div>');
+                        }
+                    });
                 });
 
                 promiseController.getScore(function(score) {

@@ -47,13 +47,28 @@ define(function() {
         });
     };
 
-    var _getScoreByPromiseStatus = function(dto, onSuccess, onError) {
+    var _getScoreByPromiseStatus = function(dto, onSuccess) {
         $.ajax({
             url: '/promises/score/' + dto.status + '/sum',
             method: 'get',
             success: function(score) {
                 if (onSuccess) {
                     onSuccess(JSON.parse(score));
+                }
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    };
+
+    var _getLatestScoreDate = function(onSuccess) {
+        $.ajax({
+            url: '/promises/score/date',
+            method: 'get',
+            success: function(scoreDate) {
+                if (onSuccess) {
+                    onSuccess(JSON.parse(scoreDate));
                 }
             },
             error: function(error) {
@@ -74,6 +89,9 @@ define(function() {
         },
         getScoreByPromiseStatus: function(dto, onSuccess, onError) {
             _getScoreByPromiseStatus(dto, onSuccess, onError);
+        },
+        getLatestScoreDate: function(onSuccess) {
+            _getLatestScoreDate(onSuccess);
         }
     };
 

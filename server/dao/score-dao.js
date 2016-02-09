@@ -1,4 +1,4 @@
-define(['pg'], function(pg) {
+define(['pg', '../www/js/constantz'], function(pg, constantz) {
 
     const DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/promiseboard';
 
@@ -99,9 +99,32 @@ define(['pg'], function(pg) {
     };
 
     var _getLatestScoreDateByUser = function(dto, callback) {
-        // select creation_date from scores
-        // where promise_id in (select id from promises where username = $1)
-        // order by creation_date desc limit 1;
+        console.log('Retrieving last score date for username = [%s]', dto.username);
+
+        pg.connect(DATABASE_URL, function(err, client) {
+            if (err) throw err;
+
+            var resultingScoreDate = {date: null};
+            client
+                .query('SELECT creation_date \
+                    FROM scores \
+                    WHERE promise_id in ( \
+                        SELECT id \
+                        FROM promises \
+                        WHERE username = $1 \
+                    ) \
+                    ORDER BY creation_date DESC LIMIT 1;',
+                    [dto.username])
+                .on('row', function(row) {
+                    resultingScoreDate.date = new Date(row.creation_date);
+                })
+                .on('end', function(result) {
+                    if (callback) {
+                        callback(resultingScoreDate);
+                    }
+                    client.end();
+                });
+        });
     };
 
     return {
@@ -116,6 +139,9 @@ define(['pg'], function(pg) {
         },
         getScoreByPromiseStatus: function(dto, callback) {
             _getScoreByPromiseStatus(dto, callback);
+        },
+        getLatestScoreDateByUser: function(dto, callback) {
+            _getLatestScoreDateByUser(dto, callback);
         }
     };
 
