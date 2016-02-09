@@ -51,7 +51,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                         status: status
                     }, function() {
                         onSuccess();
-                        refreshPromiseList();
+                        $('#showPromisesCommited').click();
                     });
                 }
 
@@ -184,20 +184,17 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
             };
 
             var refreshPromiseList = function(user, filter) {
-                $('#scorePool span').html('?');
-                $('#scorePool').attr('style', 'display: none;');
                 $('#promiseList').html('<div class="pb-promise-list-loader"><img src="img/loader.gif" /></div>');
 
                 promiseController.getPromises(function(promises) {
                     $('#promiseList').empty();
                     refreshStatistics(promises);
                     scoreController.getLatestScoreDate(function(scoreDate) {
-                        if (!scoreDate.date || new Date().getTime() - new Date(scoreDate.date).getTime() >= 60 * 60 * 1000) {
-                            $('#scorePool span').html('You can allocate 1 point');
-                            $('#scorePool').attr('style', '');
+                        var deltaTime = 0;
+                        if (!scoreDate.date || (deltaTime = new Date().getTime() - new Date(scoreDate.date).getTime()) >= 60 * 60 * 1000) {
+                            $('#scorePool span').html('Allocate 1 point');
                         } else {
-                            $('#scorePool span').html('X minutes left');
-                            $('#scorePool').attr('style', '');
+                            $('#scorePool span').html((60 - Math.round(deltaTime / 60 / 1000)) + ' min. left');
                         }
 
                         var filteredPromiseCount = 0;
@@ -323,7 +320,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     dueDate: selectedDate
                 }, function() {
                     $('#createPromiseModalCloseButton').click();
-                    refreshPromiseList(user);
+                    $('#showPromisesCommited').click();
                 }, function(error) {
                     if (error.field === 'description') {
                         $('#createPromiseModalDescriptionGroup').addClass('has-error');
