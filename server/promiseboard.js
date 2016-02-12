@@ -21,8 +21,8 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     app.use(session({
         secret: 'salt',
         cookie: {
-            expires: new Date(Date.now() + 10 * 60 * 1000),
-            maxAge: 10 * 60 * 1000
+            expires: new Date(Date.now() + constants.SESSION_STANDARD_LENGTH),
+            maxAge: constants.SESSION_STANDARD_LENGTH
         },
         rolling: true
     }));
