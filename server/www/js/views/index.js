@@ -15,7 +15,8 @@ require(['controllers/user-controller', 'common-utils'], function(userController
             resetLoginModalFields();
             userController.logIn({
                 username: $('#loginModalUsernameField').val(),
-                password: $('#loginModalPasswordField').val()
+                password: $('#loginModalPasswordField').val(),
+                remember: $('#loginModalRememberField').is(':checked')
             }, function() {
                 window.location.replace('board.html');
             }, function() {

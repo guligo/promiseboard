@@ -31,6 +31,14 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
                 var submittedUser = req.body;
                 _doLogin(submittedUser, function(instagramProfile) {
                     req.session.username = submittedUser.username;
+                    console.log('User with username [%s] started session at [%s]', submittedUser.username, new Date());
+
+                    if (submittedUser.remember === 'true') {
+                        req.session.cookie.expires = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+                        req.session.cookie.maxAge = 2 * 24 * 60 * 60 * 1000;
+                    }
+
+                    console.log('User session is supposed to expire at [%s]', req.session.cookie.expires);
                     res.sendStatus(200);
                 }, function(e) {
                     commonUtils.handleException(e, res);

@@ -6,7 +6,8 @@ define(function() {
             method: 'post',
             data: {
                 username: data.username,
-                password: data.password
+                password: data.password,
+                remember: data.remember
             },
             success: function() {
                 onSuccess();
