@@ -31,6 +31,12 @@ body {
     max-width: 350px;
 }
 
+.pb-fb-like {
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+}
+
 @media only screen and (max-width: 500px) {
     body {
         background-size: auto 100%;
