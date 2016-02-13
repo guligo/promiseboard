@@ -124,7 +124,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.statusChangeDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {
                         console.log(score.score);
@@ -135,7 +135,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed via Instagram at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Instagram');
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {
                         console.log(score.score);
@@ -146,7 +146,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-danger');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.statusChangeDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {
                         console.log(score.score);
