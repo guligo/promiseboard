@@ -125,10 +125,6 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
                     $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
-
-                    scoreController.getScore({promiseId: promise.id}, function(score) {
-                        console.log(score.score);
-                    });
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
@@ -136,10 +132,6 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
                     $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Instagram');
-
-                    scoreController.getScore({promiseId: promise.id}, function(score) {
-                        console.log(score.score);
-                    });
                 } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
@@ -147,10 +139,6 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-danger');
                     $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
-
-                    scoreController.getScore({promiseId: promise.id}, function(score) {
-                        console.log(score.score);
-                    });
                 }
 
                 $('#promise' + promise.id + ' .pb-status-removed').click(function() {
@@ -174,14 +162,28 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 });
                 $('#numberOfPromisesCommited').text(numberOfPromisesCommited);
 
-                scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED}, function(score1) {
-                    scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED_VIA_INSTAGRAM}, function(score2) {
-                        $('#numberOfPromisesCompleted').text(score1.score + score2.score);
-                    });
-                });
+                scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED}, function(promiseCompletedScore) {
+                    scoreController.getScoreByPromiseStatus({status: constants.PROMISE_COMPLETED_VIA_INSTAGRAM}, function(promiseCompletedViaInstagramScore) {
+                        promiseCompletedScore.score += promiseCompletedViaInstagramScore.score;
+                        scoreController.getScoreByPromiseStatus({status: constants.PROMISE_FAILED}, function(promiseFailedScore) {
+                            $('#numberOfPromisesCompleted').text(promiseCompletedScore.score);
+                            $('#numberOfPromisesFailed').text(promiseFailedScore.score);
 
-                scoreController.getScoreByPromiseStatus({status: constants.PROMISE_FAILED}, function(score) {
-                    $('#numberOfPromisesFailed').text(score.score);
+                            var points = promiseCompletedScore.score / (promiseCompletedScore.score + promiseFailedScore.score);
+                            if (points <= constants.POINTS_TERRIBLE) {
+                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-lightning.svg');
+                            } else if (points <= constants.POINTS_BAD) {
+                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-drizzle.svg');
+                            } else if (points <= constants.POINTS_NEUTRAL) {
+                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud.svg');
+                            } else if (points <= constants.POINTS_GOOD) {
+                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-sun.svg');
+                            } else if (points <= constants.POINTS_EXCELLENT) {
+                                $('#score').attr('src', '/css/adam-whitcroft-climacons/sun.svg');
+                            }
+                            $('#score').attr('title', 'Completion ratio: ' + commonUtils.round(points, 2));
+                        });
+                    });
                 });
             };
 
@@ -217,20 +219,6 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                             $('#promiseList').html('<div class="pb-promise-list-empty"><span>Go ahead and commit some promise or resolution!</span></div>');
                         }
                     });
-                });
-
-                promiseController.getScore(function(score) {
-                    if (score.points === constants.POINTS_TERRIBLE) {
-                        $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-lightning.svg');
-                    } else if (score.points === constants.POINTS_BAD) {
-                        $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-drizzle.svg');
-                    } else if (score.points === constants.POINTS_NEUTRAL) {
-                        $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud.svg');
-                    } else if (score.points === constants.POINTS_GOOD) {
-                        $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-sun.svg');
-                    } else if (score.points === constants.POINTS_EXCELLENT) {
-                        $('#score').attr('src', '/css/adam-whitcroft-climacons/sun.svg');
-                    }
                 });
             }
 

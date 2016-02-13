@@ -87,6 +87,11 @@ define(function() {
         return str === 'true';
     };
 
+    var _round = function(number, places) {
+        var multiplier = Math.pow(10, places);
+        return Math.round(number * multiplier) / multiplier;
+    };
+
     return {
         createException: function(text, field) {
             return _createException(text, field);
@@ -120,7 +125,10 @@ define(function() {
         },
         stringToBoolean: function(str) {
             return _stringToBoolean(str);
+        },
+        round: function(number, places) {
+            return _round(number, places);
         }
-    }
+    };
 
 });
