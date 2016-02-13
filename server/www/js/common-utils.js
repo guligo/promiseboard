@@ -21,10 +21,18 @@ define(function() {
         }
     }
 
+    var _format = function(number, length) {
+        var result = number + '';
+        while (result.length < length) {
+            result = '0' + result;
+        }
+        return result;
+    }
+
     var _formatDate = function(date) {
         if (date) {
             return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' +
-                date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                _format(date.getHours(), 2) + ':' + _format(date.getMinutes(), 2) + ':' + _format(date.getSeconds(), 2);
         } else {
             return '<unknown>';
         }
