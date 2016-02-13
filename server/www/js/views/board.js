@@ -115,19 +115,15 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                         });
                     });
 
-                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due:');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
-                    $('#promise' + promise.id + ' .pb-promise-time-left').text(commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
-                    $('#promise' + promise.id + ' .pb-progress').removeClass('pb-progress-invisible');
-
-                    var d1 = new Date(promise.dueDate).getTime() - new Date(promise.creationDate).getTime();
-                    var d2 = new Date(promise.dueDate).getTime() - new Date().getTime();
-                    $('#promise' + promise.id + ' .pb-progress .progress-bar-success').attr('style', 'width: ' + d2 / d1 * 100 + '%');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label-default');
+                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
-                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Completed at:');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {
@@ -137,8 +133,9 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
-                    $('#promise' + promise.id + ' .pb-promise-date-label').html('Completed via <div class="btn btn-social-icon btn-instagram"><span class="fa fa-instagram"></span></div> at:');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed via Instagram at ' + commonUtils.formatDate(new Date(promise.dueDate)));
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {
                         console.log(score.score);
@@ -147,7 +144,8 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
-                    $('#promise' + promise.id + ' .pb-promise-date-label').text('Due date:');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
+                    $('#promise' + promise.id + ' .pb-promise-date').addClass('label-danger');
                     $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.formatDate(new Date(promise.dueDate)));
 
                     scoreController.getScore({promiseId: promise.id}, function(score) {

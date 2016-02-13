@@ -75,6 +75,10 @@ define(function() {
         return date1.getTime() === date2.getTime();
     };
 
+    var _stringToBoolean = function(str) {
+        return str === 'true';
+    };
+
     return {
         createException: function(text, field) {
             return _createException(text, field);
@@ -105,6 +109,9 @@ define(function() {
         },
         dateEquals: function(date1, date2) {
             return _dateEquals(date1, date2);
+        },
+        stringToBoolean: function(str) {
+            return _stringToBoolean(str);
         }
     }
 

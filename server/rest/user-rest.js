@@ -33,7 +33,7 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
                     req.session.username = submittedUser.username;
                     console.log('User with username [%s] started session at [%s]', submittedUser.username, new Date());
 
-                    if (submittedUser.remember === 'true') {
+                    if (commonUtils.stringToBoolean(submittedUser.remember)) {
                         req.session.cookie.expires = new Date(Date.now() + constants.SESSION_EXTENDED_LENGTH);
                         req.session.cookie.maxAge = constants.SESSION_EXTENDED_LENGTH;
                     } else {
