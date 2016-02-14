@@ -50,14 +50,18 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
+            var resultingId;
             client
                 .query('INSERT INTO \
                     promises (username, description, tag, creation_date, due_date, status, status_change_date) \
-                    VALUES ($1, $2, $3, $4, $5, $6, $4);',
-                    [username, description, tag, new Date(), dueDate, constants.PROMISE_COMMITED])
+                    VALUES ($1, $2, $3, $4, $5, $6, $4) \
+                    RETURNING id;',
+                    [username, description, tag, new Date(), dueDate, constants.PROMISE_COMMITED], function(err, res) {
+                        resultingId = res.rows[0].id;
+                    })
                 .on('end', function(result) {
                     if (callback) {
-                        callback();
+                        callback(resultingId);
                     }
                     client.end();
                 });
