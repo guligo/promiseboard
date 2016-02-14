@@ -21,6 +21,12 @@ define(function() {
         }
     }
 
+    var _handleClientException = function(e) {
+        if (e.status === 401) {
+            window.location.replace('/');
+        }
+    }
+
     var _format = function(number, length) {
         var result = number + '';
         while (result.length < length) {
@@ -98,6 +104,9 @@ define(function() {
         },
         handleException: function(e, res) {
             return _handleException(e, res);
+        },
+        handleClientException: function(e) {
+            _handleClientException(e);
         },
         formatDate: function(date) {
             return _formatDate(date);

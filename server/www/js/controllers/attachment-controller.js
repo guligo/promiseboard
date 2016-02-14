@@ -1,4 +1,4 @@
-define(function() {
+define(['common-utils'], function(commonUtils) {
 
     var _createAttachment = function(dto, onSuccess, onError) {
         $.ajax({
@@ -12,7 +12,7 @@ define(function() {
                 onSuccess();
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -25,7 +25,7 @@ define(function() {
                 onSuccess(JSON.parse(result));
             },
             error: function(error) {
-                console.log(error);
+                commonUtils.handleClientException(error);
             }
         });
     };

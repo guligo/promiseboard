@@ -1,4 +1,4 @@
-define(function() {
+define(['common-utils'], function(commonUtils) {
 
     var _createPromise = function(data, onSuccess, onError) {
         $.ajax({
@@ -14,6 +14,7 @@ define(function() {
                 onSuccess();
             },
             error: function(error) {
+                commonUtils.handleClientException(error);
                 onError(JSON.parse(error.responseText));
             }
         });
@@ -27,7 +28,7 @@ define(function() {
                 onSuccess(JSON.parse(promises));
             },
             error: function(error) {
-                console.log(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -43,7 +44,7 @@ define(function() {
                 onSuccess();
             },
             error: function(error) {
-                console.log(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -60,7 +61,7 @@ define(function() {
                 onSuccess();
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };

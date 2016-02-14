@@ -1,4 +1,4 @@
-define(function() {
+define(['common-utils'], function(commonUtils) {
 
     var _inflate = function(dto, onSuccess) {
         dto.score = +1;
@@ -27,7 +27,7 @@ define(function() {
                 }
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -42,7 +42,7 @@ define(function() {
                 }
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -57,7 +57,7 @@ define(function() {
                 }
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
@@ -72,7 +72,7 @@ define(function() {
                 }
             },
             error: function(error) {
-                console.error(error);
+                commonUtils.handleClientException(error);
             }
         });
     };
