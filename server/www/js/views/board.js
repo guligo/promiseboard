@@ -231,6 +231,11 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                 }
             });
 
+            $('#createPromiseModalDueDateInOneMinute').click(function() {
+                selectedDate = new Date(Date.now() + 60 * 1000);
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+            });
+
             $('#createPromiseModalDueDateToday').click(function() {
                 var endOfToday = new Date();
                 endOfToday.setHours(23);

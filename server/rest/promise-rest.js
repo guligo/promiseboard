@@ -42,6 +42,30 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
             });
         });
 
+        var _updatePromiseStatusToCompletedViaInstagramIfRequired = function(promise, recentMedia) {
+            var recentMediaCreationDate = new Date(Number(recentMedia.caption.created_time  * 1000));
+            if (recentMedia.tags.indexOf(promise.tag) > -1
+                && recentMedia.tags.indexOf('promiseboard') > -1
+                && commonUtils.dateBeforeOrEquals(promise.creationDate, recentMediaCreationDate)
+                && commonUtils.dateBeforeOrEquals(new Date(), promise.dueDate)) {
+
+                _getDataFromUrl(recentMedia.images.standard_resolution.url, function(data) {
+                    attachmentDao.createAttachment({
+                        promiseId: promise.id,
+                        data: data
+                    });
+                });
+                promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
+            }
+        };
+
+        var _updatePromiseStatusToFailedIfRequired = function(promise) {
+            if (promise.status === constants.PROMISE_COMMITED
+                && commonUtils.dateAfter(new Date(), promise.dueDate)) {
+                promise.status = constants.PROMISE_FAILED;
+            }
+        };
+
         app.get('/promises', checkAuthAsync, function(req, res) {
             promiseDao.getPromisesByUsername(req.session.username, function(promises) {
                 userProfileDao.getInstagramProfile(req.session.username, function(userInstagramProfile) {
@@ -49,25 +73,8 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                         instagramService.getRecentMedia(userInstagramProfile.token, function(result) {
                             promises.forEach(function(promise) {
                                 result.data.forEach(function(recentMedia) {
-                                    var recentMediaCreationDate = new Date(Number(recentMedia.caption.created_time  * 1000));
-
-                                    if (recentMedia.tags.indexOf(promise.tag) > -1
-                                        && recentMedia.tags.indexOf('promiseboard') > -1
-                                        && commonUtils.dateBeforeOrEquals(promise.creationDate, recentMediaCreationDate)
-                                        && commonUtils.dateBeforeOrEquals(new Date(), promise.dueDate)) {
-
-                                        _getDataFromUrl(recentMedia.images.standard_resolution.url, function(data) {
-                                            attachmentDao.createAttachment({
-                                                promiseId: promise.id,
-                                                data: data
-                                            });
-                                        });
-                                        promise.status = constants.PROMISE_COMPLETED_VIA_INSTAGRAM;
-                                    } else if (promise.status === constants.PROMISE_COMMITED
-                                        && commonUtils.dateAfter(new Date(), promise.dueDate)) {
-
-                                        promise.status = constants.PROMISE_FAILED;
-                                    }
+                                    _updatePromiseStatusToCompletedViaInstagramIfRequired(promise, recentMedia);
+                                    _updatePromiseStatusToFailedIfRequired(promise);
                                 });
                             });
 
@@ -76,7 +83,13 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                             });
                         });
                     } else {
-                        res.end(JSON.stringify(promises));
+                        promises.forEach(function(promise) {
+                            _updatePromiseStatusToFailedIfRequired(promise);
+                        });
+
+                        promiseDao.updatePromiseStatuses(promises, function() {
+                            res.end(JSON.stringify(promises));
+                        });
                     }
                 });
             });
