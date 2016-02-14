@@ -5,9 +5,8 @@ body {
 */
 
 body {
-    background-image: url('../../img/sky.jpg');
+    background-image: url('../../img/cork.jpg');
     background-size: 100% auto;
-    background-repeat: no-repeat;
 }
 
 .pb-body {
