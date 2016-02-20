@@ -131,7 +131,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Instagram');
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Insta');
                 } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
