@@ -171,15 +171,15 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
                             var points = promiseCompletedScore.score / (promiseCompletedScore.score + promiseFailedScore.score);
                             if (points <= constants.POINTS_TERRIBLE) {
-                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-lightning.svg');
+                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-lightning.svg"></img>');
                             } else if (points <= constants.POINTS_BAD) {
-                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-drizzle.svg');
+                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-drizzle.svg"></img>');
                             } else if (points <= constants.POINTS_NEUTRAL) {
-                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud.svg');
+                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud.svg"></img>');
                             } else if (points <= constants.POINTS_GOOD) {
-                                $('#score').attr('src', '/css/adam-whitcroft-climacons/cloud-sun.svg');
+                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-sun.svg"></img>');
                             } else if (points <= constants.POINTS_EXCELLENT) {
-                                $('#score').attr('src', '/css/adam-whitcroft-climacons/sun.svg');
+                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/sun.svg"></img>');
                             }
                             $('#score').attr('title', 'Completion ratio: ' + commonUtils.round(points, 2));
                         });
