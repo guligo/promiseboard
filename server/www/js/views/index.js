@@ -11,6 +11,19 @@ require(['controllers/user-controller', 'common-utils'], function(userController
             $('#loginModalUsernameLabel').text('Username');
         };
 
+        $('#loginModal').on('shown.bs.modal', function() {
+            $(document).on('keypress', function(e) {
+                if (!$('#loginModalLoginButton').is(':focus') && e.keyCode === 13) {
+                    $('#loginModalLoginButton').click();
+                }
+            });
+            $('#loginModalLoginButton').focus();
+        });
+
+        $('#loginModal').on('hide.bs.modal', function() {
+            $(document).off('keypress');
+        });
+
         $('#loginModalLoginButton').click(function() {
             resetLoginModalFields();
             userController.logIn({
@@ -27,6 +40,19 @@ require(['controllers/user-controller', 'common-utils'], function(userController
 
         $('#loginModalCloseButton').click(function() {
             resetLoginModalFields();
+        });
+
+        $('#registrationModal').on('shown.bs.modal', function() {
+            $(document).on('keypress', function(e) {
+                if (!$('#registrationModalRegisterButton').is(':focus') && e.keyCode === 13) {
+                    $('#registrationModalRegisterButton').click();
+                }
+            });
+            $('#registrationModalRegisterButton').focus();
+        });
+
+        $('#registrationModal').on('hide.bs.modal', function() {
+            $(document).off('keypress');
         });
 
         var resetRegistrationModalFields = function() {
