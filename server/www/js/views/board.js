@@ -303,7 +303,7 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
             $('#createPromiseModalTagField').on('change keyup paste', function() {
                 if ($('#createPromiseModalTagField').val() && $('#createPromiseModalTagField').val() !== '') {
-                    $('#createPromiseModalTagValue').text($('#createPromiseModalTagField').val());
+                    $('#createPromiseModalTagValue').text($('#createPromiseModalTagField').val().toLowerCase());
                     $('#createPromiseModalTagDescription').attr('style', '');
                 } else {
                     $('#createPromiseModalTagDescription').attr('style', 'display: none;');
