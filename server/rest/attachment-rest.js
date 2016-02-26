@@ -8,15 +8,20 @@ define(['fs', 'connect-multiparty', '../www/js/constantz', '../www/js/common-uti
         app.post('/attachment/:promiseId', multipartMiddleware, function(req, res) {
             fs.readFile(req.files['file'].path, 'hex', function(err, data) {
                 data = '\\x' + data;
+                console.log('Attachment size = [%s] B', data.length);
 
-                var dto = {
-                    promiseId: req.params.promiseId,
-                    data: data
-                };
+                if (data.length <= constants.MAX_ATTACHMENT_SIZE) {
+                    var dto = {
+                        promiseId: req.params.promiseId,
+                        data: data
+                    };
 
-                attachmentDao.createAttachment(dto, function() {
+                    attachmentDao.createAttachment(dto, function() {
+                        res.sendStatus(200);
+                    });
+                } else {
                     res.sendStatus(200);
-                });
+                }
             });
         });
 

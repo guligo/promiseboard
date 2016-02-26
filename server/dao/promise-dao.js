@@ -77,7 +77,7 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
             client
                 .query('UPDATE promises \
                     SET status = $2, status_change_date = $3 \
-                    WHERE id = $1;',
+                    WHERE id = $1 AND status != $2;',
                     [id, status, new Date()])
                 .on('end', function(result) {
                     if (callback) {

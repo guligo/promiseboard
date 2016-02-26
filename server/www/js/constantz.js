@@ -13,7 +13,8 @@ define(function() {
         POINTS_TERRIBLE: 0.2,
         INSTAGRAM_REDIRECT_URL: 'http://promiseboard.net/settings.html',
         SESSION_STANDARD_LENGTH: 10 * 60 * 1000,
-        SESSION_EXTENDED_LENGTH: 2 * 24 * 60 * 60 * 1000
+        SESSION_EXTENDED_LENGTH: 2 * 24 * 60 * 60 * 1000,
+        MAX_ATTACHMENT_SIZE: 5 * 1024 * 1024
     }
 
 });
