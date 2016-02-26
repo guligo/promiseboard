@@ -30,6 +30,8 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
                             throw commonUtils.createException('Minimum tag length is 3 characters', 'tag');
                         } else if (submittedPromise.tag.length > 30) {
                             throw commonUtils.createException('Maximum tag length is 30 characters', 'tag');
+                        } else if (!submittedPromise.tag.match(/^[a-zA-Z0-9]+$/g)) {
+                            throw commonUtils.createException('Tag value may not contain special characters', 'tag');
                         }
                     }
 
