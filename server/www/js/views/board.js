@@ -7,20 +7,24 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
 
     $(document).ready(function() {
         var canvas = document.getElementById('scorePool');
-        var ctx = canvas.getContext("2d");
 
-        ctx.beginPath();
-        ctx.arc(16, 16, 16, 0, 2 * Math.PI);
-        ctx.fillStyle = '#ededed';
-        ctx.fill();
+        var doSomething = function(canvas, coef) {
+            var ctx = canvas.getContext("2d");
 
-        ctx.beginPath();
-        ctx.arc(16, 16, 16, Math.PI / 2, 2 * Math.PI);
-        ctx.moveTo(32, 16);
-        ctx.lineTo(16, 16);
-        ctx.lineTo(16, 32);
-        ctx.fillStyle = '#5bc0de';
-        ctx.fill();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ededed';
+            ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.fillStyle = '#5bc0de';
+            ctx.arc(16, 16, 16, - Math.PI / 2, coef * 2 * Math.PI - Math.PI / 2);
+            ctx.lineTo(16, 16);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        doSomething(canvas, 1.00);
 
         $('#logoutLink').click(function() {
             userController.logOut(function() {
