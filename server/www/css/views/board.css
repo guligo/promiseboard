@@ -103,25 +103,6 @@ a:hover {
     height: 200px;
 }
 
-@media only screen and (max-device-width: 480px) {
-    .pb-brand {
-        display: none;
-    }
-
-    .pb-brand-abbr {
-        display: block;
-    }
-
-    .pb-brand-score {
-        margin-left: -15px;
-    }
-
-    .pb-promise-attachment-content img {
-        width: 100%;
-        height: auto;
-    }
-}
-
 .pb-btns li {
     display: inline;
 }
@@ -197,6 +178,7 @@ a:hover {
 #scorePool {
     width: 50px;
     height: 50px;
+    margin-left: -15px;
     cursor: pointer;
 }
 
@@ -209,3 +191,23 @@ a:hover {
     font-size: 12px;
 }
 */
+
+
+@media only screen and (max-device-width: 480px) {
+    .pb-brand {
+        display: none;
+    }
+
+    .pb-brand-abbr {
+        display: block;
+    }
+
+    .pb-brand-score {
+        margin-left: -15px;
+    }
+
+    .pb-promise-attachment-content img {
+        width: 100%;
+        height: auto;
+    }
+}
