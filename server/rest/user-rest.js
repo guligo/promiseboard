@@ -1,5 +1,5 @@
-define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-profile-dao'],
-    function(crypto, constants, commonUtils, userDao, userProfileDao) {
+define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-dao', '../dao/user-profile-dao', '../services/trial-service'],
+    function(crypto, constants, commonUtils, userDao, userProfileDao, trialService) {
 
     var _doLogin = function(submittedUser, onSuccess, onError) {
         var dto = {
@@ -109,6 +109,12 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
             } catch (e) {
                 commonUtils.handleException(e, res);
             }
+        });
+
+        app.post('/users/try', function(req, res) {
+            trialService.createTrialData(function(userDto) {
+                res.end(JSON.stringify(userDto));
+            })
         });
     };
 

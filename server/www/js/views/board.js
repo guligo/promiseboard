@@ -2,8 +2,8 @@ require.config({
     baseUrl: 'js'
 });
 
-require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'controllers/score-controller', 'common-utils'],
-    function(constants, userController, promiseController, attachmentController, scoreController, commonUtils) {
+require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'controllers/score-controller', 'common-utils', 'date-utils'],
+    function(constants, userController, promiseController, attachmentController, scoreController, commonUtils, dateUtils) {
 
     $(document).ready(function() {
         $('#logoutLink').click(function() {
@@ -237,68 +237,28 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
             });
 
             $('#createPromiseModalDueDateToday').click(function() {
-                var endOfToday = new Date();
-                endOfToday.setHours(23);
-                endOfToday.setMinutes(59);
-                endOfToday.setSeconds(59);
-                endOfToday.setMilliseconds(999);
-
-                selectedDate = endOfToday;
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfToday));
+                selectedDate = dateUtils.getEndOfToday();
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateTomorrow').click(function() {
-                var endOfTomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-                endOfTomorrow.setHours(23);
-                endOfTomorrow.setMinutes(59);
-                endOfTomorrow.setSeconds(59);
-                endOfTomorrow.setMilliseconds(999);
-
-                selectedDate = endOfTomorrow;
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfTomorrow));
+                selectedDate = dateUtils.getEndOfTomorrow();
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisWeek').click(function() {
-                var today = new Date();
-
-                var startOfThisWeek = new Date(today.getTime() - ((today.getDay() - 1 >= 0 ? today.getDay() - 1 : 6) * 24 * 60 * 60  * 1000));
-                startOfThisWeek.setHours(0);
-                startOfThisWeek.setMinutes(0);
-                startOfThisWeek.setSeconds(0);
-                startOfThisWeek.setMilliseconds(0);
-
-                var endOfThisWeek = new Date(startOfThisWeek.getTime() + 7 * 24 * 60 * 60 * 1000 - 1);
-                selectedDate = endOfThisWeek;
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisWeek));
+                selectedDate = dateUtils.getEndOfThisWeek();
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisMonth').click(function() {
-                var startOfNextMonth = new Date();
-                startOfNextMonth.setMonth((startOfNextMonth.getMonth() + 1) % 12);
-                startOfNextMonth.setDate(1);
-                startOfNextMonth.setHours(0);
-                startOfNextMonth.setMinutes(0);
-                startOfNextMonth.setSeconds(0);
-                startOfNextMonth.setMilliseconds(0);
-
-                var endOfThisMonth = new Date(startOfNextMonth.getTime() - 1);
-                selectedDate = endOfThisMonth;
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisMonth));
+                selectedDate = dateUtils.getEndOfThisMonth();
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisYear').click(function() {
-                var startOfNextYear = new Date();
-                startOfNextYear.setFullYear(startOfNextYear.getFullYear() + 1);
-                startOfNextYear.setMonth(0);
-                startOfNextYear.setDate(1);
-                startOfNextYear.setHours(0);
-                startOfNextYear.setMinutes(0);
-                startOfNextYear.setSeconds(0);
-                startOfNextYear.setMilliseconds(0);
-
-                var endOfThisYear = new Date(startOfNextYear.getTime() - 1);
-                selectedDate = endOfThisYear;
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(endOfThisYear));
+                selectedDate = dateUtils.getEndOfThisYear();
+                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalTagField').on('change keyup paste', function() {
