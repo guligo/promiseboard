@@ -6,6 +6,22 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
     function(constants, userController, promiseController, attachmentController, scoreController, commonUtils, dateUtils) {
 
     $(document).ready(function() {
+        var canvas = document.getElementById('scorePool');
+        var ctx = canvas.getContext("2d");
+
+        ctx.beginPath();
+        ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ededed';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(16, 16, 16, Math.PI / 2, 2 * Math.PI);
+        ctx.moveTo(32, 16);
+        ctx.lineTo(16, 16);
+        ctx.lineTo(16, 32);
+        ctx.fillStyle = '#5bc0de';
+        ctx.fill();
+
         $('#logoutLink').click(function() {
             userController.logOut(function() {
                 window.location.replace('index.html');
