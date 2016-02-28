@@ -1,5 +1,5 @@
-define(['crypto', '../www/js/constantz', '../dao/user-dao', '../dao/promise-dao', '../www/js/date-utils'],
-    function(crypto, constants, userDao, promiseDao, dateUtils) {
+define(['crypto', '../www/js/constantz', '../dao/user-dao', '../dao/promise-dao', '../dao/score-dao', '../www/js/date-utils'],
+    function(crypto, constants, userDao, promiseDao, scoreDao, dateUtils) {
 
     var _getRandomToken = function() {
         return new Date().getTime() % (60 * 60 * 1000);
@@ -33,12 +33,25 @@ define(['crypto', '../www/js/constantz', '../dao/user-dao', '../dao/promise-dao'
     };
 
     var _createTrialPromises = function(dto, callback) {
-        promiseDao.createPromise(dto.username, 'Test 1', undefined, dateUtils.getEndOfToday(), function() {
-            promiseDao.createPromise(dto.username, 'Test 2', undefined, dateUtils.getEndOfTomorrow(), function() {
-                promiseDao.createPromise(dto.username, 'Test 3', undefined, dateUtils.getEndOfThisWeek(), function() {
-                    if (callback) {
-                        callback();
-                    }
+        var scoreDto = {
+            score: 1
+        };
+
+        promiseDao.createPromise(dto.username, 'Test 1', undefined, dateUtils.getEndOfToday(), function(promiseId) {
+            scoreDto.promiseId = promiseId;
+            scoreDao.createScore(scoreDto, function() {
+                promiseDao.createPromise(dto.username, 'Test 2', undefined, dateUtils.getEndOfTomorrow(), function(promiseId) {
+                    scoreDto.promiseId = promiseId;
+                    scoreDao.createScore(scoreDto, function() {
+                        promiseDao.createPromise(dto.username, 'Test 3', undefined, dateUtils.getEndOfThisWeek(), function(promiseId) {
+                            scoreDto.promiseId = promiseId;
+                            scoreDao.createScore(scoreDto, function() {
+                                if (callback) {
+                                    callback();
+                                }
+                            });
+                        });
+                    });
                 });
             });
         });

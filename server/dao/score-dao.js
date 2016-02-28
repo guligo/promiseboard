@@ -70,7 +70,7 @@ define(['pg', '../www/js/constantz'], function(pg, constantz) {
     };
 
     var _getScoreByPromiseStatus = function(dto, callback) {
-        console.log('Retrieving overall score for promises with status = [%s]', dto.status);
+        console.log('Retrieving overall score for promises of user = [%s] with status = [%s]', dto.username, dto.status);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
@@ -82,10 +82,11 @@ define(['pg', '../www/js/constantz'], function(pg, constantz) {
                     WHERE promise_id in ( \
                         SELECT id \
                         FROM promises \
-                        WHERE status = $1 \
+                        WHERE username = $1 \
+                        AND status = $2 \
                     ) \
                     GROUP BY promise_id;',
-                    [dto.status])
+                    [dto.username, dto.status])
                 .on('row', function(row) {
                     resultingScore.score += Number(row.sum);
                 })

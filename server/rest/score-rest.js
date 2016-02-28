@@ -36,6 +36,7 @@ define(['../dao/score-dao'], function(scoreDao) {
 
         app.get('/promises/score/:status/sum', checkAuthAsync, function(req, res) {
             var dto = {
+                username: req.session.username,
                 status: req.params.status
             };
 
