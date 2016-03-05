@@ -5,27 +5,31 @@ require.config({
 require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'controllers/score-controller', 'common-utils', 'date-utils'],
     function(constants, userController, promiseController, attachmentController, scoreController, commonUtils, dateUtils) {
 
-    $(document).ready(function() {
+    var renderScorePool = function(coef) {
         var canvas = document.getElementById('scorePool');
+        var ctx = canvas.getContext("2d");
 
-        var doSomething = function(canvas, coef) {
-            var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ededed';
+        ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+        ctx.fill();
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ededed';
-            ctx.arc(16, 16, 16, 0, 2 * Math.PI);
-            ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = '#5bc0de';
+        ctx.arc(16, 16, 16, - Math.PI / 2, coef * 2 * Math.PI - Math.PI / 2);
+        ctx.lineTo(16, 16);
+        ctx.closePath();
+        ctx.fill();
 
-            ctx.beginPath();
-            ctx.fillStyle = '#5bc0de';
-            ctx.arc(16, 16, 16, - Math.PI / 2, coef * 2 * Math.PI - Math.PI / 2);
-            ctx.lineTo(16, 16);
-            ctx.closePath();
-            ctx.fill();
+        if (coef >= 1) {
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('1', 16, 21);
         }
+    };
 
-        doSomething(canvas, 1.00);
-
+    $(document).ready(function() {
         $('#logoutLink').click(function() {
             userController.logOut(function() {
                 window.location.replace('index.html');
@@ -214,13 +218,13 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                     $('#promiseList').empty();
                     refreshStatistics(promises);
                     scoreController.getLatestScoreDate(function(scoreDate) {
-                        var infdef = false;
+                        var infdef = true;
                         var deltaTime = 0;
                         if (!scoreDate.date || (deltaTime = new Date().getTime() - new Date(scoreDate.date).getTime()) >= 60 * 60 * 1000) {
-                            $('#scorePool span').html('Allocate 1 point');
+                            renderScorePool(1);
                             infdef = true;
                         } else {
-                            $('#scorePool span').html((60 - Math.round(deltaTime / 60 / 1000)) + ' min. left');
+                            renderScorePool(deltaTime / (60 * 60 * 1000))
                         }
 
                         var filteredPromiseCount = 0;
