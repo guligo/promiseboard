@@ -110,12 +110,6 @@ define(['crypto', '../www/js/constantz', '../www/js/common-utils', '../dao/user-
                 commonUtils.handleException(e, res);
             }
         });
-
-        app.post('/users/try', function(req, res) {
-            trialService.createTrialData(function(userDto) {
-                res.end(JSON.stringify(userDto));
-            })
-        });
     };
 
     return {

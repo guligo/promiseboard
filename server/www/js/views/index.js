@@ -5,12 +5,6 @@ require.config({
 require(['controllers/user-controller', 'common-utils'], function(userController, commonUtils) {
 
     $(document).ready(function() {
-        $('#tryButton').click(function() {
-            userController.tryIt(function() {
-                window.location.replace('board.html');
-            });
-        });
-
         var resetLoginModalFields = function() {
             $('#loginModalUsernameGroup').removeClass('has-success');
             $('#loginModalUsernameGroup').removeClass('has-error');

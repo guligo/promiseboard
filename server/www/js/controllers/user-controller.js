@@ -49,27 +49,6 @@ define(function() {
         });
     };
 
-    var _tryIt = function(onSuccess) {
-        $.ajax({
-            url: '/users/try',
-            method: 'post',
-            success: function(userDto) {
-                userDto = JSON.parse(userDto);
-                _logIn({
-                    username: userDto.username,
-                    password: userDto.plain
-                }, function() {
-                    onSuccess();
-                }, function(error) {
-                    console.log(error);
-                });
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    };
-
     var _getMe = function(onSuccess) {
         $.ajax({
             url: '/users/me',
@@ -122,9 +101,6 @@ define(function() {
         },
         register: function(data, onSuccess, onError) {
             _register(data, onSuccess, onError);
-        },
-        tryIt: function(onSuccess) {
-            _tryIt(onSuccess);
         },
         getMe: function(onSuccess) {
             _getMe(onSuccess);

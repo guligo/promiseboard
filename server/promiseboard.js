@@ -5,8 +5,8 @@ requirejs.config({
     nodeRequire: require
 });
 
-requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/init-dao', './dao/user-profile-dao', './services/instagram-service', './rest/init-rest'],
-    function(express, bodyParser, session, favicon, constants, initDao, userProfileDao, instagramService, initRest) {
+requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/js/constantz', './dao/init-dao', './dao/user-profile-dao', './services/instagram-service', './services/trial-service', './rest/init-rest'],
+    function(express, bodyParser, session, favicon, constants, initDao, userProfileDao, instagramService, trialService, initRest) {
 
     var app = express();
     app.use(bodyParser());
@@ -56,6 +56,16 @@ requirejs(['express', 'body-parser', 'express-session', 'serve-favicon', './www/
     app.get('/index.html', function(req, res) {
         delete req.session.username;
         res.sendFile(__dirname + '/www/views/index.html');
+    });
+
+    app.get('/try.html', function(req, res) {
+        trialService.createTrialData(function(userDto) {
+            req.session.username = userDto.username;
+            req.session.cookie.expires = new Date(Date.now() + constants.SESSION_STANDARD_LENGTH);
+            req.session.cookie.maxAge = constants.SESSION_STANDARD_LENGTH;
+
+            res.sendFile(__dirname + '/www/views/board.html');
+        })
     });
 
     app.get('/board.html', checkAuthSync, function(req, res) {
