@@ -72,7 +72,7 @@ define(['pg'], function(pg) {
     }
 
     var _hasAttachment = function(dto, callback) {
-        console.log('Retrieving an attachment for promise with id = [%s]', dto.promiseId);
+        console.log('Checking whether there is an attachment for promise with id = [%s]', dto.promiseId);
 
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;

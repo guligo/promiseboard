@@ -69,8 +69,6 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
     }
 
     var _updatePromiseStatus = function(id, status, callback) {
-        console.log('Updating status of promise with id = [%s] to status = [%s]', id, status);
-
         pg.connect(DATABASE_URL, function(err, client) {
             if (err) throw err;
 
@@ -79,6 +77,9 @@ define(['pg', '../www/js/constantz'], function(pg, constants) {
                     SET status = $2, status_change_date = $3 \
                     WHERE id = $1 AND status != $2;',
                     [id, status, new Date()])
+                .on('row', function() {
+                    console.log('Updating status of promise with id = [%s] to status = [%s]', id, status);
+                })
                 .on('end', function(result) {
                     if (callback) {
                         callback();
