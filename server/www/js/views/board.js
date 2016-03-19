@@ -16,6 +16,10 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
             window.location.replace('settings.html');
         });
 
+        $('#score').click(function() {
+            $('#promiseScoreModal').modal('show');
+        });
+
         $('#scorePool').click(function() {
             $('#promiseScorePoolModal').modal('show');
         });

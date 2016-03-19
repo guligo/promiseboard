@@ -175,6 +175,10 @@ a:hover {
     margin-top: 5px;
 }
 
+#score {
+    cursor: pointer;
+}
+
 #scorePool {
     width: 50px;
     height: 50px;
