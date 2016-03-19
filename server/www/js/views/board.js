@@ -2,8 +2,25 @@ require.config({
     baseUrl: 'js'
 });
 
-require(['constantz', 'controllers/user-controller', 'controllers/promise-controller', 'controllers/attachment-controller', 'controllers/score-controller', 'common-utils', 'date-utils'],
-    function(constants, userController, promiseController, attachmentController, scoreController, commonUtils, dateUtils) {
+require([
+    'constantz',
+    'controllers/user-controller',
+    'controllers/promise-controller',
+    'controllers/attachment-controller',
+    'controllers/score-controller',
+    'common-utils',
+    'date-utils',
+    'drawing-utils'
+], function(
+    constants,
+    userController,
+    promiseController,
+    attachmentController,
+    scoreController,
+    commonUtils,
+    dateUtils,
+    drawingUtils
+) {
 
     $(document).ready(function() {
         $('#logoutLink').click(function() {
@@ -205,10 +222,10 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
                         var infdef = false;
                         var deltaTime = 0;
                         if (!scoreDate.date || (deltaTime = new Date().getTime() - new Date(scoreDate.date).getTime()) >= 60 * 60 * 1000) {
-                            renderScorePool(1);
+                            drawingUtils.drawScorePool(document.getElementById('scorePool'), 1);
                             infdef = true;
                         } else {
-                            renderScorePool(deltaTime / (60 * 60 * 1000))
+                            drawingUtils.drawScorePool(document.getElementById('scorePool'), deltaTime / (60 * 60 * 1000))
                         }
 
                         var filteredPromiseCount = 0;
@@ -336,29 +353,5 @@ require(['constantz', 'controllers/user-controller', 'controllers/promise-contro
             });
         });
     });
-
-    var renderScorePool = function(coef) {
-        var canvas = document.getElementById('scorePool');
-        var ctx = canvas.getContext("2d");
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#ededed';
-        ctx.arc(16, 16, 16, 0, 2 * Math.PI);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = '#5bc0de';
-        ctx.arc(16, 16, 16, - Math.PI / 2, coef * 2 * Math.PI - Math.PI / 2);
-        ctx.lineTo(16, 16);
-        ctx.closePath();
-        ctx.fill();
-
-        if (coef >= 1) {
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 18px Arial';
-            ctx.fillText('1', 16, 21);
-        }
-    };
 
 });
