@@ -11,38 +11,10 @@ describe('Test common-utils.js', function() {
     var commonUtils;
 
     before(function(done) {
-        requirejs(['../www/js/common-utils'], function(_commonUtils) {
+        requirejs(['../../www/js/common-utils'], function(_commonUtils) {
             commonUtils = _commonUtils;
             done();
         });
-    });
-
-    describe('#formatDate(date)', function() {
-
-        it('should return "1/2/2016 23:59:59" for specified Date object', function() {
-            var date = new Date();
-            date.setDate(1);
-            date.setMonth(1);
-            date.setYear(2016);
-            date.setHours(23);
-            date.setMinutes(59);
-            date.setSeconds(59);
-
-            assert.equal('1/2/2016 23:59:59', commonUtils.formatDate(date));
-        });
-
-        it('should return "<unknown>" if argument is not provided', function() {
-            assert.equal('<unknown>', commonUtils.formatDate());
-        });
-
-        it('should return "<unknown>" if argument is undefined', function() {
-            assert.equal('<unknown>', commonUtils.formatDate(undefined));
-        });
-
-        it('should return "<unknown>" if argument is null', function() {
-            assert.equal('<unknown>', commonUtils.formatDate(null));
-        });
-
     });
 
     describe('#isHttpUrl(url)', function() {
@@ -59,16 +31,36 @@ describe('Test common-utils.js', function() {
             assert.equal(false, commonUtils.isHttpUrl('/promiseboard/index.html'));
         });
 
-        it('should return false if argument is not provided', function() {
-            assert.equal(false, commonUtils.isHttpUrl());
+    });
+
+    describe('#stringToBoolean(str)', function() {
+
+        it('should return true if argument equals "true"', function() {
+            assert.equal(true, commonUtils.stringToBoolean('true'));
         });
 
-        it('should return false if argument is undefined', function() {
-            assert.equal(false, commonUtils.isHttpUrl(undefined));
+        it('should return false if argument is "false"', function() {
+            assert.equal(false, commonUtils.stringToBoolean('false'));
         });
 
-        it('should return false if argument is null', function() {
-            assert.equal(false, commonUtils.isHttpUrl(null));
+        it('should return false if argument is arbitrary string', function() {
+            assert.equal(false, commonUtils.stringToBoolean('qwerty'));
+        });
+
+    });
+
+    describe('#round(number, places)', function() {
+
+        it('should return 1', function() {
+            assert.equal(1, commonUtils.round(1, 0));
+        });
+
+        it('should return 1.1', function() {
+            assert.equal(1.1, commonUtils.round(1.11, 1));
+        });
+
+        it('should return 1.123', function() {
+            assert.equal(1.123, commonUtils.round(1.12345, 3));
         });
 
     });

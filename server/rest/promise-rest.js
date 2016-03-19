@@ -1,5 +1,25 @@
-define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/promise-dao', '../dao/user-profile-dao', '../dao/attachment-dao', '../dao/score-dao', '../services/instagram-service'],
-    function(request, constants, commonUtils, promiseDao, userProfileDao, attachmentDao, scoreDao, instagramService) {
+define([
+    'request',
+    '../www/js/constantz',
+    '../www/js/common-utils',
+    '../www/js/date-utils',
+    '../dao/promise-dao',
+    '../dao/user-profile-dao',
+    '../dao/attachment-dao',
+    '../dao/score-dao',
+    '../services/instagram-service'
+],
+function(
+    request,
+    constants,
+    commonUtils,
+    dateUtils,
+    promiseDao,
+    userProfileDao,
+    attachmentDao,
+    scoreDao,
+    instagramService
+) {
 
     var _getDataFromUrl = function(url, callback) {
         request.defaults({ encoding: null }).get(url, function (error, response, data) {
@@ -50,8 +70,8 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
             var recentMediaCreationDate = new Date(Number(recentMedia.caption.created_time  * 1000));
             if (recentMedia.tags.indexOf(promise.tag) > -1
                 && recentMedia.tags.indexOf('promiseboard') > -1
-                && commonUtils.dateBeforeOrEquals(promise.creationDate, recentMediaCreationDate)
-                && commonUtils.dateBeforeOrEquals(new Date(), promise.dueDate)) {
+                && dateUtils.dateBeforeOrEquals(promise.creationDate, recentMediaCreationDate)
+                && dateUtils.dateBeforeOrEquals(new Date(), promise.dueDate)) {
 
                 _getDataFromUrl(recentMedia.images.standard_resolution.url, function(data) {
                     attachmentDao.createAttachment({
@@ -65,7 +85,7 @@ define(['request', '../www/js/constantz', '../www/js/common-utils', '../dao/prom
 
         var _updatePromiseStatusToFailedIfRequired = function(promise) {
             if (promise.status === constants.PROMISE_COMMITED
-                && commonUtils.dateAfter(new Date(), promise.dueDate)) {
+                && dateUtils.dateAfter(new Date(), promise.dueDate)) {
                 promise.status = constants.PROMISE_FAILED;
             }
         };

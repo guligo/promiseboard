@@ -1,5 +1,5 @@
-define(['fs', 'connect-multiparty', '../www/js/constantz', '../www/js/common-utils', '../dao/attachment-dao'],
-    function(fs, multipart, constants, commonUtils, attachmentDao) {
+define(['fs', 'connect-multiparty', '../www/js/constantz', '../dao/attachment-dao'],
+    function(fs, multipart, constants, attachmentDao) {
 
     var _init = function(app, checkAuthAsync) {
         console.log('Initializing REST [%s] module', 'attachment');

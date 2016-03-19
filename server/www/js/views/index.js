@@ -2,7 +2,7 @@ require.config({
     baseUrl: 'js'
 });
 
-require(['controllers/user-controller', 'common-utils'], function(userController, commonUtils) {
+require(['controllers/user-controller'], function(userController) {
 
     $(document).ready(function() {
         var resetLoginModalFields = function() {

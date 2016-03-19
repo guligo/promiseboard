@@ -142,28 +142,28 @@ require([
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-default');
-                    $('#promise' + promise.id + ' .pb-promise-date').text(commonUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
+                    $('#promise' + promise.id + ' .pb-promise-date').text(dateUtils.calculateTimeLeft(new Date(promise.dueDate)) + ' left');
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + dateUtils.formatDate(new Date(promise.statusChangeDate)));
                 } else if (Number(promise.status) === constants.PROMISE_COMPLETED_VIA_INSTAGRAM) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-success');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + commonUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Insta');
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Completed at ' + dateUtils.formatDate(new Date(promise.statusChangeDate)) + ' via Insta');
                 } else if (Number(promise.status) === constants.PROMISE_FAILED) {
                     $('#promise' + promise.id + ' .pb-status-completed').hide();
                     $('#promise' + promise.id + ' .pb-status-failed').hide();
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-danger');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + commonUtils.formatDate(new Date(promise.statusChangeDate)));
+                    $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + dateUtils.formatDate(new Date(promise.statusChangeDate)));
                 }
 
                 $('#promise' + promise.id + ' .pb-status-removed').click(function() {
@@ -258,32 +258,32 @@ require([
 
             $('#createPromiseModalDueDateInOneMinute').click(function() {
                 selectedDate = new Date(Date.now() + 60 * 1000);
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateToday').click(function() {
                 selectedDate = dateUtils.getEndOfToday();
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateTomorrow').click(function() {
                 selectedDate = dateUtils.getEndOfTomorrow();
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisWeek').click(function() {
                 selectedDate = dateUtils.getEndOfThisWeek();
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisMonth').click(function() {
                 selectedDate = dateUtils.getEndOfThisMonth();
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalDueDateThisYear').click(function() {
                 selectedDate = dateUtils.getEndOfThisYear();
-                $('#createPromiseModalDueDate').text(commonUtils.formatDate(selectedDate));
+                $('#createPromiseModalDueDate').text(dateUtils.formatDate(selectedDate));
             });
 
             $('#createPromiseModalTagField').on('change keyup paste', function() {
