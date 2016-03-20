@@ -5,7 +5,7 @@
     "main": "promiseboard.js",
     "scripts": {
         "start": "node server/promiseboard.js",
-        "test": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec server/tests/utils/*.js"
+        "test": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- -R spec server/tests/**/*-test.js"
     },
     "author": "guligo",
     "dependencies": {

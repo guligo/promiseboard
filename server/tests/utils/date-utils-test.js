@@ -120,4 +120,52 @@ describe('Test date-utils.js', function() {
 
     });
 
+    describe('#getEndOfToday()', function() {
+
+        it('should return today', function() {
+            var date = dateUtils.getEndOfToday();
+            assert.equal(24 * 60 * 60 * 1000 + date.getTimezoneOffset() * 60 * 1000 - 1, date.getTime() % (24 * 60 * 60 * 1000));
+        });
+
+    });
+
+    describe('#getEndOfTomorrow()', function() {
+
+        it('should return tomorrow', function() {
+            var date = dateUtils.getEndOfTomorrow();
+            assert.equal(24 * 60 * 60 * 1000 + date.getTimezoneOffset() * 60 * 1000 - 1, date.getTime() % (24 * 60 * 60 * 1000));
+        });
+
+    });
+
+    describe('#getEndOfThisWeek()', function() {
+
+        it('should return this week', function() {
+            var date = dateUtils.getEndOfThisWeek();
+            // TODO: More specific assertion required
+            assert.equal(24 * 60 * 60 * 1000 + date.getTimezoneOffset() * 60 * 1000 - 1, date.getTime() % (24 * 60 * 60 * 1000));
+        });
+
+    });
+
+    describe('#getEndOfThisMonth()', function() {
+
+        it('should return this month', function() {
+            var date = dateUtils.getEndOfThisMonth();
+            // TODO: More specific assertion required
+            assert.equal(24 * 60 * 60 * 1000 + date.getTimezoneOffset() * 60 * 1000 - 1, date.getTime() % (24 * 60 * 60 * 1000));
+        });
+
+    });
+
+    describe('#getEndOfThisYear()', function() {
+
+        it('should return this year', function() {
+            var date = dateUtils.getEndOfThisYear();
+            // TODO: More specific assertion required
+            assert.equal(24 * 60 * 60 * 1000 + date.getTimezoneOffset() * 60 * 1000 - 1, date.getTime() % (24 * 60 * 60 * 1000));
+        });
+
+    });
+
 });
