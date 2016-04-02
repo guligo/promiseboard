@@ -206,7 +206,7 @@ require([
                             } else if (points <= constants.POINTS_EXCELLENT) {
                                 $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/sun.svg"></img>');
                             }
-                            $('#score').attr('title', 'Completion ratio: ' + commonUtils.round(points, 2));
+                            $('#score').attr('title', 'Completion ratio is ' + commonUtils.round(points, 2) * 100 + '%');
                         });
                     });
                 });
@@ -315,7 +315,7 @@ require([
             });
 
             var clearCreatePromiseModal = function() {
-                $('#createPromiseModalDescriptionLabel').text('Description');
+                $('#createPromiseModalDescriptionLabel').text('I promise:');
                 $('#createPromiseModalDescriptionGroup').removeClass('has-error');
                 $('#createPromiseModalDescriptionField').val('');
                 $('#createPromiseModalDueDate').text('');
