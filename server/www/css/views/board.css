@@ -186,6 +186,11 @@ a:hover {
     cursor: pointer;
 }
 
+
+#promiseScoreModalRatio {
+    font-weight: bold;
+}
+
 /*
 #scorePool {
     margin-top: 4px;
@@ -195,7 +200,6 @@ a:hover {
     font-size: 12px;
 }
 */
-
 
 @media only screen and (max-device-width: 480px) {
     .pb-brand {

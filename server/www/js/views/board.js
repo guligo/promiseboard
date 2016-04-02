@@ -194,19 +194,24 @@ require([
                             $('#numberOfPromisesCompleted').text(promiseCompletedScore.score);
                             $('#numberOfPromisesFailed').text(promiseFailedScore.score);
 
-                            var points = promiseCompletedScore.score / (promiseCompletedScore.score + promiseFailedScore.score);
-                            if (points <= constants.POINTS_TERRIBLE) {
-                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-lightning.svg"></img>');
-                            } else if (points <= constants.POINTS_BAD) {
-                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-drizzle.svg"></img>');
-                            } else if (points <= constants.POINTS_NEUTRAL) {
+                            var points = 0;
+                            if (promiseCompletedScore.score === 0 && promiseFailedScore.score === 0) {
                                 $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud.svg"></img>');
-                            } else if (points <= constants.POINTS_GOOD) {
-                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-sun.svg"></img>');
-                            } else if (points <= constants.POINTS_EXCELLENT) {
-                                $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/sun.svg"></img>');
+                            } else {
+                                points = promiseCompletedScore.score / (promiseCompletedScore.score + promiseFailedScore.score);
+                                if (points <= constants.POINTS_TERRIBLE) {
+                                    $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-lightning.svg"></img>');
+                                } else if (points <= constants.POINTS_BAD) {
+                                    $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-drizzle.svg"></img>');
+                                } else if (points <= constants.POINTS_NEUTRAL) {
+                                    $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud.svg"></img>');
+                                } else if (points <= constants.POINTS_GOOD) {
+                                    $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/cloud-sun.svg"></img>');
+                                } else if (points <= constants.POINTS_EXCELLENT) {
+                                    $('#score').html('<img class="navbar-brand pb-brand-score" src="/css/adam-whitcroft-climacons/sun.svg"></img>');
+                                }
                             }
-                            $('#score').attr('title', 'Completion ratio is ' + commonUtils.round(points, 2) * 100 + '%');
+                            $('#promiseScoreModalRatio').text(commonUtils.round(points, 2) * 100 + '%');
                         });
                     });
                 });
