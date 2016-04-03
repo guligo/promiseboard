@@ -4,7 +4,7 @@
 
 - Install [Node.js](https://nodejs.org/en/download)
 
-- Install PostgreSQL:
+- Install [PostgreSQL](http://www.postgresql.org):
   - sudo apt-get install postgresql-9.4
   - sudo -u postgres -i
     - psql
