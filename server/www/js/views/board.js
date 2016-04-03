@@ -163,7 +163,12 @@ require([
 
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label');
                     $('#promise' + promise.id + ' .pb-promise-date').addClass('label-danger');
-                    $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + dateUtils.formatDate(new Date(promise.statusChangeDate)));
+
+                    if (dateUtils.dateBefore(new Date(promise.statusChangeDate), new Date(promise.dueDate))) {
+                        $('#promise' + promise.id + ' .pb-promise-date').text('Marked as failed on ' + dateUtils.formatDate(new Date(promise.statusChangeDate)));
+                    } else {
+                        $('#promise' + promise.id + ' .pb-promise-date').text('Due date was ' + dateUtils.formatDate(new Date(promise.dueDate)));
+                    }
                 }
 
                 $('#promise' + promise.id + ' .pb-status-removed').click(function() {
