@@ -5,7 +5,7 @@
 - Install [Node.js](https://nodejs.org/en/download)
 
 - Install PostgreSQL:
-  - apt-get install postgresql-9.4
+  - sudo apt-get install postgresql-9.4
   - sudo -u postgres -i
     - psql
       - alter user postgres password 'secret';
