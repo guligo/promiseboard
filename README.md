@@ -1,6 +1,6 @@
 # Notes
 
-## Installation of prerequisites
+## Prerequisites
 
 - Install [Node.js](https://nodejs.org/en/download)
 
@@ -13,7 +13,7 @@
     - createdb promiseboard
   - exit
 
-## Starting up project
+## Compilation, testing & deployment
 
 - cd [repo dir]
 - npm install
@@ -22,9 +22,9 @@
 
 Application should be accessible via [localhost:5000](http://localhost:5000).
 
-## List of frequently used commands on [Heroku](https://www.heroku.com).
+## Useful [Heroku](https://www.heroku.com) commands
 
-Frequently used deployment commands:
+Promiseboard can be hosted on Heroku cloud application platform. Below are some useful commands for development purpose:
 
 - git push heroku master
 - heroku logs
