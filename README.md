@@ -4,10 +4,10 @@
 
 Web app that challenges people to commit and keep promises made to themselves and other people.
 
-+ [Promiseboard on Facebook](http://www.facebook.com/promiseboard)
++ [Promiseboard on Facebook](http://www.facebook.com/promiseboard.net)
 + [Promiseboard on Youtube](https://www.youtube.com/channel/UCCBthbBumYqtBlMY5TwDzJw)
 + [Promiseboard on Instagram](https://www.instagram.com/promiseboard)
-+ [Promiseboard on Twitter](http://www.twitter.com/promiseboard)
++ [Promiseboard on Twitter](http://www.twitter.com/promiseboardnet)
 
 ## Key technologies
 
