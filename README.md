@@ -1,8 +1,8 @@
 # Promiseboard
 
-![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard.png)
-![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard-2.png)
-![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard-3.png)
+![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard.png?token=ACjTUFBEZ0ipYEiNKFRSQif1Jy24pn5rks5XG9xXwA%3D%3D)
+![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard-2.png?token=ACjTULywOgpZos0YRUDxve96Nc6tUeKjks5XG9zCwA%3D%3D)
+![alt tag](https://raw.githubusercontent.com/guligo/promiseboard/master/assets/promiseboard-3.png?token=ACjTUNEHytV-1m3TudsBdLdqueBEyGAAks5XG9zZwA%3D%3D)
 
 ## About
 
