@@ -16,7 +16,7 @@ Web app that challenges people to commit and keep promises made to themselves an
 
 ## Key technologies
 
-Node.js, PostgreSQL, Bootstrap
+JavaScript, Node.js, PostgreSQL, Bootstrap
 
 ## Deployment instructions
 
